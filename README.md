@@ -2,12 +2,16 @@
 
 Web Service utilizando a integração com Drools
 
-### Bibliotecas utilizadas ###
+## Adicionar projeto ao Eclipse ##
 
-#### Drools V 7.6 #### 
+Primeiro realizar o clone através do git, salvando-o dentro do workspace do eclipse, após realizar o import do projeto pelo wizard de import.
+
+## Bibliotecas utilizadas ##
+
+### Drools V 7.6 ###
 * droolsjbpm-tools-distribution-7.6.0.Final.zip [Download zip](http://download.jboss.org/drools/release/7.6.0.Final/).
 
-#### Jackson V 2.8.11 ####
+### Jackson V 2.8.11 ###
 * jackson-annotations-2.8.11 [Download jar](http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-annotations/2.8.11/jackson-annotations-2.8.11.jar)
 * jackson-core-2.8.11 [Download jar](http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-core/2.8.11/jackson-core-2.8.11.jar)
 * jackson-databind-2.8.11 [Download jar](http://central.maven.org/maven2/com/fasterxml/jackson/core/jackson-databind/2.8.11/jackson-databind-2.8.11.jar)
@@ -17,13 +21,13 @@ Web Service utilizando a integração com Drools
 * jackson-module-jaxb-annotations-2.8.11 [Download jar](http://central.maven.org/maven2/com/fasterxml/jackson/module/jackson-module-jaxb-annotations/2.8.11/jackson-module-jaxb-annotations-2.8.11.jar)
 * jersey-media-json-jackson-2.3.1 [Download jar](http://central.maven.org/maven2/org/glassfish/jersey/media/jersey-media-json-jackson/2.3.1/jersey-media-json-jackson-2.3.1.jar)
 
-#### JAX-RS 2.1 / Jersey 2.26+ ####
+### JAX-RS 2.1 / Jersey 2.26+ ###
 * jaxrs-ri-2.26 [Download zip](http://repo1.maven.org/maven2/org/glassfish/jersey/bundles/jaxrs-ri/2.26/jaxrs-ri-2.26.zip)
 
-#### MySQL Connector/J ####
+### MySQL Connector/J ###
 * mysql-connector-java-5.1.45 [Download zip. Necessário autenticação](https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.zip)
 
-#### Configuração das bibliotecas ####
+### Configuração das bibliotecas ###
 
 **Criar as seguintes User Libraries no Eclipse**
 
