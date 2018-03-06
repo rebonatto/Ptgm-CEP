@@ -27,7 +27,7 @@ Primeiro realizar o clone através do git, salvando-o dentro do workspace do ecli
 ### MySQL Connector/J ###
 * mysql-connector-java-5.1.45 [Download zip. Necessário autenticação](https://dev.mysql.com/get/Downloads/Connector-J/mysql-connector-java-5.1.45.zip)
 
-### Configuração das bibliotecas ###
+## Configuração das bibliotecas ##
 
 **Criar as seguintes User Libraries no Eclipse**
 
