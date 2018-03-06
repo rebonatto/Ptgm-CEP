@@ -43,13 +43,8 @@ Web Service utilizando a integração com Drools
 
 **Adicionar os jar's nas User Libraries**
 
-### Contribution guidelines ###
+Acesse as propriedades do projeto, clicando com o botão direto do mouse, acesse a última opção Properties. Depois vá em Java -> Build Path -> User Libraries conforme a imagem [propriedades das users libraries](images/properti_build_path.png). Clique sobre a User, depois clique no botão Add External JARs..., navegue na respectiva pasta da biblioteca. Ex: Drools, vá atá a pasta [drools-7.6.0](libs/drools-7.6.0), e selecione todos os jars. Faça isso para todas as users libraries.
 
-* Writing tests
-* Code review
-* Other guidelines
+**Adicionar jar's para deploy no tomcat**
 
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+Acesse as propriedades do projeto novamente, vá até Deployment Assembly, clique no botão Add [conforme imagem](images/add_libs_deployment.png), selecione Java Build Path Entries, então adicione as users libraries _Mysql-J_, _Jackson-Parser-API_, _JAX-RS-Jersey-API_, _Drools_.
