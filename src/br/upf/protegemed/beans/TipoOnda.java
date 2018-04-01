@@ -19,9 +19,15 @@ public class TipoOnda implements Serializable{
 		this.codTipoOnda = codTipoOnda;
 		this.desc = desc;
 	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 	public Integer getCodTipoOnda() {
 		return codTipoOnda;
 	}
+	
 	public void setCodTipoOnda(Integer codTipoOnda) {
 		this.codTipoOnda = codTipoOnda;
 	}

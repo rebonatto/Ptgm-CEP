@@ -8,32 +8,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UsoSalaCaptura implements Serializable{
 
 	private static final long serialVersionUID = -7431003212656898217L;
-	private Integer codPatura;
-	private Integer codUsoSala;
-	
+	private CapturaAtual capturaAtual;
+	private UsoSala usoSala;
 	public UsoSalaCaptura() {
 		super();
 	}
-
-	public UsoSalaCaptura(Integer codPatura, Integer codUsoSala) {
+	public UsoSalaCaptura(CapturaAtual capturaAtual, UsoSala usoSala) {
 		super();
-		this.codPatura = codPatura;
-		this.codUsoSala = codUsoSala;
+		this.capturaAtual = capturaAtual;
+		this.usoSala = usoSala;
 	}
-
-	public Integer getCodPatura() {
-		return codPatura;
+	public CapturaAtual getCapturaAtual() {
+		return capturaAtual;
 	}
-
-	public void setCodPatura(Integer codPatura) {
-		this.codPatura = codPatura;
+	public void setCapturaAtual(CapturaAtual capturaAtual) {
+		this.capturaAtual = capturaAtual;
 	}
-
-	public Integer getCodUsoSala() {
-		return codUsoSala;
+	public UsoSala getUsoSala() {
+		return usoSala;
 	}
-
-	public void setCodUsoSala(Integer codUsoSala) {
-		this.codUsoSala = codUsoSala;
+	public void setUsoSala(UsoSala usoSala) {
+		this.usoSala = usoSala;
 	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}	
 }

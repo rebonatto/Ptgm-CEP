@@ -2,6 +2,7 @@ package br.upf.protegemed.beans;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -9,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class OndaPadrao implements Serializable{
 
 	private static final long serialVersionUID = 5634023677952019721L;
+	private Integer codOndaPadrao;
 	private TipoPadrao tipoPadrao;
 	private TipoOnda tipoOnda;
 	private Tomada tomada;
@@ -17,16 +19,19 @@ public class OndaPadrao implements Serializable{
 	private Double offset;
 	private Double gain;
 	private Double eficaz;
-	private Calendar dataPadra;
+	private Calendar dataPadrao;
 	private Integer codTipoPadrao;
+	private List<HarmPadrao> listHarmPadrao;
 	
 	public OndaPadrao() {
 		super();
 	}
-
-	public OndaPadrao(TipoPadrao tipoPadrao, TipoOnda tipoOnda, Tomada tomada, Equipamento equipamento,
-			Double valorMedio, Double offset, Double gain, Double eficaz, Calendar dataPadra, Integer codTipoPadrao) {
+	
+	public OndaPadrao(Integer codOndaPadrao, TipoPadrao tipoPadrao, TipoOnda tipoOnda, Tomada tomada,
+			Equipamento equipamento, Double valorMedio, Double offset, Double gain, Double eficaz, Calendar dataPadrao,
+			Integer codTipoPadrao) {
 		super();
+		this.codOndaPadrao = codOndaPadrao;
 		this.tipoPadrao = tipoPadrao;
 		this.tipoOnda = tipoOnda;
 		this.tomada = tomada;
@@ -35,8 +40,36 @@ public class OndaPadrao implements Serializable{
 		this.offset = offset;
 		this.gain = gain;
 		this.eficaz = eficaz;
-		this.dataPadra = dataPadra;
+		this.dataPadrao = dataPadrao;
 		this.codTipoPadrao = codTipoPadrao;
+	}
+
+	public Integer getCodOndaPadrao() {
+		return codOndaPadrao;
+	}
+
+	public void setCodOndaPadrao(Integer codOndaPadrao) {
+		this.codOndaPadrao = codOndaPadrao;
+	}
+
+	public Calendar getDataPadrao() {
+		return dataPadrao;
+	}
+
+	public void setDataPadrao(Calendar dataPadrao) {
+		this.dataPadrao = dataPadrao;
+	}
+
+	public List<HarmPadrao> getListHarmPadrao() {
+		return listHarmPadrao;
+	}
+
+	public void setListHarmPadrao(List<HarmPadrao> listHarmPadrao) {
+		this.listHarmPadrao = listHarmPadrao;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public TipoPadrao getTipoPadrao() {
@@ -103,12 +136,12 @@ public class OndaPadrao implements Serializable{
 		this.eficaz = eficaz;
 	}
 
-	public Calendar getDataPadra() {
-		return dataPadra;
+	public Calendar getdataPadrao() {
+		return dataPadrao;
 	}
 
-	public void setDataPadra(Calendar dataPadra) {
-		this.dataPadra = dataPadra;
+	public void setdataPadrao(Calendar dataPadrao) {
+		this.dataPadrao = dataPadrao;
 	}
 
 	public Integer getCodTipoPadrao() {

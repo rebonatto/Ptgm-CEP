@@ -21,6 +21,10 @@ public class SalaCirurgia implements Serializable{
 		this.desc = desc;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public Integer getCodSala() {
 		return codSala;
 	}

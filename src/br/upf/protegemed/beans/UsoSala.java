@@ -20,6 +20,10 @@ public class UsoSala implements Serializable{
 	public UsoSala() {
 		super();
 	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public UsoSala(Integer codUsoSala, SalaCirurgia salaCirurgia, Procedimento procedimento, Responsavel responsavel,
 			Calendar horaInicio, Calendar horaFinal, Integer ativa) {

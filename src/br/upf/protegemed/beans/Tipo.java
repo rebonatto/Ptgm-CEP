@@ -21,6 +21,10 @@ public class Tipo implements Serializable{
 		this.desc = desc;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public Integer getCodTipo() {
 		return codTipo;
 	}

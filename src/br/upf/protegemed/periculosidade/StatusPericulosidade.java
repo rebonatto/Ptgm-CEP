@@ -1,0 +1,29 @@
+package br.upf.protegemed.periculosidade;
+
+import br.upf.protegemed.beans.CapturaAtual;
+
+public class StatusPericulosidade {
+
+	public static String getStatusPericulosidade(CapturaAtual capturaAtual) {
+
+		String corrente = CorrenteRMS.getStatusCorrente(capturaAtual);
+		String frequencia = FrequenciaCorrente.getStatusFrequencia(capturaAtual);
+		
+		// System.out.println("Corrente: " + corrente + " Freq: " + frequencia + " " +
+		// frequencia.charAt(0));
+
+		if (corrente.charAt(0) == 'D') // Dangerous
+			return corrente;
+
+		if (frequencia.charAt(0) == 'D') // Dangerous
+			return frequencia;
+
+		if (corrente.charAt(0) == 'A') // Atention
+			return corrente;
+
+		if (frequencia.charAt(0) == 'A') // Atention
+			return frequencia;
+
+		return "Normal";
+	}
+}

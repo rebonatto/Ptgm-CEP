@@ -20,6 +20,10 @@ public class TipoPadrao implements Serializable{
 		this.codTipoPadrao = codTipoPadrao;
 		this.desc = desc;
 	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	public Integer getCodTipoPadrao() {
 		return codTipoPadrao;

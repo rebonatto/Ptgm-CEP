@@ -21,6 +21,10 @@ public class Marca implements Serializable{
 		this.desc = desc;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public Integer getCodMarca() {
 		return codMarca;
 	}

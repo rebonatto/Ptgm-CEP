@@ -9,9 +9,12 @@ import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Equipamento;
 import br.upf.protegemed.beans.Eventos;
 import br.upf.protegemed.beans.HarmAtual;
+import br.upf.protegemed.beans.Marca;
 import br.upf.protegemed.beans.Modelo;
+import br.upf.protegemed.beans.Tipo;
 import br.upf.protegemed.beans.TipoOnda;
 import br.upf.protegemed.beans.Tomada;
+import br.upf.protegemed.beans.UsoSala;
 import br.upf.protegemed.beans.UsoSalaEquip;
 import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
@@ -22,6 +25,8 @@ public class ProtegemedDAO {
 		
 		PreparedStatement stmt;
 		UsoSalaEquip usoSalaEquip;
+		Equipamento equipamento;
+		UsoSala usoSala;
 		List<UsoSalaEquip> listUsoSalaEquip = new ArrayList<UsoSalaEquip>();
 		ResultSet resultSet;
 		
@@ -31,8 +36,12 @@ public class ProtegemedDAO {
 			
 			while(resultSet.next()) {
 				usoSalaEquip = new UsoSalaEquip();
-				usoSalaEquip.setCodEquip(resultSet.getInt(1));
-				usoSalaEquip.setCodUsoSala(resultSet.getInt(2));
+				usoSala = new UsoSala();
+				equipamento = new Equipamento();
+				equipamento.setCodEquip(resultSet.getInt(1));
+				usoSala.setCodUsoSala(resultSet.getInt(2));
+				usoSalaEquip.setEquipamento(equipamento);
+				usoSalaEquip.setUsoSala(usoSala);
 				listUsoSalaEquip.add(usoSalaEquip);
 			}
 		
@@ -185,6 +194,9 @@ public class ProtegemedDAO {
 	public List<Equipamento> queryEquipament() {
 		
 		Equipamento equipamento;
+		Modelo modelo;
+		Marca marca;
+		Tipo tipo;
 		List<Equipamento> listEquipamentos = new ArrayList<>();
 		
 		PreparedStatement stmt;
@@ -195,10 +207,18 @@ public class ProtegemedDAO {
 			
 			while(resultSet.next()) {
 				equipamento = new Equipamento();
+				modelo = new Modelo();
+				marca = new Marca();
+				tipo = new Tipo();
+				
+				marca.setCodMarca(resultSet.getInt(2));
+				modelo.setCodModelo(resultSet.getInt(3));
+				tipo.setCodTipo(resultSet.getInt(4));
+				
 				equipamento.setCodEquip(resultSet.getInt(1));
-				equipamento.setCodMarca(resultSet.getInt(2));
-				equipamento.setCodModelo(resultSet.getInt(3));
-				equipamento.setCodTipo(resultSet.getInt(4));
+				equipamento.setMarca(marca);
+				equipamento.setModelo(modelo);
+				equipamento.setTipo(tipo);
 				equipamento.setRfid(resultSet.getString(5));
 				equipamento.setCodPatrimonio(resultSet.getInt(6));
 				equipamento.setDesc(resultSet.getString(7));

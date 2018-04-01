@@ -1,6 +1,8 @@
 package br.upf.protegemed.rest;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -14,6 +16,7 @@ import org.kie.api.runtime.KieSession;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Equipamento;
+import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.utils.Utils;
 
 @Path("/operations")
@@ -57,30 +60,58 @@ public class WSProtegemed {
 		String[] temp = c.split("&");
 		String[] objetos = new String[8];
 		String[] objetoTemp;
-		Utils.logger("[INFORMATION]-> Request ");
-		
+		List<HarmAtual> listHarmAtual = new ArrayList<HarmAtual>();
 		int counter = 0;
+		CapturaAtual capturaAtual = new CapturaAtual();
+		HarmAtual harmAtual = new HarmAtual();
+		Equipamento equipamento = new Equipamento();
+		String[] arrayCos;
+		String[] arraySen;
+		Integer inc = 1;
+		
+		//Utils.logger("[INFORMATION]-> Request ");
+		
 		for (String string : temp) {
 			//Separar atributos e valores RFID=00000, guardando apenas o valor
 			objetoTemp = string.split("=");
 			objetos[counter] = objetoTemp[1];
 			counter++;
 		}
-		CapturaAtual capturaAtual = new CapturaAtual();
-		Equipamento equipamento = new Equipamento();
+		
 		equipamento.setRfid(objetos[0]);
 		capturaAtual.setCodCaptura(2736);
 		capturaAtual.setVm2(Double.parseDouble(objetos[2]));
 		capturaAtual.setOffset(Double.parseDouble(objetos[5]));
 		capturaAtual.setGain(Double.parseDouble(objetos[6]));
 		
-		Utils.logger("RFID " + equipamento.getRfid());
-		Utils.logger("TYPE " + capturaAtual.getCodCaptura());
-		Utils.logger("VM " + capturaAtual.getVm2());
-		Utils.logger("OFFSET " + capturaAtual.getOffset());
-		Utils.logger("GAIN " + capturaAtual.getGain());
+		arrayCos = objetos[3].split(";");
+		arraySen = objetos[4].split(";");
+		
+		for (int i = 0; i < 12; i++) {
+			harmAtual.setCodHarmonica(inc);
+			harmAtual.setSen(Double.parseDouble(arraySen[i]));
+			harmAtual.setCos(Double.parseDouble(arrayCos[i]));
+			listHarmAtual.add(harmAtual);
+		}
+		
+		capturaAtual.setListHarmAtual(listHarmAtual);
+		String string1 = " SEN: ";
+		for (String string : arraySen) {
+			string1 += string;
+		}
+		string1 += "COS: ";
+		for (String string : arrayCos) {
+			string1 += string;
+		}
+		
+		Utils.logger("RFID " + equipamento.getRfid() 
+					+ "TYPE " + capturaAtual.getCodCaptura() 
+					+ "VM " + capturaAtual.getVm2() 
+					+ "OFFSET " + capturaAtual.getOffset()
+					+ "GAIN " + capturaAtual.getGain()
+					+ string1);
         
 		kSession.insert(capturaAtual);
-        kSession.fireAllRules();	    
+        kSession.fireAllRules();
 	}
 }

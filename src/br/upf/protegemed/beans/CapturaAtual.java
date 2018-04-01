@@ -2,6 +2,7 @@ package br.upf.protegemed.beans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -23,26 +24,28 @@ public class CapturaAtual implements Serializable{
 	private Integer under;
 	private Integer over;
 	private Integer duration;
+	private List<HarmAtual> listHarmAtual;
 	
 	public CapturaAtual() {
 		super();
 	};
 	
 	public CapturaAtual(
-			Integer codCaptura,
-			Tomada tomada,
-			TipoOnda tipoOnda,
-			Equipamento equipamento,
-			Eventos eventos,
-			Double valorMedio,
-			Double offset,
-			Double gain,
-			Double eficaz,
-			Timestamp dataAtual,
-			Double vm2,
-			Integer under,
-			Integer over,
-			Integer duration) {
+			Integer codCaptura
+			,Tomada tomada
+			,TipoOnda tipoOnda
+			,Equipamento equipamento
+			,Eventos eventos
+			,Double valorMedio
+			,Double offset
+			,Double gain
+			,Double eficaz
+			,Timestamp dataAtual
+			,Double vm2
+			,Integer under
+			,Integer over
+			,Integer duration
+			,List<HarmAtual> listHarmAtual) {
 		
 		this.codCaptura = codCaptura;
 		this.tomada =  tomada;
@@ -58,6 +61,11 @@ public class CapturaAtual implements Serializable{
 		this.under = under;
 		this.over = over;
 		this.duration = duration;
+		this.listHarmAtual = listHarmAtual;
+	}
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public Integer getCodCaptura() {
@@ -170,5 +178,17 @@ public class CapturaAtual implements Serializable{
 
 	public void setDuration(Integer duration) {
 		this.duration = duration;
+	}
+
+	public List<HarmAtual> getListHarmAtual() {
+		return listHarmAtual;
+	}
+
+	public void setListHarmAtual(List<HarmAtual> listHarmAtual) {
+		this.listHarmAtual = listHarmAtual;
+	}
+
+	public void setTomada(Tomada tomada) {
+		this.tomada = tomada;
 	}
 }

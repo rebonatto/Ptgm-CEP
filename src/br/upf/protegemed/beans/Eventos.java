@@ -23,6 +23,10 @@ public class Eventos implements Serializable{
 		this.formaOnda = formaOnda;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public Integer getCodEvento() {
 		return codEvento;
 	}

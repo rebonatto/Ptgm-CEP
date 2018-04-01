@@ -10,9 +10,9 @@ public class Equipamento implements Serializable{
 
 	private static final long serialVersionUID = -1385384855633098166L;
 	private Integer codEquip;
-	private Integer codMarca;
-	private Integer codModelo;
-	private Integer codTipo;
+	private Marca marca;
+	private Modelo modelo;
+	private Tipo tipo;
 	private String rfid;
 	private Integer codPatrimonio;
 	private String desc;
@@ -24,20 +24,24 @@ public class Equipamento implements Serializable{
 		super();
 	}
 
-	public Equipamento(Integer codEquip, Integer codMarca, Integer codModelo, Integer codTipo, String rfid,
+	public Equipamento(Integer codEquip, Marca marca, Modelo modelo, Tipo tipo, String rfid,
 			Integer codPatrimonio, String desc, Timestamp dataUltimaFalha, Timestamp dataUltimaManutencao,
 			Integer tempoUso) {
 		super();
 		this.codEquip = codEquip;
-		this.codMarca = codMarca;
-		this.codModelo = codModelo;
-		this.codTipo = codTipo;
+		this.marca = marca;
+		this.modelo = modelo;
+		this.tipo = tipo;
 		this.rfid = rfid;
 		this.codPatrimonio = codPatrimonio;
 		this.desc = desc;
 		this.dataUltimaFalha = dataUltimaFalha;
 		this.dataUltimaManutencao = dataUltimaManutencao;
 		this.tempoUso = tempoUso;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 	public Integer getCodEquip() {
@@ -48,28 +52,28 @@ public class Equipamento implements Serializable{
 		this.codEquip = codEquip;
 	}
 
-	public Integer getCodMarca() {
-		return codMarca;
+	public Marca getMarca() {
+		return marca;
 	}
 
-	public void setCodMarca(Integer codMarca) {
-		this.codMarca = codMarca;
+	public void setMarca(Marca marca) {
+		this.marca = marca;
 	}
 
-	public Integer getCodModelo() {
-		return codModelo;
+	public Modelo getModelo() {
+		return modelo;
 	}
 
-	public void setCodModelo(Integer codModelo) {
-		this.codModelo = codModelo;
+	public void setModelo(Modelo modelo) {
+		this.modelo = modelo;
 	}
 
-	public Integer getCodTipo() {
-		return codTipo;
+	public Tipo getTipo() {
+		return tipo;
 	}
 
-	public void setCodTipo(Integer codTipo) {
-		this.codTipo = codTipo;
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 
 	public String getRfid() {

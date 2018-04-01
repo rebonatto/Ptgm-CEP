@@ -8,32 +8,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class UsoSalaEquip implements Serializable {
 
 	private static final long serialVersionUID = 210676730110011539L;
-	private Integer codEquip;
-	private Integer codUsoSala;
-	
+	private Equipamento equipamento;
+	private UsoSala usoSala;
 	public UsoSalaEquip() {
 		super();
 	}
-
-	public UsoSalaEquip(Integer codEquip, Integer codUsoSala) {
+	public UsoSalaEquip(Equipamento equipamento, UsoSala usoSala) {
 		super();
-		this.codEquip = codEquip;
-		this.codUsoSala = codUsoSala;
+		this.equipamento = equipamento;
+		this.usoSala = usoSala;
 	}
-
-	public Integer getCodEquip() {
-		return codEquip;
+	public Equipamento getEquipamento() {
+		return equipamento;
 	}
-
-	public void setCodEquip(Integer codEquip) {
-		this.codEquip = codEquip;
+	public void setEquipamento(Equipamento equipamento) {
+		this.equipamento = equipamento;
 	}
-
-	public Integer getCodUsoSala() {
-		return codUsoSala;
+	public UsoSala getUsoSala() {
+		return usoSala;
 	}
-
-	public void setCodUsoSala(Integer codUsoSala) {
-		this.codUsoSala = codUsoSala;
+	public void setUsoSala(UsoSala usoSala) {
+		this.usoSala = usoSala;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 }

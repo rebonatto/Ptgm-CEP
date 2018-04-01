@@ -25,6 +25,10 @@ public class HarmPadrao implements Serializable{
 		this.cos = cos;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public Integer getCodHarmonica() {
 		return codHarmonica;
 	}

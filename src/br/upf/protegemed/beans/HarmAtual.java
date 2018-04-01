@@ -25,6 +25,10 @@ public class HarmAtual implements Serializable{
 		this.cos = cos;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 	public CapturaAtual getCapturaAtual() {
 		return capturaAtual;
 	}

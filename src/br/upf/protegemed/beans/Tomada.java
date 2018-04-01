@@ -9,7 +9,7 @@ public class Tomada implements Serializable{
 
 	private static final long serialVersionUID = 5309860708642897391L;
 	private Integer codTomada;
-	private Integer codSala;
+	private SalaCirurgia salaCirurgia;
 	private Integer indice;
 	private Integer modulo;
 	private String desc;
@@ -18,15 +18,19 @@ public class Tomada implements Serializable{
 		super();
 	}
 
-	public Tomada(Integer codTomada, Integer codSala, Integer indice, Integer modulo, String desc) {
+	public Tomada(Integer codTomada, SalaCirurgia salaCirurgia, Integer indice, Integer modulo, String desc) {
 		super();
 		this.codTomada = codTomada;
-		this.codSala = codSala;
+		this.salaCirurgia = salaCirurgia;
 		this.indice = indice;
 		this.modulo = modulo;
 		this.desc = desc;
 	}
 
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
 	public Integer getCodTomada() {
 		return codTomada;
 	}
@@ -35,12 +39,12 @@ public class Tomada implements Serializable{
 		this.codTomada = codTomada;
 	}
 
-	public Integer getCodSala() {
-		return codSala;
+	public SalaCirurgia getSalaCirurgia() {
+		return salaCirurgia;
 	}
 
-	public void setCodSala(Integer codSala) {
-		this.codSala = codSala;
+	public void setSalaCirurgia(SalaCirurgia salaCirurgia) {
+		this.salaCirurgia = salaCirurgia;
 	}
 
 	public Integer getIndice() {
