@@ -12,7 +12,7 @@ public class FrequenciaCorrente {
 	private float[] perigo = new float[12];
 
 	public FrequenciaCorrente() {
-		/* Valores limite da percepção, dentro considerados normais */
+		// Valores limite da percepção, dentro considerados normais
 		normal[0] = 0.060F; // 60Hz
 		normal[1] = 0.061F; // 120Hz
 		normal[2] = 0.064F; // 180Hz
@@ -25,15 +25,9 @@ public class FrequenciaCorrente {
 		normal[9] = 0.099F; // 600Hz
 		normal[10] = 0.103F; // 660Hz
 		normal[11] = 0.107F; // 720Hz
-		/*
-		 * normal[12] = 0.0111; normal[13] = 0.0115; normal[14] = 0.0120; normal[15] =
-		 * 0.0127;
-		 */
 
-		/*
-		 * Valores limite para let-ago. Até esse valores normais, acima podem causar
-		 * danos
-		 */
+		// Valores limite para let-ago. Até esse valores normais, acima podem causar
+		// danos
 		atencao[0] = 0.1000F; // 60Hz
 		atencao[1] = 0.1028F; // 120Hz
 		atencao[2] = 0.1057F; // 180Hz
@@ -47,11 +41,7 @@ public class FrequenciaCorrente {
 		atencao[10] = 0.1446F; // 660Hz
 		atencao[11] = 0.1486F; // 720Hz
 
-		/*
-		 * atencao[12] = 0.1525F; atencao[13] = 0.1564F; atencao[14] = 0.1630F;
-		 * atencao[15] = 0.1637F;
-		 */
-		/* Valores que representam perigo */
+		// Valores que representam perigo
 		perigo[0] = 0.5000F; // 60Hz
 		perigo[1] = 0.7919F; // 120Hz
 		perigo[2] = 1.0781F; // 180Hz
@@ -64,10 +54,6 @@ public class FrequenciaCorrente {
 		perigo[9] = 4.0876F; // 600Hz
 		perigo[10] = 4.4893F; // 660Hz
 		perigo[11] = 4.9049F; // 720Hz
-		/*
-		 * perigo[12] = 5.3347F; //780Hz perigo[13] = 5.7911F; //840Hz perigo[14] =
-		 * 6.2682F //900Hz perigo[15] = 6.7558F; //960Hz
-		 */
 	}
 
 	public float getNormal(int h) {
@@ -89,22 +75,13 @@ public class FrequenciaCorrente {
 		for (HarmAtual h : cap.getListHarmAtual()) {
 			// Encontra o valor da barra (modulo)
 			valor = Calculos.modulo(h.getSen(), h.getCos(), cap.getGain());
-			// Corrige o valor de pico para RMS
-			// valor = Uteis.Calculos.Pico2RMS(valor);
-			/*
-			 * // Corrige o valor com o ganho do amplificador operacional valor = valor *
-			 * CorrecaoAmplificadorOperacional.getCorrecaoFrequencia(freq);
-			 */
-			// System.out.println("F: " + freq + "\tValor: " + valor);
-			if (valor > obj.getPerigo(h.getCodHarmonica() - 1)) {
-				// System.out.println(valor + " " + obj.getPerigo(h.getHarmonica()-1));
+
+			if (valor > obj.getPerigo(h.getCodHarmonica() - 1))
 				return "Dangerous " + String.valueOf(h.getCodHarmonica() * Utils.FREQBASE) + "Hz";
-			} else if (valor > obj.getAtencao(h.getCodHarmonica() - 1)) {
+			else if (valor > obj.getAtencao(h.getCodHarmonica() - 1))
 				return "Atention " + String.valueOf(h.getCodHarmonica() * Utils.FREQBASE) + "Hz";
-			}
+
 		}
 		return "Normal";
-
 	}
-
 }

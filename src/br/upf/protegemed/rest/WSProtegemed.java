@@ -27,7 +27,7 @@ public class WSProtegemed {
 	public static KieSession kSession;
 	
 	public WSProtegemed() {
-		ks = KieServices.Factory.get();
+		ks = KieServices.Factory.get();		
 	    kContainer = ks.getKieClasspathContainer();
 	    kSession = kContainer.newKieSession("protegemed");
 	    
@@ -110,7 +110,7 @@ public class WSProtegemed {
 					+ "OFFSET " + capturaAtual.getOffset()
 					+ "GAIN " + capturaAtual.getGain()
 					+ string1);
-        
+		
 		kSession.insert(capturaAtual);
         kSession.fireAllRules();
 	}

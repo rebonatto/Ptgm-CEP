@@ -1,11 +1,15 @@
 package br.upf.protegemed.beans;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Calendar;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Role.Type;
+
 @XmlRootElement
+@Role(Type.EVENT)
 public class Equipamento implements Serializable{
 
 	private static final long serialVersionUID = -1385384855633098166L;
@@ -16,8 +20,8 @@ public class Equipamento implements Serializable{
 	private String rfid;
 	private Integer codPatrimonio;
 	private String desc;
-	private Timestamp dataUltimaFalha;
-	private Timestamp dataUltimaManutencao;
+	private Calendar dataUltimaFalha;
+	private Calendar dataUltimaManutencao;
 	private Integer tempoUso;
 	
 	public Equipamento() {
@@ -25,7 +29,7 @@ public class Equipamento implements Serializable{
 	}
 
 	public Equipamento(Integer codEquip, Marca marca, Modelo modelo, Tipo tipo, String rfid,
-			Integer codPatrimonio, String desc, Timestamp dataUltimaFalha, Timestamp dataUltimaManutencao,
+			Integer codPatrimonio, String desc, Calendar dataUltimaFalha, Calendar dataUltimaManutencao,
 			Integer tempoUso) {
 		super();
 		this.codEquip = codEquip;
@@ -100,19 +104,19 @@ public class Equipamento implements Serializable{
 		this.desc = desc;
 	}
 
-	public Timestamp getDataUltimaFalha() {
+	public Calendar getDataUltimaFalha() {
 		return dataUltimaFalha;
 	}
 
-	public void setDataUltimaFalha(Timestamp dataUltimaFalha) {
+	public void setDataUltimaFalha(Calendar dataUltimaFalha) {
 		this.dataUltimaFalha = dataUltimaFalha;
 	}
 
-	public Timestamp getDataUltimaManutencao() {
+	public Calendar getDataUltimaManutencao() {
 		return dataUltimaManutencao;
 	}
 
-	public void setDataUltimaManutencao(Timestamp dataUltimaManutencao) {
+	public void setDataUltimaManutencao(Calendar dataUltimaManutencao) {
 		this.dataUltimaManutencao = dataUltimaManutencao;
 	}
 

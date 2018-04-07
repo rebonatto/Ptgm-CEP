@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Role.Type;
+
 @XmlRootElement
+@Role(Type.EVENT)
 public class Responsavel implements Serializable{
 
 	private static final long serialVersionUID = -9134702167170815266L;

@@ -175,7 +175,7 @@ public class ProtegemedDAO {
 				capturaAtual.setOffset(resultSet.getDouble(7));
 				capturaAtual.setGain(resultSet.getDouble(8));
 				capturaAtual.setEficaz(resultSet.getDouble(9));
-				capturaAtual.setDataAtual(resultSet.getTimestamp(10));
+				//TODO Converter para Calendar capturaAtual.setDataAtual(resultSet.getTimestamp(10));
 				capturaAtual.setVm2(resultSet.getDouble(11));
 				capturaAtual.setUnder(resultSet.getInt(12));
 				capturaAtual.setOver(resultSet.getInt(13));
@@ -222,8 +222,8 @@ public class ProtegemedDAO {
 				equipamento.setRfid(resultSet.getString(5));
 				equipamento.setCodPatrimonio(resultSet.getInt(6));
 				equipamento.setDesc(resultSet.getString(7));
-				equipamento.setDataUltimaFalha(resultSet.getTimestamp(8));
-				equipamento.setDataUltimaManutencao(resultSet.getTimestamp(9));
+				//TODO Refatorar equipamento.setDataUltimaFalha(resultSet.getTimestamp(8)); 
+				//TODO Refatorar equipamento.setDataUltimaManutencao(resultSet.getTimestamp(9)); 
 				equipamento.setTempoUso(resultSet.getInt(10));
 				listEquipamentos.add(equipamento);				
 			}

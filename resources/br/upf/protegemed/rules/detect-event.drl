@@ -1,0 +1,20 @@
+//created on: 01/04/2018
+package br.upf.protegemed.rules
+
+import br.upf.protegemed.utils.Utils;
+import br.upf.protegemed.beans.CapturaAtual;
+import br.upf.protegemed.beans.Modelo;	
+
+rule "Rule Slinding Window"
+	when
+		Modelo(  ) over window:time(1s)
+	then
+		Utils.logger(drools.getRule().getName());
+end
+
+rule "Detect Event"
+	when
+		$status : CapturaAtual(  getCodCaptura() != null )
+	then
+		Utils.logger(drools.getRule().getName());
+end

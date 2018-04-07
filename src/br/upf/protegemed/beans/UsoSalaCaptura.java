@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Role.Type;
+
 @XmlRootElement
+@Role(Type.EVENT)
 public class UsoSalaCaptura implements Serializable{
 
 	private static final long serialVersionUID = -7431003212656898217L;

@@ -5,7 +5,11 @@ import java.util.Calendar;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Role.Type;
+
 @XmlRootElement
+@Role(Type.EVENT)
 public class UsoSala implements Serializable{
 
 	private static final long serialVersionUID = 4900327534704309570L;

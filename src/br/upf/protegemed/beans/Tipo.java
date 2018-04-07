@@ -4,7 +4,11 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Role.Type;
+
 @XmlRootElement
+@Role(Type.EVENT)
 public class Tipo implements Serializable{
 
 	private static final long serialVersionUID = 5910612692251952687L;

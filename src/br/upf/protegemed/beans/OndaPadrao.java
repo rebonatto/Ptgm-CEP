@@ -6,7 +6,11 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Role.Type;
+
 @XmlRootElement
+@Role(Type.EVENT)
 public class OndaPadrao implements Serializable{
 
 	private static final long serialVersionUID = 5634023677952019721L;

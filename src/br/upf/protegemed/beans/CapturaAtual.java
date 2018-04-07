@@ -1,12 +1,16 @@
 package br.upf.protegemed.beans;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kie.api.definition.type.Role;
+import org.kie.api.definition.type.Role.Type;
+
 @XmlRootElement
+@Role(Type.EVENT)
 public class CapturaAtual implements Serializable{
 
 	private static final long serialVersionUID = 7125512715669337932L;
@@ -19,7 +23,7 @@ public class CapturaAtual implements Serializable{
 	private Double offset;
 	private Double gain;
 	private Double eficaz;
-	private Timestamp dataAtual;
+	private Calendar dataAtual;
 	private Double vm2;
 	private Integer under;
 	private Integer over;
@@ -40,7 +44,7 @@ public class CapturaAtual implements Serializable{
 			,Double offset
 			,Double gain
 			,Double eficaz
-			,Timestamp dataAtual
+			,Calendar dataAtual
 			,Double vm2
 			,Integer under
 			,Integer over
@@ -140,11 +144,11 @@ public class CapturaAtual implements Serializable{
 		this.eficaz = eficaz;
 	}
 
-	public Timestamp getDataAtual() {
+	public Calendar getDataAtual() {
 		return dataAtual;
 	}
 
-	public void setDataAtual(Timestamp dataAtual) {
+	public void setDataAtual(Calendar dataAtual) {
 		this.dataAtual = dataAtual;
 	}
 

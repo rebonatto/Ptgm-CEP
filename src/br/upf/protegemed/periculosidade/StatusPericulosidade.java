@@ -8,10 +8,7 @@ public class StatusPericulosidade {
 
 		String corrente = CorrenteRMS.getStatusCorrente(capturaAtual);
 		String frequencia = FrequenciaCorrente.getStatusFrequencia(capturaAtual);
-		
-		// System.out.println("Corrente: " + corrente + " Freq: " + frequencia + " " +
-		// frequencia.charAt(0));
-
+	
 		if (corrente.charAt(0) == 'D') // Dangerous
 			return corrente;
 

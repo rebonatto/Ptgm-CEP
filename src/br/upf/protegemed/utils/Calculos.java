@@ -11,7 +11,10 @@ public class Calculos {
 
 	public static Double AjustaRMSValorMedio(CapturaAtual c) {
 		Double res = 0.0;
-		Double total = 0.0, mod = 0.0, vm = 0.0, totalharm = 0.0;
+		Double total = 0.0;
+		Double mod = 0.0;
+		Double vm = 0.0;
+		Double totalharm = 0.0;
 
 		if (c.getValorMedio() == 0)
 			return c.getEficaz();

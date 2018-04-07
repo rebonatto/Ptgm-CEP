@@ -1,5 +1,13 @@
 package br.upf.protegemed.utils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import br.upf.protegemed.beans.CapturaAtual;
+import br.upf.protegemed.beans.Equipamento;
+import br.upf.protegemed.beans.HarmAtual;
+import br.upf.protegemed.periculosidade.StatusPericulosidade;
+
 //import java.util.ArrayList;
 //import java.util.List;
 //
@@ -49,31 +57,48 @@ public class Testes {
 //			System.out.println(equipamento.getTempoUso());
 //		}
 //		
-//		String r = "RFID=0123&TYPE=00F&VM=$i&SEN=00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000&COS=00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000&OFFSET=00000000&GAIN=00000000&RMS=00000000";
+		String c = "RFID=0123&TYPE=00F&VM=2&SEN=00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000&COS=00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000;00000000&OFFSET=00000000&GAIN=00000000&RMS=00000000";
 //	
-//		String[] temp = r.split("&");
-//		String[] objetos = new String[8];
-//		String[] objetoTemp;
-//		HarmAtual harmAtual = new HarmAtual();
-//		//Utils.logger("[INFORMATION]-> Request ");
-//		
-//		int counter = 0;
-//		for (String string : temp) {
-//			//Separar atributos e valores RFID=00000, guardando apenas o valor
-//			objetoTemp = string.split("=");
-//			objetos[counter] = objetoTemp[1];
-//			counter++;
-//		}
-//		String[] arrayCos = objetos[3].split(";");
-//		String[] arraySen = objetos[4].split(";");
-//		Integer inc = 1;
-//		List<HarmAtual> list = new ArrayList<HarmAtual>();
-//		//harmAtual.setCapturaAtual(capturaAtual);
-//		for (int i = 0; i < 12; i++) {
-//			harmAtual.setCodHarmonica(inc);
-//			harmAtual.setSen(Double.parseDouble(arraySen[i]));
-//			harmAtual.setCos(Double.parseDouble(arrayCos[i]));
-//			list.add(harmAtual);
-//		}
+		String[] temp = c.split("&");
+		String[] objetos = new String[8];
+		String[] objetoTemp;
+		List<HarmAtual> listHarmAtual = new ArrayList<HarmAtual>();
+		int counter = 0;
+		CapturaAtual capturaAtual = new CapturaAtual();
+		HarmAtual harmAtual = new HarmAtual();
+		Equipamento equipamento = new Equipamento();
+		String[] arrayCos;
+		String[] arraySen;
+		Integer inc = 1;
+		
+		//Utils.logger("[INFORMATION]-> Request ");
+		
+		for (String string : temp) {
+			//Separar atributos e valores RFID=00000, guardando apenas o valor
+			objetoTemp = string.split("=");
+			objetos[counter] = objetoTemp[1];
+			counter++;
+		}
+		
+		equipamento.setRfid(objetos[0]);
+		capturaAtual.setCodCaptura(2736);
+		capturaAtual.setVm2(Double.parseDouble(objetos[2]));
+		capturaAtual.setOffset(Double.parseDouble(objetos[5]));
+		capturaAtual.setGain(Double.parseDouble(objetos[6]));
+		
+		arrayCos = objetos[3].split(";");
+		arraySen = objetos[4].split(";");
+		
+		for (int i = 0; i < 12; i++) {
+			harmAtual.setCodHarmonica(inc);
+			harmAtual.setSen(Double.parseDouble(arraySen[i]));
+			harmAtual.setCos(Double.parseDouble(arrayCos[i]));
+			listHarmAtual.add(harmAtual);
+		}
+		
+		capturaAtual.setEficaz(12.0);
+		capturaAtual.setListHarmAtual(listHarmAtual);
+		
+		System.out.println(StatusPericulosidade.getStatusPericulosidade(capturaAtual));
 	}
 }

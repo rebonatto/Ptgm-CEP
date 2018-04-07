@@ -2,11 +2,6 @@ package br.upf.protegemed.rules
  
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.beans.Eventos;
-
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
  
 rule "Teste"
     when
@@ -14,15 +9,3 @@ rule "Teste"
     then
         Utils.logger(myMessage + drools.getRule().getName());
 end
-
-rule "Vm_Com_Fuga"
-	when
-		captura : CapturaAtual( getVm2() != null )
-	then
-		Utils.logger(drools.getRule().getName() + " " + captura.getVm2());
-end
-		
-		
-		
-		
-		
