@@ -4,7 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Utils {
 
@@ -32,6 +34,7 @@ public class Utils {
 	public static final String BD = "protegemed";
 	public static final String JDBC = "mysql";
 	public static final String HOST = "localhost";
+	public static final String MASK_DATA = "YYYY-MM-dd HH:mm:ss";
 	private static String LOCALE_LOG = System.getProperty("user.home") + "/Downloads/teste.txt";
 
 	public static int MEMORIA = 256 * 1024 * 1024;
@@ -51,12 +54,18 @@ public class Utils {
 	public static int DIGITOSSIGNIFICATIVOS = 3;
 
 	public static void logger(String msg) {
-
+		
+		Date dataTemp;
+		String dataString = null;
+		
 		try {
-			String date = Calendar.getInstance().getTime().toString().concat("\n\r");
-			Files.write(Paths.get(LOCALE_LOG), new String(date).getBytes(), StandardOpenOption.APPEND);
+			SimpleDateFormat f = new SimpleDateFormat(MASK_DATA);
+			dataTemp = Calendar.getInstance().getTime();
+			dataString = "[LOG] ".concat(f.format(dataTemp)).concat(" - ");
+			
+			Files.write(Paths.get(LOCALE_LOG), new String(dataString).getBytes(), StandardOpenOption.APPEND);
 			Files.write(Paths.get(LOCALE_LOG), new String(msg).getBytes(), StandardOpenOption.APPEND);
-			Files.write(Paths.get(LOCALE_LOG), new String("\n\r").getBytes(), StandardOpenOption.APPEND);
+			Files.write(Paths.get(LOCALE_LOG), new String("\n").getBytes(), StandardOpenOption.APPEND);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
