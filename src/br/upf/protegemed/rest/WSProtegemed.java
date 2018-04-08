@@ -13,7 +13,6 @@ import javax.ws.rs.core.MediaType;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.EntryPoint;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Equipamento;
@@ -37,9 +36,6 @@ public class WSProtegemed {
 			getSession();
 			inicializaoDrools = 1;
 		}
-		//else {
-		//	Utils.logger("DROOLS JÁ INICIALIZADO");
-		//}
 	}
 
 	@GET
@@ -106,13 +102,8 @@ public class WSProtegemed {
 		ResultadoCalculoPericulosicade periculosidade = new ResultadoCalculoPericulosicade();
 		periculosidade.setCapturaAtual(capturaAtual);
 		periculosidade.setResultado(StatusPericulosidade.getStatusPericulosidade(capturaAtual));
-
-		//EntryPoint periculosidadeStream = kSession.getEntryPoint("ResultadoStream");
-		//periculosidadeStream.insert(periculosidade);
 		
-		EntryPoint capturaStream = kSession.getEntryPoint("CapturaStream");
-		capturaStream.insert(capturaAtual);
-		//kSession.insert(capturaAtual);
+		kSession.insert(capturaAtual);
 		kSession.insert(periculosidade);
 		kSession.fireAllRules();
 	}

@@ -1,14 +1,13 @@
-//created on: 01/04/2018
+//created by Clayton Tolotti: claytontolotti@gmail.com, on: 01/04/2018
 package br.upf.protegemed.rules
 
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.beans.Modelo;	
 import br.upf.protegemed.beans.ResultadoCalculoPericulosicade;
 
 rule "Rule Slinding Window"
 	when
-		$Captura : CapturaAtual( getEventos().getCodEvento() != null ) over window:time(5s) from entry-point "CapturaStream"
+		$Captura : CapturaAtual( getEventos().getCodEvento() != null ) over window:time(5s)
 	then
 		Utils.logger("<<<<<<<<< Captura " + $Captura.getVm2() + " "
 			+ drools.getRule().getName() + ">>>>>>>>>");
@@ -17,7 +16,6 @@ end
 rule "Detect Event"
 	when
 		$status : CapturaAtual(  getCodCaptura() == null )
-			from entry-point "CapturaStream"
 	then
 		Utils.logger(drools.getRule().getName());
 end
@@ -25,16 +23,15 @@ end
 rule "Status Periculosidade"
 	when
 		$periculosidade : ResultadoCalculoPericulosicade (getResultado() != null)
-			//from entry-point "ResultadoStream"
 	then
 		Utils.logger(drools.getRule().getName() + " " + $periculosidade.getResultado());
 end
 
 rule "Detecte Similaridade Event"
 	when
-		$one : CapturaAtual( $evento : getEventos().getCodEvento() ) from entry-point "CapturaStream"
+		$one : CapturaAtual( $evento : getEventos().getCodEvento() )
 		$two : CapturaAtual( this.getEventos().getCodEvento() != $evento,
-			this after[0s, 1s] $one) from entry-point "CapturaStream"
+			this after[0s, 4s] $one)
 	then
 		Utils.logger(drools.getRule().getName() + " " + $evento + " != " + $two.getEventos().getCodEvento()) ;
 		delete($one);
@@ -42,9 +39,9 @@ end
 
 rule "SEM Similaridade"
 	when
-		$one : CapturaAtual( $evento : getEventos().getCodEvento() ) from entry-point "CapturaStream"
+		$one : CapturaAtual( $evento : getEventos().getCodEvento() ) 
 		$two : CapturaAtual( this.getEventos().getCodEvento() == $evento,
-			this coincides[0s, 10s] $two) from entry-point "CapturaStream"
+			this coincides[0s, 10s] $one)
 	then
 		Utils.logger(drools.getRule().getName() + " " + $evento + " == " + $two.getEventos().getCodEvento()) ;
 end
