@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Role.Type;
+import org.kie.api.runtime.rule.FactHandle;
 
 @XmlRootElement
 @Role(Type.EVENT)
@@ -23,12 +24,14 @@ public class CapturaAtual implements Serializable{
 	private Double offset;
 	private Double gain;
 	private Double eficaz;
-	private Calendar dataAtual;
+	private Calendar dataInicial;
+	private Calendar dataFinal;
 	private Double vm2;
 	private Integer under;
 	private Integer over;
-	private Integer duration;
+	private long duracao;
 	private List<HarmAtual> listHarmAtual;
+	private FactHandle token;
 	
 	public CapturaAtual() {
 		super();
@@ -44,12 +47,14 @@ public class CapturaAtual implements Serializable{
 			,Double offset
 			,Double gain
 			,Double eficaz
-			,Calendar dataAtual
+			,Calendar dataInicial
+			,Calendar dataFinal
 			,Double vm2
 			,Integer under
 			,Integer over
-			,Integer duration
-			,List<HarmAtual> listHarmAtual) {
+			,long duracao
+			,List<HarmAtual> listHarmAtual
+			,FactHandle token) {
 		
 		this.codCaptura = codCaptura;
 		this.tomada =  tomada;
@@ -60,12 +65,14 @@ public class CapturaAtual implements Serializable{
 		this.offset = offset;
 		this.gain = gain;
 		this.eficaz = eficaz;
-		this.dataAtual = dataAtual;
+		this.dataInicial = dataInicial;
+		this.dataFinal = dataFinal;
 		this.vm2 = vm2;
 		this.under = under;
 		this.over = over;
-		this.duration = duration;
+		this.duracao = duracao;
 		this.listHarmAtual = listHarmAtual;
+		this.token = token;
 	}
 	
 	public static long getSerialversionuid() {
@@ -143,15 +150,7 @@ public class CapturaAtual implements Serializable{
 	public void setEficaz(Double eficaz) {
 		this.eficaz = eficaz;
 	}
-
-	public Calendar getDataAtual() {
-		return dataAtual;
-	}
-
-	public void setDataAtual(Calendar dataAtual) {
-		this.dataAtual = dataAtual;
-	}
-
+	
 	public Double getVm2() {
 		return vm2;
 	}
@@ -176,12 +175,12 @@ public class CapturaAtual implements Serializable{
 		this.over = over;
 	}
 
-	public Integer getDuration() {
-		return duration;
+	public long getDuracao() {
+		return duracao;
 	}
 
-	public void setDuration(Integer duration) {
-		this.duration = duration;
+	public void setDuracao(long duracao) {
+		this.duracao = duracao;
 	}
 
 	public List<HarmAtual> getListHarmAtual() {
@@ -194,5 +193,43 @@ public class CapturaAtual implements Serializable{
 
 	public void setTomada(Tomada tomada) {
 		this.tomada = tomada;
+	}
+
+	public Calendar getDataInicial() {
+		return dataInicial;
+	}
+
+	public void setDataInicial(Calendar dataInicial) {
+		this.dataInicial = dataInicial;
+	}
+
+	public Calendar getDataFinal() {
+		return dataFinal;
+	}
+
+	public void setDataFinal(Calendar dataFinal) {
+		this.dataFinal = dataFinal;
+	}
+
+	public FactHandle getToken() {
+		return token;
+	}
+
+	public void setToken(FactHandle token) {
+		this.token = token;
+	}
+	
+	public void durationBetweenEvent(Calendar dataFim, Calendar dataIni) {
+		
+		long millIni = dataIni.getTimeInMillis();
+        long millFim = dataFim.getTimeInMillis();
+
+        // Calcula a diferenca em milisegundos
+        long diff = millFim - millIni;
+
+        // Calcula a diferenca em segundos
+        long diffSeconds = diff / 1000;
+		
+		this.duracao = diffSeconds;
 	}
 }

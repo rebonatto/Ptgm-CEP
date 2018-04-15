@@ -1,0 +1,24 @@
+/*
+ created by Clayton Tolotti; claytontolotti@gmail.com on: 14/04/2018
+*/
+package br.upf.protegemed.rules
+
+/*
+ list any import classes here.
+*/
+import br.upf.protegemed.beans.CapturaAtual
+import br.upf.protegemed.utils.Utils
+
+/*
+ declare any global variables here
+*/
+
+
+rule "Event Similaridade"
+
+    when
+        $captura : CapturaAtual( $init : getDataInicial(); $fim : getDataFinal())
+        $evento : CapturaAtual( this.getDataInicial > $init && this.getDataFinal() < $fim)
+    then
+    	Utils.logger("evento " + $evento.getToken());
+end

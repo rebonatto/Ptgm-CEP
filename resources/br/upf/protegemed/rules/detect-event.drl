@@ -4,7 +4,7 @@ package br.upf.protegemed.rules
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.ResultadoCalculoPericulosicade;
-
+/*
 rule "Rule Slinding Window"
 	when
 		$Captura : CapturaAtual( getEventos().getCodEvento() != null ) over window:time(5s)
@@ -37,6 +37,18 @@ rule "Detecte Similaridade Event"
 		delete($one);
 end
 
+//this.getEquipamento().getRfid() != $rfid 
+/*
+rule "Detecte RFID diference with Events"
+	when
+		$capRfid : CapturaAtual( $rfid : getEquipamento().getRfid())
+		//$capEvento : CapturaAtual( $evento : getEventos().getCodEvento() )
+		$capEqui : CapturaAtual(this during[0s, 5s] $capRfid && this.getEquipamento().getRfid() != $rfid)
+	then
+		Utils.logger(drools.getRule().getName() + " " + $rfid + " != " + $capEqui.getEquipamento().getRfid());
+	
+end
+
 rule "SEM Similaridade"
 	when
 		$one : CapturaAtual( $evento : getEventos().getCodEvento() ) 
@@ -45,3 +57,4 @@ rule "SEM Similaridade"
 	then
 		Utils.logger(drools.getRule().getName() + " " + $evento + " == " + $two.getEventos().getCodEvento()) ;
 end
+*/

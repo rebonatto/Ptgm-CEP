@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import br.upf.protegemed.rest.WSProtegemed;
+
 public class Utils {
 
 	public static final String QUERY_EVENTOS = "select codEvento,`desc`,formaOnda from protegemed.eventos";
@@ -55,19 +57,21 @@ public class Utils {
 
 	public static void logger(String msg) {
 		
-		Date dataTemp;
-		String dataString = null;
-		
-		try {
-			SimpleDateFormat f = new SimpleDateFormat(MASK_DATA);
-			dataTemp = Calendar.getInstance().getTime();
-			dataString = "[LOG] ".concat(f.format(dataTemp)).concat(" - ");
+		if (WSProtegemed.ativarLog == 1) {
+			Date dataTemp;
+			String dataString = null;
 			
-			Files.write(Paths.get(LOCALE_LOG), new String(dataString).getBytes(), StandardOpenOption.APPEND);
-			Files.write(Paths.get(LOCALE_LOG), new String(msg).getBytes(), StandardOpenOption.APPEND);
-			Files.write(Paths.get(LOCALE_LOG), new String("\n").getBytes(), StandardOpenOption.APPEND);
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				SimpleDateFormat f = new SimpleDateFormat(MASK_DATA);
+				dataTemp = Calendar.getInstance().getTime();
+				dataString = "[LOG] ".concat(f.format(dataTemp)).concat(" - ");
+				
+				Files.write(Paths.get(LOCALE_LOG), new String(dataString).getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get(LOCALE_LOG), new String(msg).getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get(LOCALE_LOG), new String("\n").getBytes(), StandardOpenOption.APPEND);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

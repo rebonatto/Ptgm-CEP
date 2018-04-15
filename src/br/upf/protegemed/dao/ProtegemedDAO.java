@@ -179,7 +179,7 @@ public class ProtegemedDAO {
 				capturaAtual.setVm2(resultSet.getDouble(11));
 				capturaAtual.setUnder(resultSet.getInt(12));
 				capturaAtual.setOver(resultSet.getInt(13));
-				capturaAtual.setDuration(resultSet.getInt(14));
+				capturaAtual.setDuracao(resultSet.getInt(14));
 				listCapturaAtual.add(capturaAtual);
 			}
 			stmt.close();
