@@ -3,7 +3,7 @@ package br.upf.protegemed.rules
 
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.beans.ResultadoCalculoPericulosicade;
+
 /*
 rule "Rule Slinding Window"
 	when
@@ -12,41 +12,88 @@ rule "Rule Slinding Window"
 		Utils.logger("<<<<<<<<< Captura " + $Captura.getVm2() + " "
 			+ drools.getRule().getName() + ">>>>>>>>>");
 end
+*/
 
+/*
 rule "Detect Event"
 	when
 		$status : CapturaAtual(  getCodCaptura() == null )
 	then
 		Utils.logger(drools.getRule().getName());
 end
+*/
 
+/*
+ * trabalhar em regras para realizar cálculos, qualquer coisa que seja realizada em mais de um comando java;
+ * Calculo realizado na classe WSProtegemed, linha 133 136
+*/
+/*
 rule "Status Periculosidade"
 	when
-		$periculosidade : ResultadoCalculoPericulosicade (getResultado() != null)
+		$capturaAtual : CapturaAtual( calculaPericulosidade() > 100 )
 	then
-		Utils.logger(drools.getRule().getName() + " " + $periculosidade.getResultado());
+		Utils.logger("eficaz " + $capturaAtual.getEficaz() + " ganho " + $capturaAtual.getGain()
+		+ " calculo " + $capturaAtual.calculaPericulosidade());
 end
-
-rule "Detecte Similaridade Event"
+*/
+/*
+ * trabalhar a questão do tempo nas regras. 
+ * Por exemplo: se entrar um evento com type X (1) e dentro de Y segundos (5) 
+ * entra um evento com type Z (2) dispara a regra.
+*/
+/*
+rule "Detect fuga e tempo  Event"
 	when
-		$one : CapturaAtual( $evento : getEventos().getCodEvento() )
-		$two : CapturaAtual( this.getEventos().getCodEvento() != $evento,
-			this after[0s, 4s] $one)
+		$one : CapturaAtual( $evento : getEventos().getCodEvento() == 1)
+		$two : CapturaAtual( this.getEventos().getCodEvento() == 6 && $one.getTomada().getCodTomada() == this.
+			getTomada().getCodTomada(),
+			this after[0s, 1s] $one)
 	then
 		Utils.logger(drools.getRule().getName() + " " + $evento + " != " + $two.getEventos().getCodEvento()) ;
 		delete($one);
 end
 
-//this.getEquipamento().getRfid() != $rfid 
-/*
-rule "Detecte RFID diference with Events"
+rule "Detect flight plug five four"
 	when
-		$capRfid : CapturaAtual( $rfid : getEquipamento().getRfid())
-		//$capEvento : CapturaAtual( $evento : getEventos().getCodEvento() )
-		$capEqui : CapturaAtual(this during[0s, 5s] $capRfid && this.getEquipamento().getRfid() != $rfid)
+		$plugFour : CapturaAtual( getEventos().getCodEvento() == 4)
+		$plugFive : CapturaAtual( getEventos().getCodEvento() == 5 )
+		$time : CapturaAtual( $plugFour.getDataInicial() < $plugFive.getDataInicial() || 
+			 $plugFive.getDataInicial() < $plugFour.getDataInicial())
+		//$two : CapturaAtual( this.getEventos().getCodEvento() == 5 && $one.getTomada().getCodTomada() == this.
+		//	getTomada().getCodTomada(),
+		//	this after[0s, 1s] $one)
 	then
-		Utils.logger(drools.getRule().getName() + " " + $rfid + " != " + $capEqui.getEquipamento().getRfid());
-	
+		Utils.logger(drools.getRule().getName()) ;
+		//delete($one);
+end
+
+
+rule "Detect flight plug one six"
+	when
+		$plugOne : CapturaAtual( getEventos().getCodEvento() == 1 )
+		$plugSix : CapturaAtual( getEventos().getCodEvento() == 6 )
+		$time : CapturaAtual( $plugOne.getDataInicial() < $plugSix.getDataInicial() || 
+			 $plugSix.getDataInicial() < $plugOne.getDataInicial())
+		//$two : CapturaAtual( this.getEventos().getCodEvento() == 5 && $one.getTomada().getCodTomada() == this.
+		//	getTomada().getCodTomada(),
+		//	this after[0s, 1s] $one)
+	then
+		Utils.logger(drools.getRule().getName()) ;
+		//delete($one);
+end
+
+rule "Detect flight plug two tree"
+	when
+		$plugTwo : CapturaAtual( getEventos().getCodEvento() == 1 )
+		$plugTree : CapturaAtual( getEventos().getCodEvento() == 6 )
+		$time : CapturaAtual( $plugTwo.getDataInicial() < $plugTree.getDataInicial() || 
+			 $plugTree.getDataInicial() < $plugTwo.getDataInicial())
+		//$two : CapturaAtual( this.getEventos().getCodEvento() == 5 && $one.getTomada().getCodTomada() == this.
+		//	getTomada().getCodTomada(),
+		//	this after[0s, 1s] $one)
+	then
+		Utils.logger(drools.getRule().getName()) ;
+		//delete($one);
 end
 
 rule "SEM Similaridade"

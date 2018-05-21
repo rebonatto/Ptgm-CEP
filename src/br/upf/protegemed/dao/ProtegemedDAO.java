@@ -2,6 +2,7 @@ package br.upf.protegemed.dao;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import br.upf.protegemed.beans.Eventos;
 import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.Marca;
 import br.upf.protegemed.beans.Modelo;
+import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tipo;
 import br.upf.protegemed.beans.TipoOnda;
 import br.upf.protegemed.beans.Tomada;
@@ -124,8 +126,8 @@ public class ProtegemedDAO {
 				capturaAtual.setCodCaptura(resultSet.getInt(1));
 				harmAtual.setCapturaAtual(capturaAtual);
 				harmAtual.setCodHarmonica(resultSet.getInt(2));
-				harmAtual.setSen(resultSet.getDouble(3));
-				harmAtual.setCos(resultSet.getDouble(4));
+				harmAtual.setSen(resultSet.getFloat(3));
+				harmAtual.setCos(resultSet.getFloat(4));
 				listHarmAtual.add(harmAtual);
 			}
 			stmt.close();
@@ -171,12 +173,12 @@ public class ProtegemedDAO {
 				capturaAtual.setTipoOnda(tipoOnda);
 				capturaAtual.setEquipamento(equipamento);
 				capturaAtual.setEventos(eventos);
-				capturaAtual.setValorMedio(resultSet.getDouble(6));
-				capturaAtual.setOffset(resultSet.getDouble(7));
-				capturaAtual.setGain(resultSet.getDouble(8));
-				capturaAtual.setEficaz(resultSet.getDouble(9));
+				capturaAtual.setMv(resultSet.getFloat(6));
+				capturaAtual.setOffset(resultSet.getFloat(7));
+				capturaAtual.setGain(resultSet.getFloat(8));
+				capturaAtual.setEficaz(resultSet.getFloat(9));
 				//TODO Converter para Calendar capturaAtual.setDataAtual(resultSet.getTimestamp(10));
-				capturaAtual.setVm2(resultSet.getDouble(11));
+				capturaAtual.setMv2(resultSet.getFloat(11));
 				capturaAtual.setUnder(resultSet.getInt(12));
 				capturaAtual.setOver(resultSet.getInt(13));
 				capturaAtual.setDuracao(resultSet.getInt(14));
@@ -231,6 +233,31 @@ public class ProtegemedDAO {
 		} catch (Exception e) {
 			e.getMessage();
 			return null;
+		}
+	}
+	
+	public SalaCirurgia querySalaCirurgia (Integer codTomada) throws SQLException {
+		
+		PreparedStatement stmt = null;
+		ResultSet resultSet;
+		SalaCirurgia sala = new SalaCirurgia();
+		
+		try {
+			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_COD_SALA);
+			stmt.setInt(1, codTomada);
+			
+			resultSet = stmt.executeQuery();
+			
+			while(resultSet.next()) {
+				sala.setCodSala(resultSet.getInt(1));
+				sala.setDesc(resultSet.getString(2));
+			}
+			return sala;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+			return null;
+		} finally {
+			stmt.close();
 		}
 	}
 }

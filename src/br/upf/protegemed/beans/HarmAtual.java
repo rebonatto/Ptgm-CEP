@@ -14,14 +14,14 @@ public class HarmAtual implements Serializable{
 	private static final long serialVersionUID = 7389569986793972029L;
 	private CapturaAtual capturaAtual;
 	private Integer codHarmonica;
-	private Double sen;
-	private Double cos;
+	private float sen;
+	private float cos;
 	
 	public HarmAtual() {
 		super();
 	}
 
-	public HarmAtual(CapturaAtual capturaAtual, Integer codHarmonica, Double sen, Double cos) {
+	public HarmAtual(CapturaAtual capturaAtual, Integer codHarmonica, float sen, float cos) {
 		super();
 		this.capturaAtual = capturaAtual;
 		this.codHarmonica = codHarmonica;
@@ -49,19 +49,19 @@ public class HarmAtual implements Serializable{
 		this.codHarmonica = codHarmonica;
 	}
 
-	public Double getSen() {
+	public float getSen() {
 		return sen;
 	}
 
-	public void setSen(Double sen) {
+	public void setSen(float sen) {
 		this.sen = sen;
 	}
 
-	public Double getCos() {
+	public float getCos() {
 		return cos;
 	}
 
-	public void setCos(Double cos) {
+	public void setCos(float cos) {
 		this.cos = cos;
 	}
 }

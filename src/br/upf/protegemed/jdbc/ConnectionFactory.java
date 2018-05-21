@@ -12,7 +12,9 @@ public class ConnectionFactory {
         	 Class.forName("com.mysql.jdbc.Driver").newInstance();
              return DriverManager.getConnection(
                      "jdbc:" + Utils.JDBC + "://"
-                     		 + Utils.HOST + "/",
+                     		 + Utils.HOST + ":"
+                     		 + Utils.PORT + "/"
+                     		 + Utils.BD,
                      		 Utils.USER,
                      		 Utils.PASSWORD);
          } catch (SQLException e) {

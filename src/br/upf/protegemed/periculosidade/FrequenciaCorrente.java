@@ -69,7 +69,7 @@ public class FrequenciaCorrente {
 	}
 
 	public static String getStatusFrequencia(CapturaAtual cap) {
-		Double valor;
+		Float valor;
 		FrequenciaCorrente obj = new FrequenciaCorrente();
 
 		for (HarmAtual h : cap.getListHarmAtual()) {

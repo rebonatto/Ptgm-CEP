@@ -9,17 +9,18 @@ import br.upf.protegemed.beans.HarmAtual;
  */
 public class Calculos {
 
-	public static Double AjustaRMSValorMedio(CapturaAtual c) {
-		Double res = 0.0;
-		Double total = 0.0;
-		Double mod = 0.0;
-		Double vm = 0.0;
-		Double totalharm = 0.0;
+	public static float AjustaRMSValorMedio(CapturaAtual c) {
+		
+		float res = 0.0F;
+		float total = 0.0F;
+		float mod = 0.0F;
+		float vm = 0.0F;
+		float totalharm = 0.0F;
 
-		if (c.getValorMedio() == 0)
+		if (c.getMv() == 0)
 			return c.getEficaz();
 		// coloca o valor do VM
-		vm = Math.abs((c.getValorMedio() / 256 - c.getOffset()) / c.getGain());
+		vm = (float) Math.abs((c.getMv() / 256 - c.getOffset()) / c.getGain());
 		total = vm;
 
 		// calcula e adiciona cada uma das barras
@@ -32,19 +33,19 @@ public class Calculos {
 		return res;
 	}
 
-	public static Double modulo(Double sen, Double cos, Double gain) {
+	public static float modulo(float sen, float cos, float gain) {
 		/* calcula o modulo, igual ao grafico do programa */
-		Double f = (Double) Math.sqrt(sen * sen + cos * cos) / 128;
+		float f = (float) (Math.sqrt(sen * sen + cos * cos) / 128);
 		f = f / gain;
 
 		return f;
 	}
 
-	public static Double Pico2RMS(Double f) {
+	public static float Pico2RMS(float f) {
 		/* ajusta o valor de pico para RMS */
 		f = f * f;
 		f = f / 2;
-		f = (Double) Math.sqrt(f);
+		f = (float) Math.sqrt(f);
 		return f;
 	}
 }

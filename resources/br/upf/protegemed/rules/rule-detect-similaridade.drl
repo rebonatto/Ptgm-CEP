@@ -9,16 +9,32 @@ package br.upf.protegemed.rules
 import br.upf.protegemed.beans.CapturaAtual
 import br.upf.protegemed.utils.Utils
 
-/*
- declare any global variables here
-*/
-
-
-rule "Event Similaridade"
-
-    when
-        $captura : CapturaAtual( $init : getDataInicial(); $fim : getDataFinal())
-        $evento : CapturaAtual( this.getDataInicial > $init && this.getDataFinal() < $fim)
-    then
-    	Utils.logger("evento " + $evento.getToken());
+rule "rule-detected-similaridade"
+	salience 2 //regra será disparada antes da relação de início e fuga.
+	when
+		$eventOneBefore : CapturaAtual( getEventos().getCodEvento() == 1)
+		$eventOneAfter  : CapturaAtual( getEventos().getCodEvento() == 1
+						&& $eventOneBefore.getTomada().getCodTomada() != getTomada().getCodTomada()
+						&& $eventOneBefore.getSalaCirurgia().getCodSala() == $eventOneAfter.getSalaCirurgia().getCodSala()
+					)
+		$eventSixBefore : CapturaAtual( getEventos().getCodEvento() == 6
+						&& $eventOneAfter.getTomada().getCodTomada() == getTomada().getCodTomada()
+					)
+		$eventSixAfter : CapturaAtual( getEventos().getCodEvento() == 6
+						&& $eventOneBefore.getTomada().getCodTomada() != getTomada().getCodTomada()
+					)
+		$outlet    : CapturaAtual(
+						$eventOneAfter after[0s] $eventOneBefore 
+						&& ($eventSixBefore after[0s] $eventOneAfter || $eventSixAfter after[0s] $eventSixBefore)
+					)
+	then
+		Utils.logger("Fazer calculo da similaridade e mostrar" + 
+			" tomada " + $outlet.getTomada().getCodTomada() + 
+			" evento " + $outlet.getEventos().getCodEvento() +
+			" sala " + $outlet.getSalaCirurgia().getCodSala() +
+			" data " + $outlet.getData().getTime());
+		//retract($outlet);
+		//retract($eventOneAfter);
+		//retract($eventSixBefore);
+		//retract($eventSixAfter);
 end

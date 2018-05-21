@@ -1,6 +1,7 @@
 package br.upf.protegemed.rest;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,13 +15,16 @@ import javax.ws.rs.core.MediaType;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.rule.FactHandle;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Equipamento;
 import br.upf.protegemed.beans.Eventos;
 import br.upf.protegemed.beans.HarmAtual;
+import br.upf.protegemed.beans.ParamRequest;
+import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
+import br.upf.protegemed.beans.TypesRequests;
+import br.upf.protegemed.dao.ProtegemedDAO;
 import br.upf.protegemed.utils.Utils;
 
 @Path("/operations")
@@ -31,15 +35,11 @@ public class WSProtegemed {
 	public static KieSession kSession;
 	public static Integer inicializaoDrools = 0;
 	public static Integer ativarLog = 1;
-	public static List<CapturaAtual> listCapturas;
-	public static Boolean inserirCaptura = Boolean.TRUE;
-	public static CapturaAtual capturaAtualTemp;
 
 	public WSProtegemed() {
 		super();
 		if (inicializaoDrools == 0) {
 			getSession();
-			listCapturas = new ArrayList<CapturaAtual>();
 			inicializaoDrools = 1;
 		}
 	}
@@ -62,87 +62,98 @@ public class WSProtegemed {
 	@POST
 	@Path("post/receive-event")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void postReceiveEvent(String c) throws IOException {
+	public void postReceiveEvent(String c) throws IOException, SQLException {
 
 		// Separar os parâmetros recebidos Ex: RFID=000&TYPE=00F
 		String[] temp = c.split("&");
-		String[] objetos = new String[8];
-		String[] objetoTemp;
 		List<HarmAtual> listHarmAtual = new ArrayList<HarmAtual>();
-		int counter = 0;
 		CapturaAtual capturaAtual = new CapturaAtual();
-		HarmAtual harmAtual = new HarmAtual();
 		Equipamento equipamento = new Equipamento();
 		Eventos eventos = new Eventos();
 		Tomada tomada = new Tomada();
-
+		SalaCirurgia salaCirurgia = new SalaCirurgia();
+		ParamRequest paramRequest = new ParamRequest();
+		
 		String[] arrayCos;
 		String[] arraySen;
 		Integer inc = 1;
 
-		for (String string : temp) {
-			// Separar atributos e valores RFID=00000, guardando apenas o valor
-			objetoTemp = string.split("=");
-			objetos[counter] = objetoTemp[1];
-			counter++;
-		}
-
+		paramRequest = splitRequest(temp);
+		
 		capturaAtual.setCodCaptura(2736);
-		equipamento.setRfid(objetos[0]);
-		eventos.setCodEvento(Integer.parseInt(objetos[1]));
-		tomada.setCodTomada(Integer.parseInt(objetos[1]));
+		eventos.setCodEvento(Integer.parseInt(paramRequest.getTYPE()));
+		tomada.setCodTomada(Integer.parseInt(paramRequest.getOUTLET()));
+		salaCirurgia = new ProtegemedDAO().querySalaCirurgia(tomada.getCodTomada());
+		equipamento.setRfid(paramRequest.getRFID());
+		capturaAtual.setOffset(Float.parseFloat(paramRequest.getOFFSET()));
+		capturaAtual.setGain(Utils.convertHexToFloat(paramRequest.getGAIN()));
+		capturaAtual.setEficaz(Utils.convertHexToFloat(paramRequest.getRMS()));
+		capturaAtual.setMv(Utils.convertHexToFloat(paramRequest.getMV()));
+		capturaAtual.setMv2(Utils.convertHexToFloat(paramRequest.getMV2()));
+		capturaAtual.setUnder(Integer.parseInt(paramRequest.getUNDER()));
+		capturaAtual.setOver(Integer.parseInt(paramRequest.getOVER()));
+		capturaAtual.setDuracao(Integer.parseInt(paramRequest.getDURATION()));
+		
 		capturaAtual.setEventos(eventos);
 		capturaAtual.setEquipamento(equipamento);
 		capturaAtual.setTomada(tomada);
-		capturaAtual.setVm2(Double.parseDouble(objetos[2]));
-		arrayCos = objetos[3].split(";");
-		arraySen = objetos[4].split(";");
-		capturaAtual.setOffset(Double.parseDouble(objetos[5]));
-		capturaAtual.setGain(Double.parseDouble(objetos[6]));
-		capturaAtual.setEficaz(Double.parseDouble(objetos[7]));
-		capturaAtual.setDuracao(Integer.parseInt(objetos[5]));
-
-		for (int i = 0; i < 12; i++) {
+		capturaAtual.setSalaCirurgia(salaCirurgia);
+		
+		arraySen = paramRequest.getSIN().split("%");
+		arrayCos = paramRequest.getCOS().split("%");
+		
+		for (int i = 0; i < arrayCos.length; i++) {
+			HarmAtual harmAtual = new HarmAtual();
 			harmAtual.setCodHarmonica(inc);
-			harmAtual.setSen(Double.parseDouble(arraySen[i]));
-			harmAtual.setCos(Double.parseDouble(arrayCos[i]));
+			harmAtual.setSen(Utils.convertHexToFloat(arraySen[i]));
+			harmAtual.setCos(Utils.convertHexToFloat(arrayCos[i]));
 			listHarmAtual.add(harmAtual);
 		}
 
 		capturaAtual.setListHarmAtual(listHarmAtual);
-		capturaAtual.setDataInicial(Calendar.getInstance());
+		capturaAtual.setData(Calendar.getInstance());
 
-		if (listCapturas.size() == 0) {
-			listCapturas.add(capturaAtual);
-		} else {
-			counter = 0;
-			for (CapturaAtual capturas : listCapturas) {
-				if (capturaAtual.getEquipamento().getRfid().equals(capturas.getEquipamento().getRfid())
-						&& capturaAtual.getTomada().getCodTomada().equals(capturas.getTomada().getCodTomada())) {
-					capturas.setDataFinal(Calendar.getInstance());
-					listCapturas.set(counter, capturas);
-					inserirCaptura = Boolean.FALSE;
-					capturaAtualTemp = capturas;
-				}
-				counter += 1;
-			}
-			if (inserirCaptura == Boolean.TRUE)
-				listCapturas.add(capturaAtual);
-		}
-
-		// ResultadoCalculoPericulosicade periculosidade = new
-		// ResultadoCalculoPericulosicade();
-		// periculosidade.setCapturaAtual(capturaAtual);
-		// periculosidade.setResultado(StatusPericulosidade.getStatusPericulosidade(capturaAtual));
-
-		if (inserirCaptura == Boolean.TRUE) {
-			FactHandle token = kSession.insert(capturaAtual);
-			capturaAtual.setToken(token);
-		} else {
-			kSession.update(capturaAtualTemp.getToken(), capturaAtualTemp);
-			capturaAtualTemp.durationBetweenEvent(capturaAtualTemp.getDataFinal(), capturaAtualTemp.getDataInicial());
-			capturaAtualTemp = null;
-		}
+		kSession.insert(capturaAtual);
 		kSession.fireAllRules();
+	}
+	
+	public ParamRequest splitRequest(String[] param) {
+		
+		String objetoTemp[] = null;
+		ParamRequest paramRequest = new ParamRequest();
+		
+		for (String result : param) {
+			// Separar atributos e valores RFID=00000, guardando apenas o valor
+			objetoTemp = result.split("=");
+
+			if(objetoTemp[0].equals(TypesRequests.TYPE.getUrl())) {
+				paramRequest.setTYPE(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.OUTLET.getUrl())) {
+				paramRequest.setOUTLET(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.RFID.getUrl())) {
+				paramRequest.setRFID(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.OFFSET.getUrl())) {
+				paramRequest.setOFFSET(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.GAIN.getUrl())) {
+				paramRequest.setGAIN(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.RMS.getUrl())) {
+				paramRequest.setRMS(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.MV.getUrl())) {
+				paramRequest.setMV(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.MV2.getUrl())) {
+				paramRequest.setMV2(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.UNDER.getUrl())) {
+				paramRequest.setUNDER(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.OVER.getUrl())) {
+				paramRequest.setOVER(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.DURATION.getUrl())) {
+				paramRequest.setDURATION(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.SIN.getUrl())) {
+				paramRequest.setSIN(objetoTemp[1]);
+			} else if (objetoTemp[0].equals(TypesRequests.COS.getUrl())) {
+				paramRequest.setCOS(objetoTemp[1]);
+			}
+		}
+		return paramRequest;
 	}
 }

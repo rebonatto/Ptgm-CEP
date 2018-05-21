@@ -8,7 +8,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kie.api.definition.type.Role;
 import org.kie.api.definition.type.Role.Type;
-import org.kie.api.runtime.rule.FactHandle;
 
 @XmlRootElement
 @Role(Type.EVENT)
@@ -20,18 +19,17 @@ public class CapturaAtual implements Serializable{
 	private TipoOnda tipoOnda;
 	private Equipamento equipamento;
 	private Eventos eventos;
-	private Double valorMedio;
-	private Double offset;
-	private Double gain;
-	private Double eficaz;
-	private Calendar dataInicial;
-	private Calendar dataFinal;
-	private Double vm2;
+	private float offset;
+	private float gain;
+	private float eficaz;
+	private Calendar data;
+	private float mv;
+	private float mv2;
 	private Integer under;
 	private Integer over;
 	private long duracao;
 	private List<HarmAtual> listHarmAtual;
-	private FactHandle token;
+	private SalaCirurgia salaCirurgia;
 	
 	public CapturaAtual() {
 		super();
@@ -43,36 +41,34 @@ public class CapturaAtual implements Serializable{
 			,TipoOnda tipoOnda
 			,Equipamento equipamento
 			,Eventos eventos
-			,Double valorMedio
-			,Double offset
-			,Double gain
-			,Double eficaz
-			,Calendar dataInicial
-			,Calendar dataFinal
-			,Double vm2
+			,float mv
+			,float offset
+			,float gain
+			,float eficaz
+			,Calendar data
+			,float mv2
 			,Integer under
 			,Integer over
 			,long duracao
 			,List<HarmAtual> listHarmAtual
-			,FactHandle token) {
+			, SalaCirurgia salaCirurgia) {
 		
 		this.codCaptura = codCaptura;
 		this.tomada =  tomada;
 		this.tipoOnda = tipoOnda;
 		this.equipamento = equipamento;
 		this.eventos = eventos;
-		this.valorMedio = valorMedio;
+		this.mv = mv;
 		this.offset = offset;
 		this.gain = gain;
 		this.eficaz = eficaz;
-		this.dataInicial = dataInicial;
-		this.dataFinal = dataFinal;
-		this.vm2 = vm2;
+		this.data = data;
+		this.mv2 = mv2;
 		this.under = under;
 		this.over = over;
 		this.duracao = duracao;
 		this.listHarmAtual = listHarmAtual;
-		this.token = token;
+		this.salaCirurgia = salaCirurgia;
 	}
 	
 	public static long getSerialversionuid() {
@@ -119,44 +115,44 @@ public class CapturaAtual implements Serializable{
 		this.eventos = eventos;
 	}
 
-	public Double getValorMedio() {
-		return valorMedio;
+	public float getMv() {
+		return mv;
 	}
 
-	public void setValorMedio(Double valorMedio) {
-		this.valorMedio = valorMedio;
+	public void setMv(float mv) {
+		this.mv = mv;
 	}
 
-	public Double getOffset() {
+	public float getOffset() {
 		return offset;
 	}
 
-	public void setOffset(Double offset) {
+	public void setOffset(float offset) {
 		this.offset = offset;
 	}
 
-	public Double getGain() {
+	public float getGain() {
 		return gain;
 	}
 
-	public void setGain(Double gain) {
+	public void setGain(float gain) {
 		this.gain = gain;
 	}
 
-	public Double getEficaz() {
+	public float getEficaz() {
 		return eficaz;
 	}
 
-	public void setEficaz(Double eficaz) {
+	public void setEficaz(float eficaz) {
 		this.eficaz = eficaz;
 	}
 	
-	public Double getVm2() {
-		return vm2;
+	public float getMv2() {
+		return mv2;
 	}
 
-	public void setVm2(Double vm2) {
-		this.vm2 = vm2;
+	public void setMv2(float mv2) {
+		this.mv2 = mv2;
 	}
 
 	public Integer getUnder() {
@@ -195,41 +191,42 @@ public class CapturaAtual implements Serializable{
 		this.tomada = tomada;
 	}
 
-	public Calendar getDataInicial() {
-		return dataInicial;
+	public Calendar getData() {
+		return data;
 	}
 
-	public void setDataInicial(Calendar dataInicial) {
-		this.dataInicial = dataInicial;
-	}
-
-	public Calendar getDataFinal() {
-		return dataFinal;
-	}
-
-	public void setDataFinal(Calendar dataFinal) {
-		this.dataFinal = dataFinal;
-	}
-
-	public FactHandle getToken() {
-		return token;
-	}
-
-	public void setToken(FactHandle token) {
-		this.token = token;
+	public void setData(Calendar data) {
+		this.data = data;
 	}
 	
-	public void durationBetweenEvent(Calendar dataFim, Calendar dataIni) {
+	public SalaCirurgia getSalaCirurgia () {
+		return salaCirurgia;
+	}
+	
+	public void setSalaCirurgia(SalaCirurgia salaCirurgia) {
+		this.salaCirurgia = salaCirurgia;
+	}
+	
+	public static long durationBetweenEvent(Calendar eventoFim, Calendar eventoIni) {
 		
-		long millIni = dataIni.getTimeInMillis();
-        long millFim = dataFim.getTimeInMillis();
+		long millIni = eventoIni.getTimeInMillis();
+        long millFim = eventoFim.getTimeInMillis();
 
         // Calcula a diferenca em milisegundos
         long diff = millFim - millIni;
 
         // Calcula a diferenca em segundos
-        long diffSeconds = diff / 1000;
+        //long diffSeconds = diff / 1000;
 		
-		this.duracao = diffSeconds;
+		return diff;
+	}
+	
+	public float calculaPericulosidade() {
+		/*float floatAux = (this.getEficaz() * this.getEficaz()) / this.getGain();
+		if (floatAux < 0) {
+			floatAux *= -1;
+		}
+		return floatAux;*/
+		return (this.getEficaz() * this.getEficaz()) / this.getGain(); 
 	}
 }

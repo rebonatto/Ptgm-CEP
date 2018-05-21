@@ -7,9 +7,9 @@ import br.upf.protegemed.beans.CapturaAtual;
 public class CorrenteRMS implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	private static Double normal = 0.06;
-	private static Double atention = 0.1;
-	private static Double intervention = 0.5;
+	private static float normal = 0.06F;
+	private static float atention = 0.1F;
+	private static float intervention = 0.5F;
 	
 	public CorrenteRMS() {
 		super();
@@ -19,15 +19,15 @@ public class CorrenteRMS implements Serializable{
 		return serialVersionUID;
 	}
 
-	public Double getNormal() {
+	public float getNormal() {
 		return normal;
 	}
 
-	public Double getAtention() {
+	public float getAtention() {
 		return atention;
 	}
 
-	public Double getIntervention() {
+	public float getIntervention() {
 		return intervention;
 	}
 	

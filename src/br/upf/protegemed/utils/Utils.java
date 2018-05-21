@@ -30,12 +30,14 @@ public class Utils {
 	public static final String QUERY_CAPTURA_ATUAL = "select codCaptura,codTomada,codTipoOnda,codEquip,codEvento, valorMedio, offset, gain, eficaz, dataAtual, vm2, under, over, duration from protegemed.capturaatual";
 	public static final String QUERY_EQUIPAMENTO = "select codEquip,codMarca,codModelo,codTipo,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso from protegemed.equipamento";
 	public static final String QUERY_ONDA_PADRAO = "select codOndaPadrao,codTipoOnda,codTomada,codEquip,valorMedio,offset,gain,eficaz,dataPadrao,codTipoPadrao from protegemed.ondapadrao";
-
+	public static final String QUERY_COD_SALA = "select s.codSala, s.desc from protegemed.salacirurgia s, tomada t where t.codSala = s.codSala and t.codTomada = ?";
+	
 	public static final String PASSWORD = "senha.123";
-	public static final String USER = "root";
+	public static final String USER = "protegemed";
 	public static final String BD = "protegemed";
 	public static final String JDBC = "mysql";
 	public static final String HOST = "localhost";
+	public static final String PORT = "3306";
 	public static final String MASK_DATA = "YYYY-MM-dd HH:mm:ss";
 	private static String LOCALE_LOG = System.getProperty("user.home") + "/Downloads/teste.txt";
 
@@ -73,5 +75,10 @@ public class Utils {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static Float convertHexToFloat(String string) {
+		//Long bits = Long.parseLong(string, 16);
+		return Float.intBitsToFloat(new Long(Long.parseLong(string, 16)).intValue());
 	}
 }

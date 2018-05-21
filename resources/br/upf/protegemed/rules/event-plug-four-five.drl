@@ -1,0 +1,18 @@
+//created by Clayton Tolotti: claytontolotti@gmail.com, on: 01/04/2018
+package br.upf.protegemed.rules
+
+import br.upf.protegemed.utils.Utils;
+import br.upf.protegemed.beans.CapturaAtual;
+
+rule "Detect flight plug four five"
+	when
+		$eventFour : CapturaAtual( getEventos().getCodEvento() == 4 )
+		$eventFive : CapturaAtual( getEventos().getCodEvento() == 5 )
+		$outlet : CapturaAtual($eventFive.getTomada().getCodTomada() == $eventFour.getTomada().getCodTomada(), 
+			$eventFive after[0s] $eventFour)
+	then
+		Utils.logger(drools.getRule().getName() + " " + $outlet.durationBetweenEvent(
+			$eventFive.getData(), $eventFour.getData()));
+		retract($eventFour);
+		retract($eventFive);
+end

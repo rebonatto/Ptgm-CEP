@@ -1,0 +1,50 @@
+//created by Clayton Tolotti: claytontolotti@gmail.com, on: 11/05/2018
+package br.upf.protegemed.rules
+
+import br.upf.protegemed.utils.Utils;
+import br.upf.protegemed.beans.CapturaAtual;
+
+rule "rule-detect-orphan-event-one"
+	when
+		$typeOne : CapturaAtual( getEventos().getCodEvento() == 1 )
+		$total   : Number($total > 1) from accumulate (
+			CapturaAtual(
+					this.getEventos().getCodEvento() == $typeOne.getEventos().getCodEvento() && 
+					this.getTomada().getCodTomada() == $typeOne.getTomada().getCodTomada(), 
+					$cont : this
+				),
+				count($cont)
+			)
+	then
+		Utils.logger("remove -> " +
+			" data: " + $typeOne.getData().getTime().toString() + 
+			" evento: " + $typeOne.getEventos().getCodEvento());
+		retract($typeOne);
+end
+
+rule "list-all-events"
+	when
+		$capture : CapturaAtual(  )
+	then
+		Utils.logger("drools -> " +
+			" data: " + $capture.getData().getTime().toString() + 
+			" evento: " + $capture.getEventos().getCodEvento());
+end;
+
+rule "rule-detect-orphan-event-six"
+	when
+		$typeSix : CapturaAtual( getEventos().getCodEvento() == 6 )
+		$total : Number($total > 1) from accumulate (
+				CapturaAtual( 
+					this.getEventos().getCodEvento() == $typeSix.getEventos().getCodEvento() &&
+					this.getTomada().getCodTomada() == $typeSix.getTomada().getCodTomada(),
+					$cont : this
+				),
+				count($cont)
+			)
+	then
+		Utils.logger("remove -> " +
+			" data: " + $typeSix.getData().getTime().toString() + 
+			" evento: " + $typeSix.getEventos().getCodEvento());
+		retract($typeSix);
+end

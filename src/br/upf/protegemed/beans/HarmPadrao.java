@@ -14,14 +14,14 @@ public class HarmPadrao implements Serializable{
 	private static final long serialVersionUID = -7433375480682564451L;
 	private Integer codHarmonica;
 	private Integer codOndaPadrao;
-	private Double sen;
-	private Double cos;
+	private float sen;
+	private float cos;
 	
 	public HarmPadrao() {
 		super();
 	}
 
-	public HarmPadrao(Integer codHarmonica, Integer codOndaPadrao, Double sen, Double cos) {
+	public HarmPadrao(Integer codHarmonica, Integer codOndaPadrao, float sen, float cos) {
 		super();
 		this.codHarmonica = codHarmonica;
 		this.codOndaPadrao = codOndaPadrao;
@@ -49,19 +49,19 @@ public class HarmPadrao implements Serializable{
 		this.codOndaPadrao = codOndaPadrao;
 	}
 
-	public Double getSen() {
+	public float getSen() {
 		return sen;
 	}
 
-	public void setSen(Double sen) {
+	public void setSen(float sen) {
 		this.sen = sen;
 	}
 
-	public Double getCos() {
+	public float getCos() {
 		return cos;
 	}
 
-	public void setCos(Double cos) {
+	public void setCos(float cos) {
 		this.cos = cos;
 	}
 }

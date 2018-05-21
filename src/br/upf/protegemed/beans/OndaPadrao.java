@@ -19,10 +19,10 @@ public class OndaPadrao implements Serializable{
 	private TipoOnda tipoOnda;
 	private Tomada tomada;
 	private Equipamento equipamento;
-	private Double valorMedio;
-	private Double offset;
-	private Double gain;
-	private Double eficaz;
+	private float valorMedio;
+	private float offset;
+	private float gain;
+	private float eficaz;
 	private Calendar dataPadrao;
 	private Integer codTipoPadrao;
 	private List<HarmPadrao> listHarmPadrao;
@@ -32,7 +32,7 @@ public class OndaPadrao implements Serializable{
 	}
 	
 	public OndaPadrao(Integer codOndaPadrao, TipoPadrao tipoPadrao, TipoOnda tipoOnda, Tomada tomada,
-			Equipamento equipamento, Double valorMedio, Double offset, Double gain, Double eficaz, Calendar dataPadrao,
+			Equipamento equipamento, float valorMedio, float offset, float gain, float eficaz, Calendar dataPadrao,
 			Integer codTipoPadrao) {
 		super();
 		this.codOndaPadrao = codOndaPadrao;
@@ -108,35 +108,35 @@ public class OndaPadrao implements Serializable{
 		this.equipamento = equipamento;
 	}
 
-	public Double getValorMedio() {
+	public float getValorMedio() {
 		return valorMedio;
 	}
 
-	public void setValorMedio(Double valorMedio) {
+	public void setValorMedio(float valorMedio) {
 		this.valorMedio = valorMedio;
 	}
 
-	public Double getOffset() {
+	public float getOffset() {
 		return offset;
 	}
 
-	public void setOffset(Double offset) {
+	public void setOffset(float offset) {
 		this.offset = offset;
 	}
 
-	public Double getGain() {
+	public float getGain() {
 		return gain;
 	}
 
-	public void setGain(Double gain) {
+	public void setGain(float gain) {
 		this.gain = gain;
 	}
 
-	public Double getEficaz() {
+	public float getEficaz() {
 		return eficaz;
 	}
 
-	public void setEficaz(Double eficaz) {
+	public void setEficaz(float eficaz) {
 		this.eficaz = eficaz;
 	}
 
