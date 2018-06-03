@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Equipamento;
@@ -112,9 +114,26 @@ public class WSProtegemed {
 
 		capturaAtual.setListHarmAtual(listHarmAtual);
 		capturaAtual.setData(Calendar.getInstance());
-
+		
 		kSession.insert(capturaAtual);
 		kSession.fireAllRules();
+	}
+	
+	@GET
+	@Path("get/list-all-events")
+	public void listAllEvents() {
+		Collection<FactHandle> collect = kSession.getFactHandles();
+		
+		if(collect.size() > 0) {
+			Utils.logger("total events in drools " + collect.size());
+		} else {
+			Utils.logger("nothing events in drools");
+			return;
+		}
+		Utils.logger("list events");
+		for (FactHandle factHandle : collect) {
+			Utils.logger("fact " + factHandle.toString());
+		}
 	}
 	
 	public ParamRequest splitRequest(String[] param) {

@@ -3,38 +3,45 @@
 */
 package br.upf.protegemed.rules
 
-/*
- list any import classes here.
-*/
 import br.upf.protegemed.beans.CapturaAtual
 import br.upf.protegemed.utils.Utils
+import br.upf.protegemed.periculosidade.EscalaCorrenteRMS
+import br.upf.protegemed.periculosidade.EscalaFrequenciaCorrente
 
-rule "rule-detected-similaridade"
+rule "rule-detected-similaridade-1"
+	salience 3 //regra será disparada antes da relação de início e fuga.
+	when
+		$eventOneBefore : CapturaAtual( getEventos().getCodEvento() == 1) 
+		$eventOneAfter : CapturaAtual( getEventos().getCodEvento() == 1
+					&& $eventOneBefore.getTomada().getCodTomada() != getTomada().getCodTomada()
+					&& $eventOneBefore.getSalaCirurgia().getCodSala() == $eventOneAfter.getSalaCirurgia().getCodSala()
+				)
+		$outlet	: CapturaAtual(
+					this.getEventos().getCodEvento() == 6 
+					&& this.getTomada().getCodTomada() != $eventOneBefore.getTomada().getCodTomada()
+					&& this.getTomada().getCodTomada() == $eventOneAfter.getTomada().getCodTomada()
+					&& this.getSalaCirurgia().getCodSala() == $eventOneAfter.getSalaCirurgia().getCodSala()
+					,this after[0s] $eventOneAfter && $eventOneAfter after[0s] $eventOneBefore
+				)
+	then
+		Utils.logger(drools.getRule().getName());
+end;
+
+rule "rule-detected-similaridade-2"
 	salience 2 //regra será disparada antes da relação de início e fuga.
 	when
-		$eventOneBefore : CapturaAtual( getEventos().getCodEvento() == 1)
-		$eventOneAfter  : CapturaAtual( getEventos().getCodEvento() == 1
-						&& $eventOneBefore.getTomada().getCodTomada() != getTomada().getCodTomada()
-						&& $eventOneBefore.getSalaCirurgia().getCodSala() == $eventOneAfter.getSalaCirurgia().getCodSala()
-					)
-		$eventSixBefore : CapturaAtual( getEventos().getCodEvento() == 6
-						&& $eventOneAfter.getTomada().getCodTomada() == getTomada().getCodTomada()
-					)
-		$eventSixAfter : CapturaAtual( getEventos().getCodEvento() == 6
-						&& $eventOneBefore.getTomada().getCodTomada() != getTomada().getCodTomada()
-					)
-		$outlet    : CapturaAtual(
-						$eventOneAfter after[0s] $eventOneBefore 
-						&& ($eventSixBefore after[0s] $eventOneAfter || $eventSixAfter after[0s] $eventSixBefore)
-					)
+		$eventOneBefore : CapturaAtual( getEventos().getCodEvento() == 1) 
+		$eventOneAfter : CapturaAtual( getEventos().getCodEvento() == 1
+					&& $eventOneBefore.getTomada().getCodTomada() != getTomada().getCodTomada()
+					&& $eventOneBefore.getSalaCirurgia().getCodSala() == $eventOneAfter.getSalaCirurgia().getCodSala()
+				)
+		$outlet	: CapturaAtual(
+					this.getEventos().getCodEvento() == 6 
+					&& this.getTomada().getCodTomada() == $eventOneBefore.getTomada().getCodTomada()
+					&& this.getTomada().getCodTomada() != $eventOneAfter.getTomada().getCodTomada()
+					&& this.getSalaCirurgia().getCodSala() == $eventOneBefore.getSalaCirurgia().getCodSala()
+					,this after[0s] $eventOneAfter && $eventOneAfter after[0s] $eventOneBefore
+				)
 	then
-		Utils.logger("Fazer calculo da similaridade e mostrar" + 
-			" tomada " + $outlet.getTomada().getCodTomada() + 
-			" evento " + $outlet.getEventos().getCodEvento() +
-			" sala " + $outlet.getSalaCirurgia().getCodSala() +
-			" data " + $outlet.getData().getTime());
-		//retract($outlet);
-		//retract($eventOneAfter);
-		//retract($eventSixBefore);
-		//retract($eventSixAfter);
+		Utils.logger(drools.getRule().getName());
 end

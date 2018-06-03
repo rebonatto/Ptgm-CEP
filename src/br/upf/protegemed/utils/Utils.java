@@ -31,6 +31,7 @@ public class Utils {
 	public static final String QUERY_EQUIPAMENTO = "select codEquip,codMarca,codModelo,codTipo,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso from protegemed.equipamento";
 	public static final String QUERY_ONDA_PADRAO = "select codOndaPadrao,codTipoOnda,codTomada,codEquip,valorMedio,offset,gain,eficaz,dataPadrao,codTipoPadrao from protegemed.ondapadrao";
 	public static final String QUERY_COD_SALA = "select s.codSala, s.desc from protegemed.salacirurgia s, tomada t where t.codSala = s.codSala and t.codTomada = ?";
+	public static final String QUERY_INSERT = "insert into protegemed.teste(i) values(?)";
 	
 	public static final String PASSWORD = "senha.123";
 	public static final String USER = "protegemed";
@@ -38,7 +39,7 @@ public class Utils {
 	public static final String JDBC = "mysql";
 	public static final String HOST = "localhost";
 	public static final String PORT = "3306";
-	public static final String MASK_DATA = "YYYY-MM-dd HH:mm:ss";
+	public static final String MASK_DATA = "YYYY-MM-dd HH:mm:ss.SSS";
 	private static String LOCALE_LOG = System.getProperty("user.home") + "/Downloads/teste.txt";
 
 	public static int MEMORIA = 256 * 1024 * 1024;
