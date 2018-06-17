@@ -31,23 +31,6 @@ public class OndaPadrao implements Serializable{
 		super();
 	}
 	
-	public OndaPadrao(Integer codOndaPadrao, TipoPadrao tipoPadrao, TipoOnda tipoOnda, Tomada tomada,
-			Equipamento equipamento, float valorMedio, float offset, float gain, float eficaz, Calendar dataPadrao,
-			Integer codTipoPadrao) {
-		super();
-		this.codOndaPadrao = codOndaPadrao;
-		this.tipoPadrao = tipoPadrao;
-		this.tipoOnda = tipoOnda;
-		this.tomada = tomada;
-		this.equipamento = equipamento;
-		this.valorMedio = valorMedio;
-		this.offset = offset;
-		this.gain = gain;
-		this.eficaz = eficaz;
-		this.dataPadrao = dataPadrao;
-		this.codTipoPadrao = codTipoPadrao;
-	}
-
 	public Integer getCodOndaPadrao() {
 		return codOndaPadrao;
 	}
@@ -138,14 +121,6 @@ public class OndaPadrao implements Serializable{
 
 	public void setEficaz(float eficaz) {
 		this.eficaz = eficaz;
-	}
-
-	public Calendar getdataPadrao() {
-		return dataPadrao;
-	}
-
-	public void setdataPadrao(Calendar dataPadrao) {
-		this.dataPadrao = dataPadrao;
 	}
 
 	public Integer getCodTipoPadrao() {

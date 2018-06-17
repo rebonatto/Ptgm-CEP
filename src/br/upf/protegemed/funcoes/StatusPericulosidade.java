@@ -1,9 +1,11 @@
-package br.upf.protegemed.periculosidade;
+package br.upf.protegemed.funcoes;
 
 import br.upf.protegemed.beans.CapturaAtual;
 
 public class StatusPericulosidade {
 
+	private StatusPericulosidade() {}
+	
 	public static String getStatusPericulosidade(CapturaAtual capturaAtual) {
 
 		String corrente = CorrenteRMS.getStatusCorrente(capturaAtual);

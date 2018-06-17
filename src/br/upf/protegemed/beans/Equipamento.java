@@ -28,22 +28,6 @@ public class Equipamento implements Serializable{
 		super();
 	}
 
-	public Equipamento(Integer codEquip, Marca marca, Modelo modelo, Tipo tipo, String rfid,
-			Integer codPatrimonio, String desc, Calendar dataUltimaFalha, Calendar dataUltimaManutencao,
-			Integer tempoUso) {
-		super();
-		this.codEquip = codEquip;
-		this.marca = marca;
-		this.modelo = modelo;
-		this.tipo = tipo;
-		this.rfid = rfid;
-		this.codPatrimonio = codPatrimonio;
-		this.desc = desc;
-		this.dataUltimaFalha = dataUltimaFalha;
-		this.dataUltimaManutencao = dataUltimaManutencao;
-		this.tempoUso = tempoUso;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}

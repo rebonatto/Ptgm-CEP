@@ -1,6 +1,5 @@
 package br.upf.protegemed.rest;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,24 +24,60 @@ import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
-import br.upf.protegemed.beans.TypesRequests;
-import br.upf.protegemed.dao.ProtegemedDAO;
+import br.upf.protegemed.dao.SelectDAO;
+import br.upf.protegemed.enums.TypesRequests;
 import br.upf.protegemed.utils.Utils;
 
 @Path("/operations")
 public class WSProtegemed {
 
-	public static KieServices ks;
-	public static KieContainer kContainer;
-	public static KieSession kSession;
-	public static Integer inicializaoDrools = 0;
-	public static Integer ativarLog = 1;
+	private static KieServices ks;
+	private static KieContainer kContainer;
+	private static KieSession kSession;
+	private static Integer inicializaoDrools = 0;
+	public static final Integer ativarLog = 1;
+	
+	public static Integer getInicializaoDrools() {
+		return inicializaoDrools;
+	}
+
+	public static void setInicializaoDrools(Integer inicializaoDrools) {
+		WSProtegemed.inicializaoDrools = inicializaoDrools;
+	}
+
+	public static Integer getAtivarlog() {
+		return ativarLog;
+	}
+
+	public static KieServices getKs() {
+		return ks;
+	}
+
+	public static void setKs(KieServices ks) {
+		WSProtegemed.ks = ks;
+	}
+
+	public static KieContainer getkContainer() {
+		return kContainer;
+	}
+
+	public static void setkContainer(KieContainer kContainer) {
+		WSProtegemed.kContainer = kContainer;
+	}
+
+	public static KieSession getkSession() {
+		return kSession;
+	}
+
+	public static void setkSession(KieSession kSession) {
+		WSProtegemed.kSession = kSession;
+	}
 
 	public WSProtegemed() {
 		super();
-		if (inicializaoDrools == 0) {
+		if (getInicializaoDrools() == 0) {
 			getSession();
-			inicializaoDrools = 1;
+			setInicializaoDrools(1);
 		}
 	}
 
@@ -55,26 +90,26 @@ public class WSProtegemed {
 	@GET
 	@Path("get/init-drools")
 	public void getSession() {
-		ks = KieServices.Factory.get();
-		kContainer = ks.getKieClasspathContainer();
-		kSession = kContainer.newKieSession("protegemed");
+		setKs(KieServices.Factory.get());
+		setkContainer(ks.getKieClasspathContainer());
+		setkSession(kContainer.newKieSession("protegemed"));
 		Utils.logger("DROOLS INICIALIZADO");
 	}
 
 	@POST
 	@Path("post/receive-event")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void postReceiveEvent(String c) throws IOException, SQLException {
+	public void postReceiveEvent(String c) throws SQLException {
 
 		// Separar os parâmetros recebidos Ex: RFID=000&TYPE=00F
 		String[] temp = c.split("&");
-		List<HarmAtual> listHarmAtual = new ArrayList<HarmAtual>();
+		List<HarmAtual> listHarmAtual = new ArrayList<>();
 		CapturaAtual capturaAtual = new CapturaAtual();
 		Equipamento equipamento = new Equipamento();
 		Eventos eventos = new Eventos();
 		Tomada tomada = new Tomada();
-		SalaCirurgia salaCirurgia = new SalaCirurgia();
-		ParamRequest paramRequest = new ParamRequest();
+		SalaCirurgia salaCirurgia;
+		ParamRequest paramRequest;
 		
 		String[] arrayCos;
 		String[] arraySen;
@@ -85,7 +120,7 @@ public class WSProtegemed {
 		capturaAtual.setCodCaptura(2736);
 		eventos.setCodEvento(Integer.parseInt(paramRequest.getTYPE()));
 		tomada.setCodTomada(Integer.parseInt(paramRequest.getOUTLET()));
-		salaCirurgia = new ProtegemedDAO().querySalaCirurgia(tomada.getCodTomada());
+		salaCirurgia = new SelectDAO().querySalaCirurgia(tomada.getCodTomada());
 		equipamento.setRfid(paramRequest.getRFID());
 		capturaAtual.setOffset(Float.parseFloat(paramRequest.getOFFSET()));
 		capturaAtual.setGain(Utils.convertHexToFloat(paramRequest.getGAIN()));
@@ -115,8 +150,8 @@ public class WSProtegemed {
 		capturaAtual.setListHarmAtual(listHarmAtual);
 		capturaAtual.setData(Calendar.getInstance());
 		
-		kSession.insert(capturaAtual);
-		kSession.fireAllRules();
+		getkSession().insert(capturaAtual);
+		getkSession().fireAllRules();
 	}
 	
 	@GET
@@ -124,7 +159,7 @@ public class WSProtegemed {
 	public void listAllEvents() {
 		Collection<FactHandle> collect = kSession.getFactHandles();
 		
-		if(collect.size() > 0) {
+		if(!collect.isEmpty()) {
 			Utils.logger("total events in drools " + collect.size());
 		} else {
 			Utils.logger("nothing events in drools");
@@ -138,7 +173,7 @@ public class WSProtegemed {
 	
 	public ParamRequest splitRequest(String[] param) {
 		
-		String objetoTemp[] = null;
+		String[] objetoTemp = null;
 		ParamRequest paramRequest = new ParamRequest();
 		
 		for (String result : param) {

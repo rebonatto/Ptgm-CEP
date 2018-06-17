@@ -1,0 +1,30 @@
+//created by Clayton Tolotti: claytontolotti@gmail.com on: 15/06/2018
+package br.upf.protegemed.rules
+
+import br.upf.protegemed.utils.Utils;
+import br.upf.protegemed.beans.CapturaAtual;
+
+rule "rule-calcule-corrente-normal"
+	salience 6
+    when
+        CapturaAtual( getEficaz() <= Utils.NORMAL, $rms : "NORMAL" )
+    then
+    	Utils.logger(drools.getRule().getName());
+end
+
+rule "rule-calcule-corrente-atention"
+	salience 6
+    when
+        CapturaAtual( getEficaz() >= Utils.ATENTION 
+        				&& getEficaz() < Utils.INTERVENTION, $rms : "ATENTION" )
+    then
+    	Utils.logger(drools.getRule().getName());
+end
+
+rule "rule-calcule-corrente-intervention"
+	salience 6
+    when
+        CapturaAtual( getEficaz() >= Utils.INTERVENTION, $rms : "INTERVENTION" )
+    then
+    	Utils.logger(drools.getRule().getName());
+end

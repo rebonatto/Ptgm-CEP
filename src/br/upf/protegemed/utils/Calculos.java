@@ -9,18 +9,22 @@ import br.upf.protegemed.beans.HarmAtual;
  */
 public class Calculos {
 
-	public static float AjustaRMSValorMedio(CapturaAtual c) {
+	private Calculos() {
+		super();
+	}
+	
+	public static float ajustaRMSValorMedio(CapturaAtual c) {
 		
-		float res = 0.0F;
-		float total = 0.0F;
-		float mod = 0.0F;
-		float vm = 0.0F;
+		float res;
+		float total;
+		float mod;
+		float vm;
 		float totalharm = 0.0F;
 
 		if (c.getMv() == 0)
 			return c.getEficaz();
 		// coloca o valor do VM
-		vm = (float) Math.abs((c.getMv() / 256 - c.getOffset()) / c.getGain());
+		vm = Math.abs((c.getMv() / 256 - c.getOffset()) / c.getGain());
 		total = vm;
 
 		// calcula e adiciona cada uma das barras
@@ -41,7 +45,7 @@ public class Calculos {
 		return f;
 	}
 
-	public static float Pico2RMS(float f) {
+	public static float picoDoisRMS(float f) {
 		/* ajusta o valor de pico para RMS */
 		f = f * f;
 		f = f / 2;

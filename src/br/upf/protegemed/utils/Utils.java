@@ -12,6 +12,8 @@ import br.upf.protegemed.rest.WSProtegemed;
 
 public class Utils {
 
+	private Utils() {}
+	
 	public static final String QUERY_EVENTOS = "select codEvento,`desc`,formaOnda from protegemed.eventos";
 	public static final String QUERY_HARMONICA_ATUAL = "select codCaptura,codHarmonica,sen,cos from protegemed.harmatual";
 	public static final String QUERY_HARMONICA_PADRAO = "select codHarmonica,codOndaPadrao,sen,cos from protegemed.harmpadrao";
@@ -31,7 +33,9 @@ public class Utils {
 	public static final String QUERY_EQUIPAMENTO = "select codEquip,codMarca,codModelo,codTipo,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso from protegemed.equipamento";
 	public static final String QUERY_ONDA_PADRAO = "select codOndaPadrao,codTipoOnda,codTomada,codEquip,valorMedio,offset,gain,eficaz,dataPadrao,codTipoPadrao from protegemed.ondapadrao";
 	public static final String QUERY_COD_SALA = "select s.codSala, s.desc from protegemed.salacirurgia s, tomada t where t.codSala = s.codSala and t.codTomada = ?";
-	public static final String QUERY_INSERT = "insert into protegemed.teste(i) values(?)";
+	public static final String QUERY_FREQ_NORMAL = "select f.valor from protegemed.frequencia_normal f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
+	public static final String QUERY_FREQ_ATENCAO = "select f.valor from protegemed.frequencia_atencao f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
+	public static final String QUERY_FREQ_PERIGO = "select f.valor from protegemed.frequencia_perigo f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
 	
 	public static final String PASSWORD = "senha.123";
 	public static final String USER = "protegemed";
@@ -40,27 +44,25 @@ public class Utils {
 	public static final String HOST = "localhost";
 	public static final String PORT = "3306";
 	public static final String MASK_DATA = "YYYY-MM-dd HH:mm:ss.SSS";
+	public static final float NORMAL = 0.06F;
+	public static final float ATENTION = 0.1F;
+	public static final float INTERVENTION = 0.5F;
+	public static final Integer VERSAO_FREQUENCIA = 1;
+	
 	private static String LOCALE_LOG = System.getProperty("user.home") + "/Downloads/teste.txt";
-
-	public static int MEMORIA = 256 * 1024 * 1024;
-
-	public static int MAXSALAS = 16;
-	public static int MAXTOMADAS = 12;
-
-	public static int HARMONICAS = 12;
-	public static int PONTOSONDA = 256;
-
-	public static int FREQBASE = 60;
-
-	public static int TEMPOATUALIZARELOGIOS = 1000;
-	public static int TEMPOATUALIZATABELA = 3000;
-
-	public static Calendar DATALIMITEVM;
-	public static int DIGITOSSIGNIFICATIVOS = 3;
+	public static final int MEMORIA = 256 * 1024 * 1024;
+	public static final int MAXSALAS = 16;
+	public static final int MAXTOMADAS = 12;
+	public static final int HARMONICAS = 12;
+	public static final int PONTOSONDA = 256;
+	public static final int FREQBASE = 60;
+	public static final int TEMPOATUALIZARELOGIOS = 1000;
+	public static final int TEMPOATUALIZATABELA = 3000;
+	public static final int DIGITOSSIGNIFICATIVOS = 3;
 
 	public static void logger(String msg) {
 		
-		if (WSProtegemed.ativarLog == 1) {
+		if (WSProtegemed.getAtivarlog() == 1) {
 			Date dataTemp;
 			String dataString = null;
 			
@@ -69,17 +71,16 @@ public class Utils {
 				dataTemp = Calendar.getInstance().getTime();
 				dataString = "[LOG] ".concat(f.format(dataTemp)).concat(" - ");
 				
-				Files.write(Paths.get(LOCALE_LOG), new String(dataString).getBytes(), StandardOpenOption.APPEND);
-				Files.write(Paths.get(LOCALE_LOG), new String(msg).getBytes(), StandardOpenOption.APPEND);
-				Files.write(Paths.get(LOCALE_LOG), new String("\n").getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get(LOCALE_LOG), dataString.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get(LOCALE_LOG), msg.getBytes(), StandardOpenOption.APPEND);
+				Files.write(Paths.get(LOCALE_LOG), "\n".getBytes(), StandardOpenOption.APPEND);
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger(e.getMessage());
 			}
 		}
 	}
 	
 	public static Float convertHexToFloat(String string) {
-		//Long bits = Long.parseLong(string, 16);
 		return Float.intBitsToFloat(new Long(Long.parseLong(string, 16)).intValue());
 	}
 }

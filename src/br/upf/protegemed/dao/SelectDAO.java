@@ -18,10 +18,11 @@ import br.upf.protegemed.beans.TipoOnda;
 import br.upf.protegemed.beans.Tomada;
 import br.upf.protegemed.beans.UsoSala;
 import br.upf.protegemed.beans.UsoSalaEquip;
+import br.upf.protegemed.enums.TypesFrequencia;
 import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
 
-public class ProtegemedDAO {
+public class SelectDAO {
 	
 	public List<UsoSalaEquip> queryUseRoomEquip() {
 		
@@ -29,7 +30,7 @@ public class ProtegemedDAO {
 		UsoSalaEquip usoSalaEquip;
 		Equipamento equipamento;
 		UsoSala usoSala;
-		List<UsoSalaEquip> listUsoSalaEquip = new ArrayList<UsoSalaEquip>();
+		List<UsoSalaEquip> listUsoSalaEquip = new ArrayList<>();
 		ResultSet resultSet;
 		
 		try {
@@ -50,8 +51,7 @@ public class ProtegemedDAO {
 			stmt.close();
 			return listUsoSalaEquip;
 		} catch(Exception pr) {
-			pr.getMessage();
-			return null;
+			return listUsoSalaEquip;
 		}
 	}
 	
@@ -59,7 +59,7 @@ public class ProtegemedDAO {
 		
 		PreparedStatement stmt;
 		Eventos eventos;
-		List<Eventos> listEvents = new ArrayList<Eventos>();
+		List<Eventos> listEvents = new ArrayList<>();
 		ResultSet resultSet;
 		
 		try {
@@ -77,8 +77,7 @@ public class ProtegemedDAO {
 			stmt.close();
 			return listEvents;
 		} catch(Exception pr) {
-			pr.getMessage();
-			return null;
+			return listEvents;
 		}
 	}
 	
@@ -86,7 +85,7 @@ public class ProtegemedDAO {
 		
 		PreparedStatement stmt;
 		Modelo modelo;
-		List<Modelo> listModels = new ArrayList<Modelo>();
+		List<Modelo> listModels = new ArrayList<>();
 		ResultSet resultSet;
 		
 		try {
@@ -103,8 +102,7 @@ public class ProtegemedDAO {
 			stmt.close();
 			return listModels;
 		} catch(Exception pr) {
-			pr.getMessage();
-			return null;
+			return listModels;
 		}
 	}
 	
@@ -134,8 +132,7 @@ public class ProtegemedDAO {
 			return listHarmAtual;
 			
 		} catch(Exception pr) {
-			pr.getMessage();
-			return null;
+			return listHarmAtual;
 		}
 	}
 
@@ -169,7 +166,7 @@ public class ProtegemedDAO {
 				equipamento.setCodEquip(resultSet.getInt(4));
 				eventos.setCodEvento(resultSet.getInt(5));
 				
-				capturaAtual.setCodTomada(tomada);
+				capturaAtual.setTomada(tomada);
 				capturaAtual.setTipoOnda(tipoOnda);
 				capturaAtual.setEquipamento(equipamento);
 				capturaAtual.setEventos(eventos);
@@ -177,7 +174,6 @@ public class ProtegemedDAO {
 				capturaAtual.setOffset(resultSet.getFloat(7));
 				capturaAtual.setGain(resultSet.getFloat(8));
 				capturaAtual.setEficaz(resultSet.getFloat(9));
-				//TODO Converter para Calendar capturaAtual.setDataAtual(resultSet.getTimestamp(10));
 				capturaAtual.setMv2(resultSet.getFloat(11));
 				capturaAtual.setUnder(resultSet.getInt(12));
 				capturaAtual.setOver(resultSet.getInt(13));
@@ -189,7 +185,7 @@ public class ProtegemedDAO {
 			
 		} catch (Exception e) {
 			e.getMessage();
-			return null;
+			return listCapturaAtual;
 		}
 	}
 
@@ -232,7 +228,7 @@ public class ProtegemedDAO {
 			return listEquipamentos;
 		} catch (Exception e) {
 			e.getMessage();
-			return null;
+			return listEquipamentos;
 		}
 	}
 	
@@ -254,10 +250,39 @@ public class ProtegemedDAO {
 			}
 			return sala;
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
 			return null;
-		} finally {
-			stmt.close();
+		}
+	}
+	
+	public List<Float> queryFrequencia(Integer versao, String tipo) {
+		
+		PreparedStatement stmt = null;
+		ResultSet resultSet = null;
+		List<Float> list = new ArrayList<>();
+		Float f;
+		
+		try {
+			if (tipo.equals(TypesFrequencia.NORMAL.getUrl())) {
+				stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_FREQ_NORMAL);
+			} else if (tipo.equals(TypesFrequencia.ATENCAO.getUrl())) {
+				stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_FREQ_ATENCAO);
+			} else if (tipo.equals(TypesFrequencia.PERIGO.getUrl())){
+				stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_FREQ_PERIGO);
+			}
+			
+			if (stmt != null ) {
+				stmt.setInt(1, versao);
+				resultSet = stmt.executeQuery();
+			}
+			if (resultSet != null ) {
+				while(resultSet.next()) {
+					f = resultSet.getFloat(1);
+					list.add(f);
+				}
+			}
+			return list;
+		} catch (Exception e) {
+			return list;
 		}
 	}
 }

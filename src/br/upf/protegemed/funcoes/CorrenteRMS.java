@@ -1,4 +1,4 @@
-package br.upf.protegemed.periculosidade;
+package br.upf.protegemed.funcoes;
 
 import java.io.Serializable;
 

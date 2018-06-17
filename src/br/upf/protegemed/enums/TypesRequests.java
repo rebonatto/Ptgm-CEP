@@ -1,4 +1,4 @@
-package br.upf.protegemed.beans;
+package br.upf.protegemed.enums;
 
 public enum TypesRequests {
 	RFID("RFID"),

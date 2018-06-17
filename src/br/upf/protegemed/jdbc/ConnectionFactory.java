@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import br.upf.protegemed.utils.Utils;
 
 public class ConnectionFactory {
-	 public Connection getConnection() throws InstantiationException, IllegalAccessException, ClassNotFoundException {
+	 public Connection getConnection() {
          try {
-        	 Class.forName("com.mysql.jdbc.Driver").newInstance();
+			Class.forName("com.mysql.jdbc.Driver").newInstance();
              return DriverManager.getConnection(
                      "jdbc:" + Utils.JDBC + "://"
                      		 + Utils.HOST + ":"
@@ -17,8 +17,9 @@ public class ConnectionFactory {
                      		 + Utils.BD,
                      		 Utils.USER,
                      		 Utils.PASSWORD);
-         } catch (SQLException e) {
-             throw new RuntimeException(e);
+         } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+             Utils.logger(e.getMessage());
+             return null;
          }
      }
 }

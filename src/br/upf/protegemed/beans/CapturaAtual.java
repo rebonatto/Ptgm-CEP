@@ -33,42 +33,6 @@ public class CapturaAtual implements Serializable{
 	
 	public CapturaAtual() {
 		super();
-	};
-	
-	public CapturaAtual(
-			Integer codCaptura
-			,Tomada tomada
-			,TipoOnda tipoOnda
-			,Equipamento equipamento
-			,Eventos eventos
-			,float mv
-			,float offset
-			,float gain
-			,float eficaz
-			,Calendar data
-			,float mv2
-			,Integer under
-			,Integer over
-			,long duracao
-			,List<HarmAtual> listHarmAtual
-			, SalaCirurgia salaCirurgia) {
-		
-		this.codCaptura = codCaptura;
-		this.tomada =  tomada;
-		this.tipoOnda = tipoOnda;
-		this.equipamento = equipamento;
-		this.eventos = eventos;
-		this.mv = mv;
-		this.offset = offset;
-		this.gain = gain;
-		this.eficaz = eficaz;
-		this.data = data;
-		this.mv2 = mv2;
-		this.under = under;
-		this.over = over;
-		this.duracao = duracao;
-		this.listHarmAtual = listHarmAtual;
-		this.salaCirurgia = salaCirurgia;
 	}
 	
 	public static long getSerialversionuid() {
@@ -87,7 +51,7 @@ public class CapturaAtual implements Serializable{
 		return tomada;
 	}
 
-	public void setCodTomada(Tomada tomada) {
+	public void setTomada(Tomada tomada) {
 		this.tomada = tomada;
 	}
 
@@ -187,10 +151,6 @@ public class CapturaAtual implements Serializable{
 		this.listHarmAtual = listHarmAtual;
 	}
 
-	public void setTomada(Tomada tomada) {
-		this.tomada = tomada;
-	}
-
 	public Calendar getData() {
 		return data;
 	}
@@ -212,21 +172,14 @@ public class CapturaAtual implements Serializable{
 		long millIni = eventoIni.getTimeInMillis();
         long millFim = eventoFim.getTimeInMillis();
 
-        // Calcula a diferenca em milisegundos
-        long diff = millFim - millIni;
-
         // Calcula a diferenca em segundos
-        //long diffSeconds = diff / 1000;
-		
-		return diff;
+        //result = diff / 1000;
+        
+        // Calcula a diferenca em milisegundos
+        return millFim - millIni;
 	}
 	
 	public float calculaPericulosidade() {
-		/*float floatAux = (this.getEficaz() * this.getEficaz()) / this.getGain();
-		if (floatAux < 0) {
-			floatAux *= -1;
-		}
-		return floatAux;*/
 		return (this.getEficaz() * this.getEficaz()) / this.getGain(); 
 	}
 }

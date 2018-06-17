@@ -1,17 +1,16 @@
-package br.upf.protegemed.periculosidade;
+package br.upf.protegemed.funcoes;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.utils.Calculos;
-import br.upf.protegemed.utils.Utils;
 
-public class FrequenciaCorrente {
+public class EscalaFrequenciaCorrente {
 
 	private float[] normal = new float[12];
 	private float[] atencao = new float[12];
 	private float[] perigo = new float[12];
 
-	public FrequenciaCorrente() {
+	public EscalaFrequenciaCorrente() {
 		// Valores limite da percepção, dentro considerados normais
 		normal[0] = 0.060F; // 60Hz
 		normal[1] = 0.061F; // 120Hz
@@ -68,20 +67,20 @@ public class FrequenciaCorrente {
 		return perigo[h];
 	}
 
-	public static String getStatusFrequencia(CapturaAtual cap) {
+	public static Integer getEscalaStatusFrequencia(CapturaAtual cap) {
 		Float valor;
-		FrequenciaCorrente obj = new FrequenciaCorrente();
+		EscalaFrequenciaCorrente obj = new EscalaFrequenciaCorrente();
 
 		for (HarmAtual h : cap.getListHarmAtual()) {
 			// Encontra o valor da barra (modulo)
 			valor = Calculos.modulo(h.getSen(), h.getCos(), cap.getGain());
 
 			if (valor > obj.getPerigo(h.getCodHarmonica() - 1))
-				return "Dangerous " + String.valueOf(h.getCodHarmonica() * Utils.FREQBASE) + "Hz";
+				return 3;
 			else if (valor > obj.getAtencao(h.getCodHarmonica() - 1))
-				return "Atention " + String.valueOf(h.getCodHarmonica() * Utils.FREQBASE) + "Hz";
+				return 2;
 
 		}
-		return "Normal";
+		return 1;
 	}
 }
