@@ -3,7 +3,9 @@ package br.upf.protegemed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import br.upf.protegemed.beans.CapturaAtual;
@@ -195,7 +197,10 @@ public class SelectDAO {
 		Modelo modelo;
 		Marca marca;
 		Tipo tipo;
+		Tomada tomada;
 		List<Equipamento> listEquipamentos = new ArrayList<>();
+		Calendar calendar = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat(Utils.MASK_YYYY_MM_DD);
 		
 		PreparedStatement stmt;
 		ResultSet resultSet;
@@ -208,21 +213,29 @@ public class SelectDAO {
 				modelo = new Modelo();
 				marca = new Marca();
 				tipo = new Tipo();
+				tomada = new Tomada();
 				
 				marca.setCodMarca(resultSet.getInt(2));
 				modelo.setCodModelo(resultSet.getInt(3));
 				tipo.setCodTipo(resultSet.getInt(4));
+				tomada.setCodTomada(resultSet.getInt(5));
 				
 				equipamento.setCodEquip(resultSet.getInt(1));
 				equipamento.setMarca(marca);
 				equipamento.setModelo(modelo);
 				equipamento.setTipo(tipo);
-				equipamento.setRfid(resultSet.getString(5));
-				equipamento.setCodPatrimonio(resultSet.getInt(6));
-				equipamento.setDesc(resultSet.getString(7));
-				//TODO Refatorar equipamento.setDataUltimaFalha(resultSet.getTimestamp(8)); 
-				//TODO Refatorar equipamento.setDataUltimaManutencao(resultSet.getTimestamp(9)); 
-				equipamento.setTempoUso(resultSet.getInt(10));
+				equipamento.setTomada(tomada);
+				
+				equipamento.setRfid(resultSet.getString(6));
+				equipamento.setCodPatrimonio(resultSet.getInt(7));
+				equipamento.setDesc(resultSet.getString(8));
+				
+				calendar.setTime(sdf.parse(resultSet.getString(9)));
+				equipamento.setDataUltimaFalha(calendar);
+				calendar.setTime(sdf.parse(resultSet.getString(10)));
+				equipamento.setDataUltimaManutencao(calendar); 
+				
+				equipamento.setTempoUso(resultSet.getInt(11));
 				listEquipamentos.add(equipamento);				
 			}
 			return listEquipamentos;

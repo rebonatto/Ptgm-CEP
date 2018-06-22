@@ -30,7 +30,7 @@ public class Utils {
 	public static final String QUERY_USO_SALA_CAPTURA = "select codCaptura,codUsoSala from protegemed.usosalacaptura";
 	public static final String QUERY_USO_SALA_EQUIP = "select codEquip,codUsoSala from protegemed.usosalaequip";
 	public static final String QUERY_CAPTURA_ATUAL = "select codCaptura,codTomada,codTipoOnda,codEquip,codEvento, valorMedio, offset, gain, eficaz, dataAtual, vm2, under, over, duration from protegemed.capturaatual";
-	public static final String QUERY_EQUIPAMENTO = "select codEquip,codMarca,codModelo,codTipo,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso from protegemed.equipamento";
+	public static final String QUERY_EQUIPAMENTO = "select codEquip,codMarca,codModelo,codTipo,codTomada,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso from protegemed.equipamento";
 	public static final String QUERY_ONDA_PADRAO = "select codOndaPadrao,codTipoOnda,codTomada,codEquip,valorMedio,offset,gain,eficaz,dataPadrao,codTipoPadrao from protegemed.ondapadrao";
 	public static final String QUERY_COD_SALA = "select s.codSala, s.desc from protegemed.salacirurgia s, tomada t where t.codSala = s.codSala and t.codTomada = ?";
 	public static final String QUERY_FREQ_NORMAL = "select f.valor from protegemed.frequencia_normal f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
@@ -44,6 +44,7 @@ public class Utils {
 	public static final String HOST = "localhost";
 	public static final String PORT = "3306";
 	public static final String MASK_DATA = "YYYY-MM-dd HH:mm:ss.SSS";
+	public static final String MASK_YYYY_MM_DD = "yyyy-MM-dd";
 	public static final float NORMAL = 0.06F;
 	public static final float ATENTION = 0.1F;
 	public static final float INTERVENTION = 0.5F;

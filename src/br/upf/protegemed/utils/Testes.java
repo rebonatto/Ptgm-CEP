@@ -1,24 +1,24 @@
 package br.upf.protegemed.utils;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
-import org.kie.api.KieServices;
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
-
-import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.beans.Equipamento;
-import br.upf.protegemed.beans.Eventos;
-import br.upf.protegemed.beans.HarmAtual;
-import br.upf.protegemed.beans.ParamRequest;
-import br.upf.protegemed.beans.SalaCirurgia;
-import br.upf.protegemed.beans.Tomada;
-import br.upf.protegemed.dao.SelectDAO;
-import br.upf.protegemed.enums.TypesRequests;
-import br.upf.protegemed.funcoes.Similaridade;
+//import java.sql.SQLException;
+//import java.util.ArrayList;
+//import java.util.Calendar;
+//import java.util.List;
+//
+//import org.kie.api.KieServices;
+//import org.kie.api.runtime.KieContainer;
+//import org.kie.api.runtime.KieSession;
+//
+//import br.upf.protegemed.beans.CapturaAtual;
+//import br.upf.protegemed.beans.Equipamento;
+//import br.upf.protegemed.beans.Eventos;
+//import br.upf.protegemed.beans.HarmAtual;
+//import br.upf.protegemed.beans.ParamRequest;
+//import br.upf.protegemed.beans.SalaCirurgia;
+//import br.upf.protegemed.beans.Tomada;
+//import br.upf.protegemed.dao.SelectDAO;
+//import br.upf.protegemed.enums.TypesRequests;
+//import br.upf.protegemed.funcoes.Similaridade;
 
 //import java.sql.SQLException;
 //import java.util.HashMap;
@@ -39,7 +39,17 @@ import br.upf.protegemed.funcoes.Similaridade;
 
 public class Testes {
 
-	public static void main(String[] args) throws SQLException{
+	public static void main(String[] args) {
+		
+		//CapturaAtual c = new CapturaAtual();
+//		
+//		List<Equipamento> l =new ArrayList<>();
+//		
+//		l = new SelectDAO().queryEquipament();
+//		
+//		for (Equipamento equipamento : l) {
+//			System.out.println(equipamento.getDataUltimaFalha());
+//		}
 		
 //		List<Float> l;
 //		l = new SelectDAO().queryFrequencia(1, "NORMAL");
@@ -247,43 +257,43 @@ public class Testes {
 		//System.out.println(StatusPericulosidade.getStatusPericulosidade(capturaAtual));
 	}
 	
-	public static ParamRequest splitRequest(String[] param) {
-		
-		String[] objetoTemp = null;
-		ParamRequest paramRequest = new ParamRequest();
-		
-		for (String result : param) {
-			// Separar atributos e valores RFID=00000, guardando apenas o valor
-			objetoTemp = result.split("=");
-
-			if(objetoTemp[0].equals(TypesRequests.TYPE.getUrl())) {
-				paramRequest.setTYPE(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.OUTLET.getUrl())) {
-				paramRequest.setOUTLET(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.RFID.getUrl())) {
-				paramRequest.setRFID(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.OFFSET.getUrl())) {
-				paramRequest.setOFFSET(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.GAIN.getUrl())) {
-				paramRequest.setGAIN(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.RMS.getUrl())) {
-				paramRequest.setRMS(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.MV.getUrl())) {
-				paramRequest.setMV(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.MV2.getUrl())) {
-				paramRequest.setMV2(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.UNDER.getUrl())) {
-				paramRequest.setUNDER(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.OVER.getUrl())) {
-				paramRequest.setOVER(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.DURATION.getUrl())) {
-				paramRequest.setDURATION(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.SIN.getUrl())) {
-				paramRequest.setSIN(objetoTemp[1]);
-			} else if (objetoTemp[0].equals(TypesRequests.COS.getUrl())) {
-				paramRequest.setCOS(objetoTemp[1]);
-			}
-		}
-		return paramRequest;
-	}
+//	public static ParamRequest splitRequest(String[] param) {
+//		
+//		String[] objetoTemp = null;
+//		ParamRequest paramRequest = new ParamRequest();
+//		
+//		for (String result : param) {
+//			// Separar atributos e valores RFID=00000, guardando apenas o valor
+//			objetoTemp = result.split("=");
+//
+//			if(objetoTemp[0].equals(TypesRequests.TYPE.getUrl())) {
+//				paramRequest.setTYPE(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.OUTLET.getUrl())) {
+//				paramRequest.setOUTLET(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.RFID.getUrl())) {
+//				paramRequest.setRFID(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.OFFSET.getUrl())) {
+//				paramRequest.setOFFSET(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.GAIN.getUrl())) {
+//				paramRequest.setGAIN(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.RMS.getUrl())) {
+//				paramRequest.setRMS(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.MV.getUrl())) {
+//				paramRequest.setMV(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.MV2.getUrl())) {
+//				paramRequest.setMV2(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.UNDER.getUrl())) {
+//				paramRequest.setUNDER(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.OVER.getUrl())) {
+//				paramRequest.setOVER(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.DURATION.getUrl())) {
+//				paramRequest.setDURATION(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.SIN.getUrl())) {
+//				paramRequest.setSIN(objetoTemp[1]);
+//			} else if (objetoTemp[0].equals(TypesRequests.COS.getUrl())) {
+//				paramRequest.setCOS(objetoTemp[1]);
+//			}
+//		}
+//		return paramRequest;
+//	}
 }

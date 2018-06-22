@@ -17,6 +17,7 @@ public class Equipamento implements Serializable{
 	private Marca marca;
 	private Modelo modelo;
 	private Tipo tipo;
+	private Tomada tomada;
 	private String rfid;
 	private Integer codPatrimonio;
 	private String desc;
@@ -62,6 +63,14 @@ public class Equipamento implements Serializable{
 
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
+	}
+	
+	public Tomada getTomada() {
+		return tomada;
+	}
+
+	public void setTomada(Tomada tomada) {
+		this.tomada = tomada;
 	}
 
 	public String getRfid() {
