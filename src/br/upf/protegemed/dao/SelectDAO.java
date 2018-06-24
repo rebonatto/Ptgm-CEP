@@ -3,6 +3,7 @@ package br.upf.protegemed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,12 +22,17 @@ import br.upf.protegemed.beans.Tomada;
 import br.upf.protegemed.beans.UsoSala;
 import br.upf.protegemed.beans.UsoSalaEquip;
 import br.upf.protegemed.enums.TypesFrequencia;
+import br.upf.protegemed.exceptions.ProtegeClassException;
+import br.upf.protegemed.exceptions.ProtegeDAOException;
+import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
+import br.upf.protegemed.exceptions.ProtegeInstanciaException;
+import br.upf.protegemed.exceptions.ProtegemedParserException;
 import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
 
 public class SelectDAO {
 	
-	public List<UsoSalaEquip> queryUseRoomEquip() {
+	public List<UsoSalaEquip> queryUseRoomEquip() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
 		PreparedStatement stmt;
 		UsoSalaEquip usoSalaEquip;
@@ -52,12 +58,12 @@ public class SelectDAO {
 		
 			stmt.close();
 			return listUsoSalaEquip;
-		} catch(Exception pr) {
-			return listUsoSalaEquip;
+		} catch(SQLException pr) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
 		}
 	}
 	
-	public List<Eventos> queryEvents() {
+	public List<Eventos> queryEvents() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		PreparedStatement stmt;
 		Eventos eventos;
@@ -78,12 +84,12 @@ public class SelectDAO {
 			
 			stmt.close();
 			return listEvents;
-		} catch(Exception pr) {
-			return listEvents;
+		} catch(SQLException pr) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
 		}
 	}
 	
-	public List<Modelo> queryModels() {
+	public List<Modelo> queryModels() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
 		PreparedStatement stmt;
 		Modelo modelo;
@@ -103,12 +109,12 @@ public class SelectDAO {
 			
 			stmt.close();
 			return listModels;
-		} catch(Exception pr) {
-			return listModels;
+		} catch(SQLException pr) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
 		}
 	}
 	
-	public List<HarmAtual> queryHarmCurrent(){
+	public List<HarmAtual> queryHarmCurrent() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 
 		PreparedStatement stmt;
 		HarmAtual harmAtual;
@@ -133,12 +139,12 @@ public class SelectDAO {
 			stmt.close();
 			return listHarmAtual;
 			
-		} catch(Exception pr) {
-			return listHarmAtual;
+		} catch(SQLException pr) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
 		}
 	}
 
-	public List<CapturaAtual> queryCaptureCurrent(){
+	public List<CapturaAtual> queryCaptureCurrent() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		CapturaAtual capturaAtual;
 		Tomada tomada;
 		TipoOnda tipoOnda;
@@ -185,13 +191,12 @@ public class SelectDAO {
 			stmt.close();
 			return listCapturaAtual;
 			
-		} catch (Exception e) {
-			e.getMessage();
-			return listCapturaAtual;
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
 		}
 	}
 
-	public List<Equipamento> queryEquipament() {
+	public List<Equipamento> queryEquipament() throws ProtegeDAOException, ProtegemedParserException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		Equipamento equipamento;
 		Modelo modelo;
@@ -239,13 +244,15 @@ public class SelectDAO {
 				listEquipamentos.add(equipamento);				
 			}
 			return listEquipamentos;
-		} catch (Exception e) {
-			e.getMessage();
-			return listEquipamentos;
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
+		} catch(ParseException pe) {
+			throw new ProtegemedParserException(ProtegemedParserException.msgException.concat(pe.getMessage()), 
+					pe.getErrorOffset());
 		}
 	}
 	
-	public SalaCirurgia querySalaCirurgia (Integer codTomada) throws SQLException {
+	public SalaCirurgia querySalaCirurgia (Integer codTomada) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		PreparedStatement stmt = null;
 		ResultSet resultSet;
@@ -262,12 +269,12 @@ public class SelectDAO {
 				sala.setDesc(resultSet.getString(2));
 			}
 			return sala;
-		} catch (Exception e) {
-			return null;
+		} catch (SQLException e) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, e.getCause());
 		}
 	}
 	
-	public List<Float> queryFrequencia(Integer versao, String tipo) {
+	public List<Float> queryFrequencia(Integer versao, String tipo) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
 		PreparedStatement stmt = null;
 		ResultSet resultSet = null;
@@ -294,8 +301,8 @@ public class SelectDAO {
 				}
 			}
 			return list;
-		} catch (Exception e) {
-			return list;
+		} catch (SQLException e) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, e.getCause());
 		}
 	}
 }

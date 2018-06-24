@@ -8,6 +8,10 @@ import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.dao.SelectDAO;
 import br.upf.protegemed.enums.TypesFrequencia;
+import br.upf.protegemed.exceptions.ProtegeClassException;
+import br.upf.protegemed.exceptions.ProtegeDAOException;
+import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
+import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.utils.Calculos;
 import br.upf.protegemed.utils.Utils;
 
@@ -17,7 +21,7 @@ public class FrequenciaCorrente {
 	private float[] atencao = new float[12];
 	private float[] perigo = new float[12];
 
-	public FrequenciaCorrente() {
+	public FrequenciaCorrente() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		HashMap<Integer, String> hashMap = new HashMap<>();
 		hashMap.put(1, "NORMAL");
@@ -64,7 +68,7 @@ public class FrequenciaCorrente {
 		return perigo[h];
 	}
 
-	public static String getStatusFrequencia(CapturaAtual cap) {
+	public static String getStatusFrequencia(CapturaAtual cap) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		Float valor;
 		FrequenciaCorrente obj = new FrequenciaCorrente();
 

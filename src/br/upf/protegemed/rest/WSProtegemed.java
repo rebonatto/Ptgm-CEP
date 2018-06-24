@@ -26,6 +26,10 @@ import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
 import br.upf.protegemed.dao.SelectDAO;
 import br.upf.protegemed.enums.TypesRequests;
+import br.upf.protegemed.exceptions.ProtegeClassException;
+import br.upf.protegemed.exceptions.ProtegeDAOException;
+import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
+import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.utils.Utils;
 
 @Path("/operations")
@@ -99,59 +103,63 @@ public class WSProtegemed {
 	@POST
 	@Path("post/receive-event")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	public void postReceiveEvent(String c) throws SQLException {
-
-		// Separar os parâmetros recebidos Ex: RFID=000&TYPE=00F
-		String[] temp = c.split("&");
-		List<HarmAtual> listHarmAtual = new ArrayList<>();
-		CapturaAtual capturaAtual = new CapturaAtual();
-		Equipamento equipamento = new Equipamento();
-		Eventos eventos = new Eventos();
-		Tomada tomada = new Tomada();
-		SalaCirurgia salaCirurgia;
-		ParamRequest paramRequest;
+	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
-		String[] arrayCos;
-		String[] arraySen;
-		Integer inc = 1;
-
-		paramRequest = splitRequest(temp);
-		
-		capturaAtual.setCodCaptura(2736);
-		eventos.setCodEvento(Integer.parseInt(paramRequest.getTYPE()));
-		tomada.setCodTomada(Integer.parseInt(paramRequest.getOUTLET()));
-		salaCirurgia = new SelectDAO().querySalaCirurgia(tomada.getCodTomada());
-		equipamento.setRfid(paramRequest.getRFID());
-		capturaAtual.setOffset(Float.parseFloat(paramRequest.getOFFSET()));
-		capturaAtual.setGain(Utils.convertHexToFloat(paramRequest.getGAIN()));
-		capturaAtual.setEficaz(Utils.convertHexToFloat(paramRequest.getRMS()));
-		capturaAtual.setMv(Utils.convertHexToFloat(paramRequest.getMV()));
-		capturaAtual.setMv2(Utils.convertHexToFloat(paramRequest.getMV2()));
-		capturaAtual.setUnder(Integer.parseInt(paramRequest.getUNDER()));
-		capturaAtual.setOver(Integer.parseInt(paramRequest.getOVER()));
-		capturaAtual.setDuracao(Integer.parseInt(paramRequest.getDURATION()));
-		
-		capturaAtual.setEventos(eventos);
-		capturaAtual.setEquipamento(equipamento);
-		capturaAtual.setTomada(tomada);
-		capturaAtual.setSalaCirurgia(salaCirurgia);
-		
-		arraySen = paramRequest.getSIN().split("%");
-		arrayCos = paramRequest.getCOS().split("%");
-		
-		for (int i = 0; i < arrayCos.length; i++) {
-			HarmAtual harmAtual = new HarmAtual();
-			harmAtual.setCodHarmonica(inc);
-			harmAtual.setSen(Utils.convertHexToFloat(arraySen[i]));
-			harmAtual.setCos(Utils.convertHexToFloat(arrayCos[i]));
-			listHarmAtual.add(harmAtual);
+		try {
+			// Separar os parâmetros recebidos Ex: RFID=000&TYPE=00F
+			String[] temp = c.split("&");
+			List<HarmAtual> listHarmAtual = new ArrayList<>();
+			CapturaAtual capturaAtual = new CapturaAtual();
+			Equipamento equipamento = new Equipamento();
+			Eventos eventos = new Eventos();
+			Tomada tomada = new Tomada();
+			SalaCirurgia salaCirurgia;
+			ParamRequest paramRequest;
+			
+			String[] arrayCos;
+			String[] arraySen;
+			Integer inc = 1;
+	
+			paramRequest = splitRequest(temp);
+			
+			capturaAtual.setCodCaptura(2736);
+			eventos.setCodEvento(Integer.parseInt(paramRequest.getTYPE()));
+			tomada.setCodTomada(Integer.parseInt(paramRequest.getOUTLET()));
+			salaCirurgia = new SelectDAO().querySalaCirurgia(tomada.getCodTomada());
+			equipamento.setRfid(paramRequest.getRFID());
+			capturaAtual.setOffset(Float.parseFloat(paramRequest.getOFFSET()));
+			capturaAtual.setGain(Utils.convertHexToFloat(paramRequest.getGAIN()));
+			capturaAtual.setEficaz(Utils.convertHexToFloat(paramRequest.getRMS()));
+			capturaAtual.setMv(Utils.convertHexToFloat(paramRequest.getMV()));
+			capturaAtual.setMv2(Utils.convertHexToFloat(paramRequest.getMV2()));
+			capturaAtual.setUnder(Integer.parseInt(paramRequest.getUNDER()));
+			capturaAtual.setOver(Integer.parseInt(paramRequest.getOVER()));
+			capturaAtual.setDuracao(Integer.parseInt(paramRequest.getDURATION()));
+			
+			capturaAtual.setEventos(eventos);
+			capturaAtual.setEquipamento(equipamento);
+			capturaAtual.setTomada(tomada);
+			capturaAtual.setSalaCirurgia(salaCirurgia);
+			
+			arraySen = paramRequest.getSIN().split("%");
+			arrayCos = paramRequest.getCOS().split("%");
+			
+			for (int i = 0; i < arrayCos.length; i++) {
+				HarmAtual harmAtual = new HarmAtual();
+				harmAtual.setCodHarmonica(inc);
+				harmAtual.setSen(Utils.convertHexToFloat(arraySen[i]));
+				harmAtual.setCos(Utils.convertHexToFloat(arrayCos[i]));
+				listHarmAtual.add(harmAtual);
+			}
+	
+			capturaAtual.setListHarmAtual(listHarmAtual);
+			capturaAtual.setData(Calendar.getInstance());
+			
+			getkSession().insert(capturaAtual);
+			getkSession().fireAllRules();
+		} catch(SQLException pr) {
+			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
 		}
-
-		capturaAtual.setListHarmAtual(listHarmAtual);
-		capturaAtual.setData(Calendar.getInstance());
-		
-		getkSession().insert(capturaAtual);
-		getkSession().fireAllRules();
 	}
 	
 	@GET
