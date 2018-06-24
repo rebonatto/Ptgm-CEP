@@ -2,7 +2,6 @@ package br.upf.protegemed.utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 //
@@ -25,6 +24,7 @@ import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
 import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.funcoes.ProtegeDataset;
 //import br.upf.protegemed.funcoes.Similaridade;
+import br.upf.protegemed.funcoes.Similaridade;
 
 //import java.sql.SQLException;
 //import java.util.HashMap;
@@ -254,23 +254,15 @@ public class Testes {
 //		System.out.println(" -> " + capturaAtual.getUnder());
 //		System.out.println(" -> " + capturaAtual.getOver());
 		
-		List<Double> l1 = new ArrayList<>();
-		List<Double> l2 = new ArrayList<>();
-		
-		List<HashMap<Double, Double>> h = ProtegeDataset.newDatasetOnda(capturaAtual1, Boolean.TRUE);
-
-		for (HashMap<Double, Double> hashMap : h) {
-			l1.addAll(hashMap.values());
-		}
-		
-		h = ProtegeDataset.newDatasetOnda(capturaAtual, Boolean.TRUE);
-		
-		for (HashMap<Double, Double> hashMap : h) {
-			l2.addAll(hashMap.values());
-		}
-		
+		List<Double> l1 = ProtegeDataset.newDatasetOnda(capturaAtual1, Boolean.TRUE);
+		List<Double> l2 = ProtegeDataset.newDatasetOnda(capturaAtual, Boolean.TRUE);
+	
+//		for (Double double1 : l2) {
+//			System.out.println(double1);
+//		}
+//		
 //		double[] d = Similaridade.spearman(l1, l2);
-		
+		Similaridade.spearman(l1, l2);
 //		for (double e : d) {
 //			System.out.println(e);	
 //		}

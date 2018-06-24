@@ -2,7 +2,6 @@ package br.upf.protegemed.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 import br.upf.protegemed.beans.CapturaAtual;
@@ -81,29 +80,16 @@ public class Calculos {
 		return ondaPadrao;
 	}
 	
-	public static Boolean calcularSpearman(CapturaAtual capturaAtualOne,
+	public static void calcularSpearman(CapturaAtual capturaAtualOne,
 			CapturaAtual capturaAtualTwo) {
 		
-		List<Double> listaUm = new ArrayList<>();
-		List<Double> listaDois = new ArrayList<>();
-		
-		List<HashMap<Double, Double>> hashUm = ProtegeDataset.newDatasetOnda(capturaAtualOne, Boolean.TRUE);
-		List<HashMap<Double, Double>> hashDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo, Boolean.TRUE);
+		List<Double> listaUm = ProtegeDataset.newDatasetOnda(capturaAtualOne, Boolean.TRUE);
+		List<Double> listaDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo, Boolean.TRUE);
 
-		for (HashMap<Double, Double> hashMap : hashUm) {
-			listaUm.addAll(hashMap.values());
-		}
-		
-		for (HashMap<Double, Double> hashMap : hashDois) {
-			listaDois.addAll(hashMap.values());
-		}
-		
 		double[] d = Similaridade.spearman(listaUm, listaDois);
 		
 		for (double e : d) {
 			Utils.logger("calculo de spearman " + e);	
 		}
-		
-		return Boolean.TRUE;
 	}
 }

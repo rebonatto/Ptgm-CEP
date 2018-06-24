@@ -7,7 +7,6 @@ package br.upf.protegemed.funcoes;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import br.upf.protegemed.beans.CapturaAtual;
@@ -26,12 +25,12 @@ public class ProtegeDataset implements Serializable {
 		super();
 	}
 
-	public static List<HashMap<Double, Double>> newDatasetOnda(CapturaAtual capturaAtual, boolean padrao) {
+	public static List<Double> newDatasetOnda(CapturaAtual capturaAtual, boolean padrao) {
 		
 		OndaPadrao onda= null;
-		HashMap<Double, Double> newDataSetOne = new HashMap<>();
-		HashMap<Double, Double> newDataSetTwo = new HashMap<>();
-		List<HashMap<Double, Double>> hashMaps = new ArrayList<>();
+		List<Double> newDataSet = new ArrayList<>();
+		//List<Double> newDataSetTwo = new ArrayList<>();
+		//List<HashMap<Double, Double>> hashMaps = new ArrayList<>();
 		
 		double[] val = new double[Utils.PONTOSONDA];
 		double[] sen = new double[Utils.HARMONICAS];
@@ -96,12 +95,12 @@ public class ProtegeDataset implements Serializable {
 			}
 
 			val[i] = (val[i]) / capturaAtual.getGain();
-			newDataSetOne.put(tempo[i] * 1000, val[i]);
+			newDataSet.add(val[i]);
 			
 			if (padrao) {
 				if (onda== null) {
 					if (i == 0) {
-						newDataSetTwo.put(tempo[i] * 1000, 0.0);
+						newDataSet.add(0.0);
 					}
 				} else {
 					if (tiraDoVM == 0)
@@ -128,16 +127,13 @@ public class ProtegeDataset implements Serializable {
 						val[i] = sp;
 					}
 					val[i] = (val[i]) / onda.getGain();
-					newDataSetTwo.put(tempo[i] * 1000, val[i]);
+					newDataSet.add(val[i]);
 				}
 			}
 			tempo[i + 1] = (tempo[i] + (1.0 / (Utils.FREQBASE * 256)));
 			tempoi[i + 1] = (tempoi[i] - (1.0 / (Utils.FREQBASE * 256)));
 		}
 
-		hashMaps.add(newDataSetOne);
-		hashMaps.add(newDataSetTwo);
-		
-		return hashMaps;
+		return newDataSet;
 	}
 }
