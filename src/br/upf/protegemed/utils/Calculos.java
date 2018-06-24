@@ -1,7 +1,15 @@
 package br.upf.protegemed.utils;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.HarmAtual;
+import br.upf.protegemed.beans.OndaPadrao;
+import br.upf.protegemed.funcoes.ProtegeDataset;
+import br.upf.protegemed.funcoes.Similaridade;
 
 /**
  *
@@ -51,5 +59,51 @@ public class Calculos {
 		f = f / 2;
 		f = (float) Math.sqrt(f);
 		return f;
+	}
+	
+	public static OndaPadrao minDifValorMedio(CapturaAtual cap) {
+		OndaPadrao ondaPadrao = null;
+
+		float dif;
+		float aux;
+
+		Collection<OndaPadrao> lista = new ArrayList<>();
+		dif = Float.MAX_VALUE;
+
+		for (OndaPadrao onda : lista) {
+			aux = Math.abs(cap.getMv() - onda.getValorMedio());
+
+			if (aux < dif) {
+				ondaPadrao = onda;
+				dif = aux;
+			}
+		}
+		return ondaPadrao;
+	}
+	
+	public static Boolean calcularSpearman(CapturaAtual capturaAtualOne,
+			CapturaAtual capturaAtualTwo) {
+		
+		List<Double> listaUm = new ArrayList<>();
+		List<Double> listaDois = new ArrayList<>();
+		
+		List<HashMap<Double, Double>> hashUm = ProtegeDataset.newDatasetOnda(capturaAtualOne, Boolean.TRUE);
+		List<HashMap<Double, Double>> hashDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo, Boolean.TRUE);
+
+		for (HashMap<Double, Double> hashMap : hashUm) {
+			listaUm.addAll(hashMap.values());
+		}
+		
+		for (HashMap<Double, Double> hashMap : hashDois) {
+			listaDois.addAll(hashMap.values());
+		}
+		
+		double[] d = Similaridade.spearman(listaUm, listaDois);
+		
+		for (double e : d) {
+			Utils.logger("calculo de spearman " + e);	
+		}
+		
+		return Boolean.TRUE;
 	}
 }

@@ -5,8 +5,6 @@ package br.upf.protegemed.rules
 
 import br.upf.protegemed.beans.CapturaAtual
 import br.upf.protegemed.utils.Utils
-import br.upf.protegemed.funcoes.EscalaCorrenteRMS
-import br.upf.protegemed.funcoes.EscalaFrequenciaCorrente
 
 rule "rule-detected-similaridade-1"
 	salience 3 //regra será disparada antes da relação de início e fuga.
