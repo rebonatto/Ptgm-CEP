@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.HarmAtual;
-import br.upf.protegemed.dao.SelectDAO;
+import br.upf.protegemed.dao.FrequenciasDAO;
 import br.upf.protegemed.enums.TypesFrequencia;
 import br.upf.protegemed.exceptions.ProtegeClassException;
 import br.upf.protegemed.exceptions.ProtegeDAOException;
@@ -31,7 +31,7 @@ public class FrequenciaCorrente {
 		for (Entry<Integer, String> key : hashMap.entrySet()) {
             
             String value = key.getValue();
-			List<Float> list = new SelectDAO().queryFrequencia(Utils.VERSAO_FREQUENCIA, value);
+			List<Float> list = new FrequenciasDAO().queryFrequencia(Utils.VERSAO_FREQUENCIA, value);
 			Integer ind = null;
 			
 			if (value == TypesFrequencia.NORMAL.getUrl()) {

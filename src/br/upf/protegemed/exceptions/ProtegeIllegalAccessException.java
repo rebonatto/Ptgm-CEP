@@ -8,6 +8,6 @@ public class ProtegeIllegalAccessException  extends IllegalAccessException imple
 	public static final String msgException = "Ocorreu um erro ao acessar as classe do JDBC";
 
 	public ProtegeIllegalAccessException(String msg) {
-		super(msg);
+		super(msgException.concat("\n").concat(msg));
 	}
 }

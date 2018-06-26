@@ -7,6 +7,11 @@ import java.util.List;
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.OndaPadrao;
+import br.upf.protegemed.dao.FrequenciasDAO;
+import br.upf.protegemed.exceptions.ProtegeClassException;
+import br.upf.protegemed.exceptions.ProtegeDAOException;
+import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
+import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.funcoes.ProtegeDataset;
 import br.upf.protegemed.funcoes.Similaridade;
 
@@ -80,16 +85,14 @@ public class Calculos {
 		return ondaPadrao;
 	}
 	
-	public static void calcularSpearman(CapturaAtual capturaAtualOne,
-			CapturaAtual capturaAtualTwo) {
+	public static boolean calcularSpearman(CapturaAtual capturaAtualOne,
+			CapturaAtual capturaAtualTwo) throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
 		
 		List<Double> listaUm = ProtegeDataset.newDatasetOnda(capturaAtualOne, Boolean.TRUE);
 		List<Double> listaDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo, Boolean.TRUE);
 
 		double[] d = Similaridade.spearman(listaUm, listaDois);
 		
-		for (double e : d) {
-			Utils.logger("calculo de spearman " + e);	
-		}
+		return new FrequenciasDAO().salvarFrequencia(capturaAtualOne, capturaAtualTwo, d);
 	}
 }

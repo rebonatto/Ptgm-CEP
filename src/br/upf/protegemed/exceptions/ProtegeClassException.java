@@ -8,10 +8,6 @@ public class ProtegeClassException extends ClassNotFoundException implements Ser
 	public static final String msgException = "Ocorreu um erro ao registrar uma classe";
 
 	public ProtegeClassException(String msg) {
-		super(msg);
-	}
-
-	public ProtegeClassException(String msg, Throwable cause) {
-		super(msg, cause);
+		super(msgException.concat("\n").concat(msg));
 	}
 }

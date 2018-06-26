@@ -8,6 +8,6 @@ public class ProtegeInstanciaException extends InstantiationException implements
 	public static final String msgException = "Ocorreu um erro ao instanciar um objeto";
 
 	public ProtegeInstanciaException(String msg) {
-		super(msg);
+		super(msgException.concat("\n").concat(msg));
 	}
 }

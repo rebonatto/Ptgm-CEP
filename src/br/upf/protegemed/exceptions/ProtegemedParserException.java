@@ -9,6 +9,6 @@ public class ProtegemedParserException extends ParseException implements Seriali
 	public static final String msgException = "Ocorreu um erro no parser de datas";
 	
 	public ProtegemedParserException(String msg, Integer errorOfSet) {
-		super(msg, errorOfSet);
+		super(msgException.concat("\n").concat(msg), errorOfSet);
 	}
 }

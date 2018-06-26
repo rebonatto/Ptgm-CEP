@@ -19,14 +19,13 @@ public class ConnectionFactory {
 					"jdbc:" + Utils.JDBC + "://" + Utils.HOST + ":" + Utils.PORT + "/" + Utils.BD, Utils.USER,
 					Utils.PASSWORD);
 		} catch (SQLException pr) {
-			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
+			throw new ProtegeDAOException(pr.getMessage());
 		} catch (InstantiationException in) {
-			throw new ProtegeInstanciaException(ProtegeInstanciaException.msgException.concat(in.getMessage()));
+			throw new ProtegeInstanciaException(in.getMessage());
 		} catch (IllegalAccessException il) {
-			throw new ProtegeIllegalAccessException(
-					ProtegeIllegalAccessException.msgException.concat(il.getCause().getMessage()));
+			throw new ProtegeIllegalAccessException(il.getMessage());
 		} catch (ClassNotFoundException cl) {
-			throw new ProtegeClassException(ProtegeClassException.msgException, cl.getCause());
+			throw new ProtegeClassException(cl.getMessage());
 		}
 	}
 }

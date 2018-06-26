@@ -33,9 +33,11 @@ public class Utils {
 	public static final String QUERY_EQUIPAMENTO = "select codEquip,codMarca,codModelo,codTipo,codTomada,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso from protegemed.equipamento";
 	public static final String QUERY_ONDA_PADRAO = "select codOndaPadrao,codTipoOnda,codTomada,codEquip,valorMedio,offset,gain,eficaz,dataPadrao,codTipoPadrao from protegemed.ondapadrao";
 	public static final String QUERY_COD_SALA = "select s.codSala, s.desc from protegemed.salacirurgia s, tomada t where t.codSala = s.codSala and t.codTomada = ?";
+	public static final String QUERY_COD_EQUIPAMENTO = "select e.codEquip, e.codMarca, e.codModelo, e.codTipo, e.codPatrimonio, e.desc from protegemed.equipamento e where e.rfid = ?";
 	public static final String QUERY_FREQ_NORMAL = "select f.valor from protegemed.frequencia_normal f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
 	public static final String QUERY_FREQ_ATENCAO = "select f.valor from protegemed.frequencia_atencao f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
 	public static final String QUERY_FREQ_PERIGO = "select f.valor from protegemed.frequencia_perigo f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
+	public static final String INSERT_RESULTADO_SIMILARIDADE = "insert into RESULTADO_SIMILARIDADE(CD_EQUIPAMENTO_1,CD_EQUIPAMENTO_2,VALUE_1,VALUE_2,VALUE_3) values(?,?,?,?,?)";
 	
 	public static final String PASSWORD = "senha.123";
 	public static final String USER = "protegemed";

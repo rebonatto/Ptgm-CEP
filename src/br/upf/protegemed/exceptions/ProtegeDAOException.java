@@ -9,10 +9,6 @@ public class ProtegeDAOException extends SQLException implements Serializable{
 	public static final String msgException = "Ocorreu um erro no Banco de Dados";
 	
 	public ProtegeDAOException(String msg) {
-		super(msg);
-	}
-	
-	public ProtegeDAOException(String msg, Throwable cause) {
-		super(msg, cause);
+		super(msgException.concat("\n").concat(msg));
 	}
 }

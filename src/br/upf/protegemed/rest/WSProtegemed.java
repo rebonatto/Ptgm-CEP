@@ -24,7 +24,8 @@ import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
-import br.upf.protegemed.dao.SelectDAO;
+import br.upf.protegemed.dao.EquipamentoDAO;
+import br.upf.protegemed.dao.SalaCirurgiaDAO;
 import br.upf.protegemed.enums.TypesRequests;
 import br.upf.protegemed.exceptions.ProtegeClassException;
 import br.upf.protegemed.exceptions.ProtegeDAOException;
@@ -106,7 +107,7 @@ public class WSProtegemed {
 	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		try {
-			// Separar os parâmetros recebidos Ex: RFID=000&TYPE=00F
+			// Separar os parÃ¢metros recebidos Ex: RFID=000&TYPE=00F
 			String[] temp = c.split("&");
 			List<HarmAtual> listHarmAtual = new ArrayList<>();
 			CapturaAtual capturaAtual = new CapturaAtual();
@@ -125,7 +126,8 @@ public class WSProtegemed {
 			capturaAtual.setCodCaptura(2736);
 			eventos.setCodEvento(Integer.parseInt(paramRequest.getTYPE()));
 			tomada.setCodTomada(Integer.parseInt(paramRequest.getOUTLET()));
-			salaCirurgia = new SelectDAO().querySalaCirurgia(tomada.getCodTomada());
+			salaCirurgia = new SalaCirurgiaDAO().querySalaCirurgia(tomada.getCodTomada());
+			equipamento = new EquipamentoDAO().queryCodEquipament(paramRequest.getRFID());
 			equipamento.setRfid(paramRequest.getRFID());
 			capturaAtual.setOffset(Float.parseFloat(paramRequest.getOFFSET()));
 			capturaAtual.setGain(Utils.convertHexToFloat(paramRequest.getGAIN()));
@@ -158,7 +160,7 @@ public class WSProtegemed {
 			getkSession().insert(capturaAtual);
 			getkSession().fireAllRules();
 		} catch(SQLException pr) {
-			throw new ProtegeDAOException(ProtegeDAOException.msgException, pr.getCause());
+			throw new ProtegeDAOException(pr.getMessage());
 		}
 	}
 	

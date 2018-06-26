@@ -16,14 +16,17 @@ import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
-import br.upf.protegemed.dao.SelectDAO;
+import br.upf.protegemed.dao.EquipamentoDAO;
+import br.upf.protegemed.dao.FrequenciasDAO;
 import br.upf.protegemed.enums.TypesRequests;
 import br.upf.protegemed.exceptions.ProtegeClassException;
 import br.upf.protegemed.exceptions.ProtegeDAOException;
 import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
 import br.upf.protegemed.exceptions.ProtegeInstanciaException;
-import br.upf.protegemed.funcoes.ProtegeDataset;
+//import br.upf.protegemed.funcoes.ProtegeDataset;
 //import br.upf.protegemed.funcoes.Similaridade;
+//import br.upf.protegemed.funcoes.Similaridade;
+import br.upf.protegemed.funcoes.ProtegeDataset;
 import br.upf.protegemed.funcoes.Similaridade;
 
 //import java.sql.SQLException;
@@ -46,6 +49,15 @@ import br.upf.protegemed.funcoes.Similaridade;
 public class Testes {
 
 	public static void main(String[] args) throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		
+//		Equipamento equipamento = new EquipamentoDAO().queryCodEquipament("12345602");
+//		
+//		System.out.println("id " + equipamento.getCodEquip()
+//				+ "\nmarca " + equipamento.getMarca().getCodMarca()
+//				+ "\nmodelo " + equipamento.getModelo().getCodModelo()
+//				+ "\ntipo " + equipamento.getTipo().getCodTipo()
+//				+ "\npatrimonio " + equipamento.getCodPatrimonio()
+//				+ "\ndescricao " + equipamento.getDesc());
 		
 		//CapturaAtual c = new CapturaAtual();
 //		
@@ -122,8 +134,8 @@ public class Testes {
 //		KieContainer kContainer;
 //		KieSession kSession;
 		
-		String c = "TYPE=01&OUTLET=02&RFID=FFFF0002&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
-		String cc = "TYPE=01&OUTLET=02&RFID=FFFF0002&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
+		String c = "TYPE=01&OUTLET=01&RFID=12345603&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
+		String cc = "TYPE=01&OUTLET=02&RFID=12345602&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
 		
 		String[] temp = c.split("&");
 		String[] temp1 = cc.split("&");
@@ -156,7 +168,9 @@ public class Testes {
 		capturaAtual.setCodCaptura(2736);
 		eventos.setCodEvento(Integer.parseInt(paramRequest.getTYPE()));
 		tomada.setCodTomada(Integer.parseInt(paramRequest.getOUTLET()));
-		salaCirurgia = new SelectDAO().querySalaCirurgia(tomada.getCodTomada());
+		//salaCirurgia = new SelectDAO().querySalaCirurgia(tomada.getCodTomada());
+		salaCirurgia = new SalaCirurgia();
+		salaCirurgia.setCodSala(1);
 		equipamento.setRfid(paramRequest.getRFID());
 		capturaAtual.setOffset(Float.parseFloat(paramRequest.getOFFSET()));
 		capturaAtual.setGain(Utils.convertHexToFloat(paramRequest.getGAIN()));
@@ -191,7 +205,9 @@ public class Testes {
 		capturaAtual1.setCodCaptura(2736);
 		eventos1.setCodEvento(Integer.parseInt(paramRequest1.getTYPE()));
 		tomada1.setCodTomada(Integer.parseInt(paramRequest1.getOUTLET()));
-		salaCirurgia1 = new SelectDAO().querySalaCirurgia(tomada1.getCodTomada());
+		//salaCirurgia1 = new SelectDAO().querySalaCirurgia(tomada1.getCodTomada());
+		salaCirurgia1 = new SalaCirurgia();
+		salaCirurgia1.setCodSala(1);
 		equipamento1.setRfid(paramRequest1.getRFID());
 		capturaAtual1.setOffset(Float.parseFloat(paramRequest1.getOFFSET()));
 		capturaAtual1.setGain(Utils.convertHexToFloat(paramRequest1.getGAIN()));
@@ -216,6 +232,7 @@ public class Testes {
 			harmAtual1.setSen(Utils.convertHexToFloat(arraySen1[i]));
 			harmAtual1.setCos(Utils.convertHexToFloat(arrayCos1[i]));
 			listHarmAtual1.add(harmAtual1);
+			System.out.println(harmAtual1.getCos() + " " + harmAtual1.getSen());
 		}
 
 		List<Double> l = new ArrayList<>();
@@ -232,11 +249,11 @@ public class Testes {
 		}
 		
 //		double[] v = Similaridade.spearman(l, ll);
-		
+		//System.out.println(new FrequenciasDAO().salvarFrequencia(capturaAtual, capturaAtual1, v));
 //		for (double d : v) {
 //			System.out.println(Math.abs(d));
 //		}
-		
+//		
 		capturaAtual1.setListHarmAtual(listHarmAtual1);
 		capturaAtual1.setData(Calendar.getInstance());
 		
@@ -256,13 +273,17 @@ public class Testes {
 		
 		List<Double> l1 = ProtegeDataset.newDatasetOnda(capturaAtual1, Boolean.TRUE);
 		List<Double> l2 = ProtegeDataset.newDatasetOnda(capturaAtual, Boolean.TRUE);
-	
+
+		//System.out.println(capturaAtual.getEquipamento().getRfid());
+		//System.out.println(capturaAtual1.getEquipamento().getRfid());
+//	
 //		for (Double double1 : l2) {
 //			System.out.println(double1);
 //		}
 //		
-//		double[] d = Similaridade.spearman(l1, l2);
-		Similaridade.spearman(l1, l2);
+		double[] d = Similaridade.spearman(l1, l2);
+		System.out.println(new FrequenciasDAO().salvarFrequencia(capturaAtual, capturaAtual1, d));
+//		Similaridade.spearman(l1, l2);
 //		for (double e : d) {
 //			System.out.println(e);	
 //		}

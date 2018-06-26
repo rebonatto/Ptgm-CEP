@@ -7,11 +7,12 @@ import br.upf.protegemed.utils.Calculos;
 
 rule "rule-calculate-similaridade"
 	salience 4
+	activation-group "calcule-simil"
     when
 		$eventOneBefore : CapturaAtual( getEventos().getCodEvento() == 1) 
 		$eventOneAfter : CapturaAtual( this.getEventos().getCodEvento() == 1
-					&& this.getTomada().getCodTomada() != $eventOneBefore.getTomada().getCodTomada()
-					&& this.getSalaCirurgia().getCodSala() == $eventOneBefore.getSalaCirurgia().getCodSala()
+					,this.getSalaCirurgia().getCodSala() == $eventOneBefore.getSalaCirurgia().getCodSala()
+					,this.getTomada().getCodTomada() != $eventOneBefore.getTomada().getCodTomada()
 				)
     then
     	Calculos.calcularSpearman($eventOneBefore, $eventOneAfter);
