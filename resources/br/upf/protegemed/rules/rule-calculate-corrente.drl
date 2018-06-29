@@ -7,7 +7,7 @@ import br.upf.protegemed.beans.CapturaAtual;
 rule "rule-calcule-corrente-normal"
 	salience 6
     when
-        CapturaAtual( getEficaz() <= Utils.NORMAL, $rms : "NORMAL" )
+        CapturaAtual( getEventos().getCodEvento() == 1, getEficaz() <= Utils.NORMAL, $rms : "NORMAL" )
     then
     	Utils.logger(drools.getRule().getName());
 end
@@ -15,7 +15,7 @@ end
 rule "rule-calcule-corrente-atention"
 	salience 6
     when
-        CapturaAtual( getEficaz() >= Utils.ATENTION 
+        CapturaAtual( getEventos().getCodEvento() == 1, getEficaz() >= Utils.ATENTION 
         				&& getEficaz() < Utils.INTERVENTION, $rms : "ATENTION" )
     then
     	Utils.logger(drools.getRule().getName());
@@ -24,7 +24,7 @@ end
 rule "rule-calcule-corrente-intervention"
 	salience 6
     when
-        CapturaAtual( getEficaz() >= Utils.INTERVENTION, $rms : "INTERVENTION" )
+        CapturaAtual( getEventos().getCodEvento() == 1, getEficaz() >= Utils.INTERVENTION, $rms : "INTERVENTION" )
     then
     	Utils.logger(drools.getRule().getName());
 end

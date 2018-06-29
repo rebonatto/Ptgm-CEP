@@ -37,6 +37,7 @@ public class Utils {
 	public static final String QUERY_FREQ_NORMAL = "select f.valor from protegemed.frequencia_normal f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
 	public static final String QUERY_FREQ_ATENCAO = "select f.valor from protegemed.frequencia_atencao f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
 	public static final String QUERY_FREQ_PERIGO = "select f.valor from protegemed.frequencia_perigo f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
+	public static final String QUERY_FREQUENCIAS = "select f.valor from protegemed.frequencias f inner join protegemed.versao_frequencia v on f.id_versao = v.id and f.tipo = ? and f.id_versao = ?";
 	public static final String INSERT_RESULTADO_SIMILARIDADE = "insert into RESULTADO_SIMILARIDADE(CD_EQUIPAMENTO_1,CD_EQUIPAMENTO_2,VALUE_1,VALUE_2,VALUE_3) values(?,?,?,?,?)";
 	
 	public static final String PASSWORD = "senha.123";

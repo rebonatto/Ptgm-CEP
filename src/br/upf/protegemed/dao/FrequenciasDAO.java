@@ -3,11 +3,8 @@ package br.upf.protegemed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
 import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.enums.TypesFrequencia;
 import br.upf.protegemed.exceptions.ProtegeClassException;
 import br.upf.protegemed.exceptions.ProtegeDAOException;
 import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
@@ -17,33 +14,27 @@ import br.upf.protegemed.utils.Utils;
 
 public class FrequenciasDAO {
 
-	public List<Float> queryFrequencia(Integer versao, String tipo) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
+	public float[] queryFrequencia(Integer versao, String tipo) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
 		PreparedStatement stmt = null;
 		ResultSet resultSet = null;
-		List<Float> list = new ArrayList<>();
-		Float f;
+		float[] freq = new float[12];
+		int indic = 0;
 		
 		try {
-			if (tipo.equals(TypesFrequencia.NORMAL.getUrl())) {
-				stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_FREQ_NORMAL);
-			} else if (tipo.equals(TypesFrequencia.ATENCAO.getUrl())) {
-				stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_FREQ_ATENCAO);
-			} else if (tipo.equals(TypesFrequencia.PERIGO.getUrl())){
-				stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_FREQ_PERIGO);
+			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_FREQUENCIAS);
+			
+			stmt.setString(1, tipo);
+			stmt.setInt(2, versao);
+			resultSet = stmt.executeQuery();
+			
+			while(resultSet.next()) {
+				freq[indic] = resultSet.getFloat(1);
+				indic += 1;
 			}
 			
-			if (stmt != null ) {
-				stmt.setInt(1, versao);
-				resultSet = stmt.executeQuery();
-			}
-			if (resultSet != null ) {
-				while(resultSet.next()) {
-					f = resultSet.getFloat(1);
-					list.add(f);
-				}
-			}
-			return list;
+			return freq;
+					
 		} catch (SQLException e) {
 			throw new ProtegeDAOException(e.getMessage());
 		}
@@ -70,7 +61,6 @@ public class FrequenciasDAO {
 			}
 		
 		} catch (SQLException e) {
-			//System.out.println(e.getMessage());
 			throw new ProtegeDAOException(e.getMessage());
 		}
 	}

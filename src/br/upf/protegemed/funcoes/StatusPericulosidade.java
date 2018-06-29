@@ -1,16 +1,12 @@
 package br.upf.protegemed.funcoes;
 
 import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.exceptions.ProtegeClassException;
-import br.upf.protegemed.exceptions.ProtegeDAOException;
-import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
-import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 
 public class StatusPericulosidade {
 
 	private StatusPericulosidade() {}
 	
-	public static String getStatusPericulosidade(CapturaAtual capturaAtual) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
+	public static String getStatusPericulosidade(CapturaAtual capturaAtual) {
 
 		String corrente = CorrenteRMS.getStatusCorrente(capturaAtual);
 		String frequencia = FrequenciaCorrente.getStatusFrequencia(capturaAtual);

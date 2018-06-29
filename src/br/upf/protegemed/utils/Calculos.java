@@ -1,5 +1,6 @@
 package br.upf.protegemed.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -24,9 +25,9 @@ public class Calculos {
 	private Calculos() {
 		super();
 	}
-	
+
 	public static float ajustaRMSValorMedio(CapturaAtual c) {
-		
+
 		float res;
 		float total;
 		float mod;
@@ -64,7 +65,7 @@ public class Calculos {
 		f = (float) Math.sqrt(f);
 		return f;
 	}
-	
+
 	public static OndaPadrao minDifValorMedio(CapturaAtual cap) {
 		OndaPadrao ondaPadrao = null;
 
@@ -84,15 +85,63 @@ public class Calculos {
 		}
 		return ondaPadrao;
 	}
-	
-	public static boolean calcularSpearman(CapturaAtual capturaAtualOne,
-			CapturaAtual capturaAtualTwo) throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		
-		List<Double> listaUm = ProtegeDataset.newDatasetOnda(capturaAtualOne, Boolean.TRUE);
-		List<Double> listaDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo, Boolean.TRUE);
+
+	public static double casasDouble(double value, int places) {
+		if (places < 0) {
+			throw new IllegalArgumentException();
+		}
+
+		BigDecimal bd = BigDecimal.valueOf(value);
+		bd = bd.setScale(places, BigDecimal.ROUND_HALF_UP);
+		return bd.doubleValue();
+	}
+
+	public static double desvioPadrao(List<Double> onda, double media) {
+		double elevar;
+		double desvio = 0.0;
+
+		int tamanho = onda.size();
+		int i;
+
+		for (i = 0; i < tamanho; i++) {
+			elevar = onda.get(i) - media;
+			desvio += (elevar * elevar);
+		}
+		desvio /= (tamanho - 1);
+		desvio = Math.sqrt(desvio);
+		return desvio;
+	}
+
+	public static double variancia(List<Double> onda) {
+		double media = 0.0;
+		double elevar;
+		double variancia = 0.0;
+
+		int tamanho = onda.size();
+		int i;
+
+		for (i = 0; i < tamanho; i++) {
+			media += (onda.get(i));
+		}
+		media /= tamanho;
+		for (i = 0; i < tamanho; i++) {
+			elevar = onda.get(i) - media;
+			variancia += (elevar * elevar);
+		}
+
+		variancia /= (tamanho - 1);
+		return variancia;
+	}
+
+	public static boolean calcularSpearman(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo)
+			throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
+			ProtegeDAOException {
+
+		List<Double> listaUm = ProtegeDataset.newDatasetOnda(capturaAtualOne);
+		List<Double> listaDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo);
 
 		double[] d = Similaridade.spearman(listaUm, listaDois);
-		
+
 		return new FrequenciasDAO().salvarFrequencia(capturaAtualOne, capturaAtualTwo, d);
 	}
 }

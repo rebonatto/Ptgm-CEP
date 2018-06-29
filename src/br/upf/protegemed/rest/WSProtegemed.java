@@ -13,8 +13,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
 import org.kie.api.KieServices;
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.rule.FactHandle;
 
 import br.upf.protegemed.beans.CapturaAtual;
@@ -36,54 +34,14 @@ import br.upf.protegemed.utils.Utils;
 @Path("/operations")
 public class WSProtegemed {
 
-	private static KieServices ks;
-	private static KieContainer kContainer;
-	private static KieSession kSession;
-	private static Integer inicializaoDrools = 0;
 	public static final Integer ativarLog = 1;
-	
-	public static Integer getInicializaoDrools() {
-		return inicializaoDrools;
-	}
-
-	public static void setInicializaoDrools(Integer inicializaoDrools) {
-		WSProtegemed.inicializaoDrools = inicializaoDrools;
-	}
 
 	public static Integer getAtivarlog() {
 		return ativarLog;
 	}
 
-	public static KieServices getKs() {
-		return ks;
-	}
-
-	public static void setKs(KieServices ks) {
-		WSProtegemed.ks = ks;
-	}
-
-	public static KieContainer getkContainer() {
-		return kContainer;
-	}
-
-	public static void setkContainer(KieContainer kContainer) {
-		WSProtegemed.kContainer = kContainer;
-	}
-
-	public static KieSession getkSession() {
-		return kSession;
-	}
-
-	public static void setkSession(KieSession kSession) {
-		WSProtegemed.kSession = kSession;
-	}
-
 	public WSProtegemed() {
 		super();
-		if (getInicializaoDrools() == 0) {
-			getSession();
-			setInicializaoDrools(1);
-		}
 	}
 
 	@GET
@@ -95,10 +53,16 @@ public class WSProtegemed {
 	@GET
 	@Path("get/init-drools")
 	public void getSession() {
-		setKs(KieServices.Factory.get());
-		setkContainer(ks.getKieClasspathContainer());
-		setkSession(kContainer.newKieSession("protegemed"));
-		Utils.logger("DROOLS INICIALIZADO");
+		
+		if (LoadConfiguration.getkSession() == null) {
+			Utils.logger("Uninitialized drools instance... Initializing");
+			LoadConfiguration.setKs(KieServices.Factory.get());
+			LoadConfiguration.setkContainer(LoadConfiguration.getKs().getKieClasspathContainer());
+			LoadConfiguration.setkSession(LoadConfiguration.getkContainer().newKieSession("protegemed"));
+			Utils.logger("Initializing drools instance");
+		} else {
+			Utils.logger("Instance initialized drools");
+		}
 	}
 
 	@POST
@@ -111,7 +75,7 @@ public class WSProtegemed {
 			String[] temp = c.split("&");
 			List<HarmAtual> listHarmAtual = new ArrayList<>();
 			CapturaAtual capturaAtual = new CapturaAtual();
-			Equipamento equipamento = new Equipamento();
+			Equipamento equipamento;
 			Eventos eventos = new Eventos();
 			Tomada tomada = new Tomada();
 			SalaCirurgia salaCirurgia;
@@ -157,8 +121,8 @@ public class WSProtegemed {
 			capturaAtual.setListHarmAtual(listHarmAtual);
 			capturaAtual.setData(Calendar.getInstance());
 			
-			getkSession().insert(capturaAtual);
-			getkSession().fireAllRules();
+			LoadConfiguration.getkSession().insert(capturaAtual);
+			LoadConfiguration.getkSession().fireAllRules();
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
 		}
@@ -167,7 +131,7 @@ public class WSProtegemed {
 	@GET
 	@Path("get/list-all-events")
 	public void listAllEvents() {
-		Collection<FactHandle> collect = kSession.getFactHandles();
+		Collection<FactHandle> collect = LoadConfiguration.getkSession().getFactHandles();
 		
 		if(!collect.isEmpty()) {
 			Utils.logger("total events in drools " + collect.size());

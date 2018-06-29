@@ -8,7 +8,7 @@ import br.upf.protegemed.funcoes.FrequenciaCorrente;
 rule "rule-frequencia-corrente"
 	salience 5
     when
-		$captura : CapturaAtual(  )
+		$captura : CapturaAtual( getEventos().getCodEvento() == 1 )
     then
 		Utils.logger("frequencia via rule " + FrequenciaCorrente.getStatusFrequencia($captura));
 end
