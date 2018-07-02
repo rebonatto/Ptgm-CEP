@@ -2,6 +2,8 @@ package br.upf.protegemed.utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 //
@@ -16,7 +18,6 @@ import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
-import br.upf.protegemed.dao.EquipamentoDAO;
 import br.upf.protegemed.dao.FrequenciasDAO;
 import br.upf.protegemed.enums.TypesRequests;
 import br.upf.protegemed.exceptions.ProtegeClassException;
@@ -134,8 +135,8 @@ public class Testes {
 //		KieContainer kContainer;
 //		KieSession kSession;
 		
-		String c = "TYPE=01&OUTLET=01&RFID=12345603&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
-		String cc = "TYPE=01&OUTLET=02&RFID=12345602&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
+		String c = "TYPE=01&OUTLET=01&RFID=FFFF0003&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
+		String cc = "TYPE=01&OUTLET=02&RFID=FFFF0003&OFFSET=2093&GAIN=444E6B09&RMS=3FA277C5&MV=00000000&MV2=00000000&UNDER=0000&OVER=0000&DURATION=0000&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD";
 		
 		String[] temp = c.split("&");
 		String[] temp1 = cc.split("&");
@@ -232,7 +233,7 @@ public class Testes {
 			harmAtual1.setSen(Utils.convertHexToFloat(arraySen1[i]));
 			harmAtual1.setCos(Utils.convertHexToFloat(arrayCos1[i]));
 			listHarmAtual1.add(harmAtual1);
-			System.out.println(harmAtual1.getCos() + " " + harmAtual1.getSen());
+			//System.out.println(harmAtual1.getCos() + " " + harmAtual1.getSen());
 		}
 
 		List<Double> l = new ArrayList<>();
@@ -271,18 +272,76 @@ public class Testes {
 //		System.out.println(" -> " + capturaAtual.getUnder());
 //		System.out.println(" -> " + capturaAtual.getOver());
 		
-		List<Double> l1 = ProtegeDataset.newDatasetOnda(capturaAtual1, Boolean.TRUE);
-		List<Double> l2 = ProtegeDataset.newDatasetOnda(capturaAtual, Boolean.TRUE);
+		List<Double> l1 = ProtegeDataset.newDatasetOnda(capturaAtual1);
+		List<Double> l2 = ProtegeDataset.newDatasetOnda(capturaAtual);
 
 		//System.out.println(capturaAtual.getEquipamento().getRfid());
 		//System.out.println(capturaAtual1.getEquipamento().getRfid());
 //	
-//		for (Double double1 : l2) {
-//			System.out.println(double1);
-//		}
+	
+//		Collections.sort(l1, new Comparator<Double>() {
+//			@Override
+//			public int compare(Double o1, Double o2) {
+//
+//				return o1.compareTo(o2);
+//			}
+//		});
+		
+		List<Double> lll = new ArrayList<>();
+		lll.add(1.90642);
+		lll.add(2.10288);
+		lll.add(1.52229);
+		lll.add(2.61826);
+		lll.add(1.42738);
+		lll.add(2.22488);
+		lll.add(1.69742);
+		lll.add(3.15435);
+		lll.add(1.98492);
+		lll.add(1.99568);
+		
+
+		Collections.sort(l1, new Comparator<Double>() {
+			@Override
+			public int compare(Double o1, Double o2) {
+
+				return o1.compareTo(o2);
+			}
+		});
+		
+		int k = l1.size();
+		for (Double double1 : l1) {
+			if (k < 152 && k > 101) {
+				lll.add(double1);
+			}
+			k -= 1;
+		}
+		System.out.println(lll.size());
+		for (Double double1 : l1) {
+			System.out.println(double1);
+		}
 //		
-		double[] d = Similaridade.spearman(l1, l2);
-		System.out.println(new FrequenciasDAO().salvarFrequencia(capturaAtual, capturaAtual1, d));
+		Similaridade.shapiroWilk(lll);
+//		int k = 0;
+//		for(int i = (lll.size() - 1); i < lll.size(); i++) {
+//			for(int j = 0; j < (lll.size() / 2); j++) {
+//				System.out.println(CoeficienteShapiroWilk.matrix[j][i]);
+//				k++;
+//			}
+//		}
+		//System.out.println(k);
+//		Integer i = l1.size();
+//		for (Double double1 : l1) {
+//			i -= 1;
+//			
+//			if (i <= 153 && i > 103) {
+//				lll.add(double1);
+//				System.out.println(double1);
+//			}
+//		}
+//		Similaridade.shapirWilk(lll);
+//		
+//		double[] d = Similaridade.spearman(l1, l2);
+//		System.out.println(new FrequenciasDAO().salvarFrequencia(capturaAtual, capturaAtual1, d));
 //		Similaridade.spearman(l1, l2);
 //		for (double e : d) {
 //			System.out.println(e);	

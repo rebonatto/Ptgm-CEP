@@ -10,6 +10,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import br.upf.protegemed.utils.Calculos;
+import br.upf.protegemed.utils.Utils;
+import br.upf.protegemed.utils.ValoresShapiroWilk;
 
 public class Similaridade {
 
@@ -146,10 +148,22 @@ public class Similaridade {
 		return maxspearman;
 	}
 
-	public static void shapirWilk(List<Double> lista) {
+	/*
+	 * author Clayton Tolotti
+	 * param lista
+	 * referência: http://www.portalaction.com.br/inferencia/64-teste-de-shapiro-wilk
+	 * 
+	 */
+	public static boolean shapiroWilk(List<Double> lista) {
 
 		double media = .0;
-		double a = .0;
+		double somatorio = .0;
+		double b = 0.0;
+		double w = 0.0;
+		double significancia;
+		
+		Integer indic = lista.size();
+
 		// Ordenar o vetor
 		Collections.sort(lista, new Comparator<Double>() {
 			@Override
@@ -165,11 +179,30 @@ public class Similaridade {
 		}
 
 		media /= lista.size();
-		
-		
+
+		//(xi - media(x))²
 		for (Double d : lista) {
-			a += Math.pow((d - media), 2);
+			somatorio += Math.pow((d - media), 2);
 		}
-		System.out.println(a);
+
+		for (int i = (lista.size() - 1); i < lista.size(); i++) {
+			for (int j = 0; j < (lista.size() / 2); j++) {
+				b += (ValoresShapiroWilk.getMatrizcoeficientes(j,i) * (lista.get(indic - 1) - lista.get(j)));
+				indic -= 1;
+			}
+		}
+		if(somatorio != 0.0) {
+			w = (Math.pow(b, 2)) / somatorio;	
+		}
+
+		for (int i = 0; i < 9; i++) {
+			if (ValoresShapiroWilk.getMatriznivelsignificancia(0,i) == Utils.NIVELDESIGNIFICANCIA) {
+				indic =  i;
+			}
+		}
+		
+		significancia = ValoresShapiroWilk.getMatriznivelsignificancia(lista.size(),indic);
+		
+		return w > significancia;
 	}
 }
