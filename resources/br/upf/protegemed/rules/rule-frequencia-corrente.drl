@@ -1,14 +1,27 @@
 //created by Clayton Tolotti: claytontolotti@gmail.com on: 16/06/2018
 package br.upf.protegemed.rules
 
-import br.upf.protegemed.utils.Utils;
-import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.funcoes.FrequenciaCorrente;
+import br.upf.protegemed.utils.Utils
+import br.upf.protegemed.beans.CapturaAtual
+import br.upf.protegemed.beans.eventos.PericulosidadeFugaEvento
+import br.upf.protegemed.beans.Frequencias
+import br.upf.protegemed.funcoes.FrequenciaCorrente
+import java.util.List
+import java.util.ArrayList
 
 rule "rule-frequencia-corrente"
 	salience 5
     when
 		$captura : CapturaAtual( getEventos().getCodEvento() == 1 )
     then
-		Utils.logger("frequencia via rule " + FrequenciaCorrente.getStatusFrequencia($captura));
+    	Integer $statusFrequencia = Frequencias.getStatusFrequencia($captura);
+    	List<CapturaAtual> $lista = new ArrayList<CapturaAtual>();
+    	$lista.add($captura);
+    	PericulosidadeFugaEvento $pericFrequencia = new PericulosidadeFugaEvento(
+    		"frequencia",
+	    	$lista,
+	    	$statusFrequencia
+    	);
+    	insert($pericFrequencia);
+		Utils.logger("[FREQUENCIA]: " + $statusFrequencia);
 end

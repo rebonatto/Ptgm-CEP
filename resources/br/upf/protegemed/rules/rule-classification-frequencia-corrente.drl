@@ -1,0 +1,27 @@
+//created by Clayton Tolotti: claytontolotti@gmail.com, on: 28/08/2018
+package br.upf.protemgeed.rules
+
+import br.upf.protegemed.utils.Utils
+import br.upf.protegemed.beans.eventos.PericulosidadeFugaEvento
+import br.upf.protegemed.beans.eventos.ProcessarEventos
+
+rule "rule-classification-frequencia"
+	//activation-group "reprocessar"
+    when
+        $processar : PericulosidadeFugaEvento() and  ProcessarEventos( this.getProcessar() == 1)
+        $periculosidade : PericulosidadeFugaEvento( this.getTipo().equals("frequencia"),
+        											this.getResultado() >  $processar.getResultado())
+    then
+    	Utils.logger("id 0 : " + $periculosidade.getTipo());
+end
+
+
+rule "rule-classification-corrente-"
+	//activation-group "reprocessar"
+    when
+        $processa : PericulosidadeFugaEvento() and  ProcessarEventos( this.getProcessar() == 1)
+        $periculosidad : PericulosidadeFugaEvento( this.getTipo().equals("corrente"),
+        											this.getResultado() >  $processa.getResultado())
+    then
+    	Utils.logger("id 0 : " + $periculosidad.getTipo());
+end

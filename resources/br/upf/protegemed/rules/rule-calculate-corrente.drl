@@ -3,28 +3,27 @@ package br.upf.protegemed.rules
 
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
+import br.upf.protegemed.dao.EscalaCorrenteDAO;
+import br.upf.protegemed.beans.eventos.PericulosidadeFugaEvento
+import br.upf.protegemed.funcoes.CorrenteRMS
 
-rule "rule-calcule-corrente-normal"
+import java.util.List
+import java.util.ArrayList
+
+rule "rule-calcule-corrente"
 	salience 6
     when
-        CapturaAtual( getEventos().getCodEvento() == 1, getEficaz() <= Utils.NORMAL, $rms : "NORMAL" )
+        $captura : CapturaAtual(
+					getEventos().getCodEvento() == 1
+				)
     then
-    	Utils.logger(drools.getRule().getName());
-end
-
-rule "rule-calcule-corrente-atention"
-	salience 6
-    when
-        CapturaAtual( getEventos().getCodEvento() == 1, getEficaz() >= Utils.ATENTION 
-        				&& getEficaz() < Utils.INTERVENTION, $rms : "ATENTION" )
-    then
-    	Utils.logger(drools.getRule().getName());
-end
-
-rule "rule-calcule-corrente-intervention"
-	salience 6
-    when
-        CapturaAtual( getEventos().getCodEvento() == 1, getEficaz() >= Utils.INTERVENTION, $rms : "INTERVENTION" )
-    then
-    	Utils.logger(drools.getRule().getName());
+    	List<CapturaAtual> $lista = new ArrayList<CapturaAtual>();
+    	$lista.add($captura);
+    	PericulosidadeFugaEvento $pericCorrente = new PericulosidadeFugaEvento(
+    		"corrente",
+	    	$lista,
+	    	CorrenteRMS.getStatusCorrente($captura)
+    	);
+    	insert($pericCorrente);
+    	Utils.logger("[CORRENTE]: " + $pericCorrente.getResultado());
 end

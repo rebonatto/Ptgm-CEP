@@ -1,9 +1,14 @@
-//created by Clayton Tolotti: claytontolotti@gmail.com, on: 24/06/2018
+//created by Clayton Tolotti: claytontolotti@gmail.com, on: 24/06/2018protegemed.spearman
 package br.upf.protegemed.rules
 
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
+import br.upf.protegemed.beans.eventos.Similaridade;
 import br.upf.protegemed.utils.Calculos;
+import br.upf.protegemed.dao.EscalaCorrenteDAO;
+
+import java.util.List;
+import java.util.ArrayList;
 
 rule "rule-calculate-similaridade"
 	salience 4
@@ -15,5 +20,15 @@ rule "rule-calculate-similaridade"
 					,this.getTomada().getCodTomada() != $eventOneBefore.getTomada().getCodTomada()
 				)
     then
-    	Calculos.calcularSpearman($eventOneBefore, $eventOneAfter);
+    	Similaridade similaridade;
+    	List<CapturaAtual> lista = new ArrayList<CapturaAtual>();
+    	Float $d = Calculos.calcularSpearman($eventOneBefore, $eventOneAfter);
+    	lista.add($eventOneBefore);
+    	lista.add($eventOneAfter);
+    	
+    	similaridade = new Similaridade(
+    		lista,
+    		$d
+    	);
+    	insert(similaridade);	
 end

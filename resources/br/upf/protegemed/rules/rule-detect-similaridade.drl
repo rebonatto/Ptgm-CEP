@@ -3,8 +3,17 @@
 */
 package br.upf.protegemed.rules
 
+import br.upf.protegemed.beans.eventos.PericulosidadeFugaEvento
 import br.upf.protegemed.beans.CapturaAtual
 import br.upf.protegemed.utils.Utils
+import br.upf.protegemed.utils.Calculos
+
+import java.util.List
+import java.util.ArrayList
+
+global Float $resultado
+global List<CapturaAtual> $listaCaptura
+global PericulosidadeFugaEvento $periculosidadeFugaEvento
 
 rule "rule-detected-similaridade-1"
 	salience 3 //regra será disparada antes da relação de início e fuga.
@@ -22,6 +31,18 @@ rule "rule-detected-similaridade-1"
 					,this after[0s] $eventOneAfter && $eventOneAfter after[0s] $eventOneBefore
 				)
 	then
+		$listaCaptura = new ArrayList<CapturaAtual>();
+		
+		$resultado = Calculos.calcularSpearman($eventOneBefore, $eventOneAfter);
+		$listaCaptura.add($eventOneBefore);
+		$listaCaptura.add($eventOneAfter);
+			
+		$periculosidadeFugaEvento = new PericulosidadeFugaEvento(
+			"similaridade",
+			$listaCaptura,
+			$resultado
+		);
+		insert($periculosidadeFugaEvento);
 		Utils.logger(drools.getRule().getName());
 end;
 
@@ -41,5 +62,18 @@ rule "rule-detected-similaridade-2"
 					,this after[0s] $eventOneAfter && $eventOneAfter after[0s] $eventOneBefore
 				)
 	then
+		$listaCaptura = new ArrayList<CapturaAtual>();
+		
+		$resultado = Calculos.calcularSpearman($eventOneBefore, $eventOneAfter);
+		$listaCaptura.add($eventOneBefore);
+		$listaCaptura.add($eventOneAfter);
+			
+		$periculosidadeFugaEvento = new PericulosidadeFugaEvento(
+			"similaridade",
+			$listaCaptura,
+			$resultado
+		);
+		
+		insert($periculosidadeFugaEvento);
 		Utils.logger(drools.getRule().getName());
-end
+end;
