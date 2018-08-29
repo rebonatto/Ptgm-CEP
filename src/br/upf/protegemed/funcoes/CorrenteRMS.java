@@ -31,11 +31,11 @@ public class CorrenteRMS implements Serializable{
 		return intervention;
 	}
 	
-    public static String getStatusCorrente(CapturaAtual capturaAtual){        
+    public static Integer getStatusCorrente(CapturaAtual capturaAtual){        
         if (capturaAtual.getEficaz() > intervention)
-            return ("Dangerous");
+        	return 3;
         else if (capturaAtual.getEficaz() > atention)
-            return ("Atention");
-        return "Normal";     
+        	return 2;
+        return 1;     
     }
 }

@@ -39,19 +39,19 @@ public class FrequenciaCorrente {
 		FrequenciaCorrente.perigo = perigo;
 	}
 
-	public static String getStatusFrequencia(CapturaAtual cap) {
+	public static Integer getStatusFrequencia(CapturaAtual cap) {
 		Float valor;
 
 		for (HarmAtual h : cap.getListHarmAtual()) {
 			// Encontra o valor da barra (modulo)
 			valor = Calculos.modulo(h.getSen(), h.getCos(), cap.getGain());
-
-			if (valor > FrequenciaCorrente.getPerigo(h.getCodHarmonica() - 1))
-				return "Dangerous ".concat(String.valueOf(h.getCodHarmonica() * Utils.FREQBASE)).concat("Hz");
-			else if (valor > FrequenciaCorrente.getAtencao(h.getCodHarmonica() - 1))
-				return "Atention ".concat(String.valueOf(h.getCodHarmonica() * Utils.FREQBASE)).concat("Hz");
-
+			Utils.logger("indice : " + (h.getCodHarmonica()));
+			if (valor > FrequenciaCorrente.getPerigo(h.getCodHarmonica())) {
+				return 3;
+			} else if (valor > FrequenciaCorrente.getAtencao(h.getCodHarmonica())) {
+				return 2;	
+			}
 		}
-		return "Normal";
+		return 1;
 	}
 }

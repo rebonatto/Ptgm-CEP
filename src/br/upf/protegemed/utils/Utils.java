@@ -38,9 +38,14 @@ public class Utils {
 	public static final String QUERY_FREQ_NORMAL = "select f.valor from protegemed.frequencia_normal f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
 	public static final String QUERY_FREQ_ATENCAO = "select f.valor from protegemed.frequencia_atencao f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
 	public static final String QUERY_FREQ_PERIGO = "select f.valor from protegemed.frequencia_perigo f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
-	public static final String QUERY_FREQUENCIAS = "select f.valor from protegemed.frequencias f inner join protegemed.versao_frequencia v on f.id_versao = v.id and f.tipo = ? and f.id_versao = ?";
-	public static final String INSERT_RESULTADO_SIMILARIDADE = "insert into RESULTADO_SIMILARIDADE(CD_EQUIPAMENTO_1,CD_EQUIPAMENTO_2,VALUE_1,VALUE_2,VALUE_3) values(?,?,?,?,?)";
-
+	public static final String QUERY_ESCALA_FREQUENCIA = "SELECT f.valor, f.frequencia FROM protegemed.escala_frequencia f, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE f.id_versao = v.id AND f.id_tipo = pf.id AND f.id_tipo = ? AND f.id_versao = ?";
+	public static final String QUERY_ESCALA_SIMILARIDADE = "SELECT es.valor_min, es.valor_max FROM protegemed.escala_similaridade es, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE es.id_versao = v.id AND es.id_tipo = pf.id AND es.id_tipo = ? AND es.id_versao = ?";
+	public static final String QUERY_ESCALA_CORRENTE = "SELECT ec.valor FROM protegemed.escala_corrente ec, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE ec.id_versao = v.id AND ec.id_tipo = pf.id AND ec.id_tipo = ? AND ec.id_versao = ?";
+	public static final String QUERY_VERSAO = "select id, data, id_versao, descricao from versao where id_versao = ?";
+	public static final String QUERY_PERICULOSIDADE_FUGA = "select id,tipo,descricao from protegemed.periculosidade_fuga";
+	//public static final String INSERT_VL_CORRENTE = "insert into protegemed.vl_corrente(resultado, id_captura) values(?, ?)";
+	public static final String INSERT_SPEARMAN = "insert into protegemed.spearman(valor) values(?)";
+	
 	public static final String PASSWORD = "senha.123";
 	public static final String USER = "protegemed";
 	public static final String BD = "protegemed";

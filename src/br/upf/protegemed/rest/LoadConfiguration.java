@@ -7,11 +7,22 @@
 
 package br.upf.protegemed.rest;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
-import br.upf.protegemed.dao.FrequenciasDAO;
+import br.upf.protegemed.beans.Versao;
+import br.upf.protegemed.beans.escala.EscalaFrequencia;
+import br.upf.protegemed.beans.escala.EscalaSimilaridade;
+import br.upf.protegemed.beans.escala.PericulosidadeFuga;
+import br.upf.protegemed.dao.EscalaFrequenciasDAO;
+import br.upf.protegemed.dao.EscalaSimilaridadeDAO;
+import br.upf.protegemed.dao.PericulosidadeFugaDAO;
+import br.upf.protegemed.dao.VersaoDAO;
 import br.upf.protegemed.exceptions.ProtegeClassException;
 import br.upf.protegemed.exceptions.ProtegeDAOException;
 import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
@@ -24,14 +35,36 @@ public class LoadConfiguration {
 	private static KieContainer kContainer;
 	private static KieSession kSession;
 	private static Integer inicializaoDrools = 0;
+	public static Integer inicializao = 0;
+	public static Versao versao;
+	public static List<PericulosidadeFuga> listPericulosidade;
+	public static List<EscalaSimilaridade> listEscalaSimilaridades;
+	public static List<EscalaFrequencia> listEscalaFrequencia;
 	
 	private LoadConfiguration() {
 		super();
 	}
 	
-	public static float[] loadFrequencias(String value) throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		
-		return new FrequenciasDAO().queryFrequencia(Utils.VERSAO_FREQUENCIA, value);
+	public static void loadVersao() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException, ParseException {
+		versao = new VersaoDAO().queryVersao("1.0");
+	}
+	
+	public static void loadPericulosidadeFuga() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		listPericulosidade = new PericulosidadeFugaDAO().queryPericulosidadeFuga();
+	}
+	
+	public static void loadEscalaSimilaridade() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		for(int i = 0; i < listPericulosidade.size(); i++) {
+			listEscalaSimilaridades = new EscalaSimilaridadeDAO().queryEscalaSimilaridade(versao, listPericulosidade.get(i));
+		}
+	}
+	
+	public static void loadEscalaFrequencias() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		listEscalaFrequencia = new ArrayList<>();
+		for(int i = 0; i < listPericulosidade.size(); i++) {
+			EscalaFrequencia escalaFrequencia = new EscalaFrequenciasDAO().queryFrequencias(versao, listPericulosidade.get(i));
+			listEscalaFrequencia.add(escalaFrequencia);
+		}
 	}
 	
 	public static void initInstanceDrools() {
@@ -40,7 +73,11 @@ public class LoadConfiguration {
 			setkContainer(getKs().getKieClasspathContainer());
 			setkSession(getkContainer().newKieSession("protegemed"));
 			setInicializaoDrools(1);
+			inicializao += 1;
 			Utils.logger("Initializing drools instance");
+		} else {
+			
+			Utils.logger("Instance ok " + getkSession().getIdentifier());
 		}
 	}
 

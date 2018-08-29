@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
+import org.drools.core.common.DefaultFactHandle;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.rule.FactHandle;
 
@@ -22,6 +23,7 @@ import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
+import br.upf.protegemed.beans.eventos.Similaridade;
 import br.upf.protegemed.dao.EquipamentoDAO;
 import br.upf.protegemed.dao.SalaCirurgiaDAO;
 import br.upf.protegemed.enums.TypesRequests;
@@ -71,6 +73,12 @@ public class WSProtegemed {
 	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		try {
+			if(LoadConfiguration.inicializao == 1) {
+				c += ("&SIN=44A74464%3BC232764E%3BC02F3D9A%3BC12780FC%3B42618EF4%3BC1CC261E%3BC21668A5%3BC0E1178A%3BC164BAB6%3BC0A07318%3BC10AEC48%3BC095ACE4&COS=C41D1918%3B418A1530%3B41B06ECC%3B40F0FE2A%3B42321A4A%3BC0C2D6BE%3BBE3880E4%3BC01D72A3%3BC12024DE%3B3FF28A7C%3BC05C0DE6%3B4014D9FD");
+			} else {
+				c += ("&SIN=4254A050%3BBFE0F68A%3BBE464CAA%3BBF62A529%3BBFA9CDB2%3BBDCA9270%3B3E8FB022%3BBE8987A2%3B3C6A3700%3BBEFD04EB%3BBEFF5D15%3BBE9BB644&COS=412A13F6%3BBCFBBE6C%3BBEBA6265%3BBDD75965%3BBFB807F3%3B3DFC5F62%3B3A7BB900%3BBDBB55DF%3B3E72D46A%3B3DA7D24B%3BBDBA04F4%3B3E25F431");
+			}
+			LoadConfiguration.inicializao += 1;
 			// Separar os parÃ¢metros recebidos Ex: RFID=000&TYPE=00F
 			String[] temp = c.split("&");
 			List<HarmAtual> listHarmAtual = new ArrayList<>();
@@ -83,7 +91,6 @@ public class WSProtegemed {
 			
 			String[] arrayCos;
 			String[] arraySen;
-			Integer inc = 1;
 	
 			paramRequest = splitRequest(temp);
 			
@@ -106,13 +113,13 @@ public class WSProtegemed {
 			capturaAtual.setEquipamento(equipamento);
 			capturaAtual.setTomada(tomada);
 			capturaAtual.setSalaCirurgia(salaCirurgia);
-			
+
 			arraySen = paramRequest.getSIN().split("%");
 			arrayCos = paramRequest.getCOS().split("%");
 			
 			for (int i = 0; i < arrayCos.length; i++) {
 				HarmAtual harmAtual = new HarmAtual();
-				harmAtual.setCodHarmonica(inc);
+				harmAtual.setCodHarmonica(i);
 				harmAtual.setSen(Utils.convertHexToFloat(arraySen[i]));
 				harmAtual.setCos(Utils.convertHexToFloat(arrayCos[i]));
 				listHarmAtual.add(harmAtual);
@@ -141,7 +148,24 @@ public class WSProtegemed {
 		}
 		Utils.logger("list events");
 		for (FactHandle factHandle : collect) {
-			Utils.logger("fact " + factHandle.toString());
+			
+			DefaultFactHandle df = (DefaultFactHandle) factHandle;
+			
+			if(df.getObjectClassName().equals(Similaridade.class.getName())) {
+				Similaridade similaridade = (Similaridade) df.getObject();
+				
+				for(int i = 0; i < similaridade.getCapturaAtual().size(); i++) {
+					
+					CapturaAtual c = similaridade.getCapturaAtual().get(i);
+					
+					Utils.logger("RFID " + c.getEquipamento().getRfid()
+								);
+				}
+				
+				//Utils.logger(similaridade.getResultado());
+			} else {
+				Utils.logger("fact " + factHandle.getClass());
+			}
 		}
 	}
 	
