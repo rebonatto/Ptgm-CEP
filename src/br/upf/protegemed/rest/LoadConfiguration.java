@@ -35,35 +35,35 @@ public class LoadConfiguration {
 	private static KieContainer kContainer;
 	private static KieSession kSession;
 	private static Integer inicializaoDrools = 0;
-	public static Integer inicializao = 0;
-	public static Versao versao;
-	public static List<PericulosidadeFuga> listPericulosidade;
-	public static List<EscalaSimilaridade> listEscalaSimilaridades;
-	public static List<EscalaFrequencia> listEscalaFrequencia;
+	private static Versao versao;
+	private static List<PericulosidadeFuga> listPericulosidade;
+	private static List<EscalaSimilaridade> listEscalaSimilaridades;
+	private static List<EscalaFrequencia> listEscalaFrequencia;
 	
 	private LoadConfiguration() {
 		super();
 	}
 	
 	public static void loadVersao() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException, ParseException {
-		versao = new VersaoDAO().queryVersao("1.0");
+		setVersao(new VersaoDAO().queryVersao("1.0"));
 	}
 	
 	public static void loadPericulosidadeFuga() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		listPericulosidade = new PericulosidadeFugaDAO().queryPericulosidadeFuga();
+		setListPericulosidade(new PericulosidadeFugaDAO().queryPericulosidadeFuga());
 	}
 	
 	public static void loadEscalaSimilaridade() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		for(int i = 0; i < listPericulosidade.size(); i++) {
-			listEscalaSimilaridades = new EscalaSimilaridadeDAO().queryEscalaSimilaridade(versao, listPericulosidade.get(i));
+		for(int i = 0; i < getListPericulosidade().size(); i++) {
+			setListEscalaSimilaridades(new EscalaSimilaridadeDAO().
+					queryEscalaSimilaridade(versao, listPericulosidade.get(i)));
 		}
 	}
 	
 	public static void loadEscalaFrequencias() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		listEscalaFrequencia = new ArrayList<>();
+		setListEscalaFrequencia(new ArrayList<>());
 		for(int i = 0; i < listPericulosidade.size(); i++) {
 			EscalaFrequencia escalaFrequencia = new EscalaFrequenciasDAO().queryFrequencias(versao, listPericulosidade.get(i));
-			listEscalaFrequencia.add(escalaFrequencia);
+			getListEscalaFrequencia().add(escalaFrequencia);
 		}
 	}
 	
@@ -73,7 +73,6 @@ public class LoadConfiguration {
 			setkContainer(getKs().getKieClasspathContainer());
 			setkSession(getkContainer().newKieSession("protegemed"));
 			setInicializaoDrools(1);
-			inicializao += 1;
 			Utils.logger("Initializing drools instance");
 		} else {
 			
@@ -111,5 +110,37 @@ public class LoadConfiguration {
 
 	public static void setInicializaoDrools(Integer inicializaoDrools) {
 		LoadConfiguration.inicializaoDrools = inicializaoDrools;
+	}
+
+	public static Versao getVersao() {
+		return versao;
+	}
+
+	public static void setVersao(Versao versao) {
+		LoadConfiguration.versao = versao;
+	}
+
+	public static List<PericulosidadeFuga> getListPericulosidade() {
+		return listPericulosidade;
+	}
+
+	public static void setListPericulosidade(List<PericulosidadeFuga> listPericulosidade) {
+		LoadConfiguration.listPericulosidade = listPericulosidade;
+	}
+
+	public static List<EscalaSimilaridade> getListEscalaSimilaridades() {
+		return listEscalaSimilaridades;
+	}
+
+	public static void setListEscalaSimilaridades(List<EscalaSimilaridade> listEscalaSimilaridades) {
+		LoadConfiguration.listEscalaSimilaridades = listEscalaSimilaridades;
+	}
+
+	public static List<EscalaFrequencia> getListEscalaFrequencia() {
+		return listEscalaFrequencia;
+	}
+
+	public static void setListEscalaFrequencia(List<EscalaFrequencia> listEscalaFrequencia) {
+		LoadConfiguration.listEscalaFrequencia = listEscalaFrequencia;
 	}
 }

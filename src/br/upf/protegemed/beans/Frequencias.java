@@ -54,17 +54,17 @@ public class Frequencias implements Serializable{
 	
 	public static Integer getStatusFrequencia(CapturaAtual cap) {
 		Float valor;
-		Integer sizeListFrequencia = LoadConfiguration.listEscalaFrequencia.size();
+		Integer sizeList = LoadConfiguration.getListEscalaFrequencia().size();
 		for (HarmAtual h : cap.getListHarmAtual()) {
 			// Encontra o valor da barra (modulo)
 			valor = Calculos.modulo(h.getSen(), h.getCos(), cap.getGain());
 			
-			if (valor > LoadConfiguration.listEscalaFrequencia.get(sizeListFrequencia-1).getValorIndex(h.getCodHarmonica())) {
-				return LoadConfiguration.listEscalaFrequencia.get(sizeListFrequencia-1).getPericulosidadeFuga().getId();
-			} else if (valor > LoadConfiguration.listEscalaFrequencia.get(sizeListFrequencia-2).getValorIndex(h.getCodHarmonica())) {
-				return LoadConfiguration.listEscalaFrequencia.get(sizeListFrequencia-2).getPericulosidadeFuga().getId();
+			if (valor > LoadConfiguration.getListEscalaFrequencia().get(sizeList-1).getValorIndex(h.getCodHarmonica())) {
+				return LoadConfiguration.getListEscalaFrequencia().get(sizeList-1).getPericulosidadeFuga().getId();
+			} else if (valor > LoadConfiguration.getListEscalaFrequencia().get(sizeList-2).getValorIndex(h.getCodHarmonica())) {
+				return LoadConfiguration.getListEscalaFrequencia().get(sizeList-2).getPericulosidadeFuga().getId();
 			}
 		}
-		return LoadConfiguration.listEscalaFrequencia.get(sizeListFrequencia-sizeListFrequencia).getPericulosidadeFuga().getId();
+		return LoadConfiguration.getListEscalaFrequencia().get(0).getPericulosidadeFuga().getId();
 	}
 }
