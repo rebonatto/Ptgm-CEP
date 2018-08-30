@@ -23,6 +23,7 @@ public class RestfulApp extends ResourceConfig {
 			LoadConfiguration.loadPericulosidadeFuga();
 			LoadConfiguration.loadEscalaSimilaridade();
 			LoadConfiguration.loadEscalaFrequencias();
+			LoadConfiguration.loadEscalaCorrente();
 			LoadConfiguration.initInstanceDrools();
 
 		} catch (Exception e) {

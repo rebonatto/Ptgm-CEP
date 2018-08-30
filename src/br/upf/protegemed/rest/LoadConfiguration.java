@@ -16,9 +16,11 @@ import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
 
 import br.upf.protegemed.beans.Versao;
+import br.upf.protegemed.beans.escala.EscalaCorrente;
 import br.upf.protegemed.beans.escala.EscalaFrequencia;
 import br.upf.protegemed.beans.escala.EscalaSimilaridade;
 import br.upf.protegemed.beans.escala.PericulosidadeFuga;
+import br.upf.protegemed.dao.EscalaCorrenteDAO;
 import br.upf.protegemed.dao.EscalaFrequenciasDAO;
 import br.upf.protegemed.dao.EscalaSimilaridadeDAO;
 import br.upf.protegemed.dao.PericulosidadeFugaDAO;
@@ -39,6 +41,7 @@ public class LoadConfiguration {
 	private static List<PericulosidadeFuga> listPericulosidade;
 	private static List<EscalaSimilaridade> listEscalaSimilaridades;
 	private static List<EscalaFrequencia> listEscalaFrequencia;
+	private static List<EscalaCorrente> listEscalaCorrente;
 	
 	private LoadConfiguration() {
 		super();
@@ -67,6 +70,14 @@ public class LoadConfiguration {
 		}
 	}
 	
+	public static void loadEscalaCorrente() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		setListEscalaCorrente(new ArrayList<>());
+		for(int i = 0; i < listPericulosidade.size(); i++) {
+			EscalaCorrente escalaCorrente = new EscalaCorrenteDAO().queryCorrente(versao, listPericulosidade.get(i));
+			getListEscalaCorrente().add(escalaCorrente);
+		}
+	}
+	
 	public static void initInstanceDrools() {
 		if (getInicializaoDrools() == 0) {
 			setKs(KieServices.Factory.get());
@@ -75,7 +86,6 @@ public class LoadConfiguration {
 			setInicializaoDrools(1);
 			Utils.logger("Initializing drools instance");
 		} else {
-			
 			Utils.logger("Instance ok " + getkSession().getIdentifier());
 		}
 	}
@@ -142,5 +152,13 @@ public class LoadConfiguration {
 
 	public static void setListEscalaFrequencia(List<EscalaFrequencia> listEscalaFrequencia) {
 		LoadConfiguration.listEscalaFrequencia = listEscalaFrequencia;
+	}
+
+	public static List<EscalaCorrente> getListEscalaCorrente() {
+		return listEscalaCorrente;
+	}
+
+	public static void setListEscalaCorrente(List<EscalaCorrente> listEscalaCorrente) {
+		LoadConfiguration.listEscalaCorrente = listEscalaCorrente;
 	}
 }
