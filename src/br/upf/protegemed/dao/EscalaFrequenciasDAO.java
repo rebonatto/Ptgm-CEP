@@ -26,7 +26,7 @@ public class EscalaFrequenciasDAO {
 		int indic = 0;
 		
 		try {
-			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_ESCALA_FREQUENCIA);
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_ESCALA_FREQUENCIA);
 			
 			stmt.setInt(1, periculosidadeFuga.getId());
 			stmt.setInt(2, versao.getId());

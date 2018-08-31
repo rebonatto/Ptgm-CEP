@@ -19,6 +19,7 @@ public class RestfulApp extends ResourceConfig {
 			packages("com.fasterxml.jackson.jaxrs.json");
 			packages("br.upf.protegemed.rest");
 			
+			LoadConfiguration.loadConnection();
 			LoadConfiguration.loadVersao();
 			LoadConfiguration.loadPericulosidadeFuga();
 			LoadConfiguration.loadEscalaSimilaridade();

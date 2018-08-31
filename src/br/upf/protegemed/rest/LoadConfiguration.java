@@ -7,6 +7,7 @@
 
 package br.upf.protegemed.rest;
 
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import br.upf.protegemed.exceptions.ProtegeClassException;
 import br.upf.protegemed.exceptions.ProtegeDAOException;
 import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
 import br.upf.protegemed.exceptions.ProtegeInstanciaException;
+import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
 
 public class LoadConfiguration {
@@ -43,8 +45,13 @@ public class LoadConfiguration {
 	private static List<EscalaFrequencia> listEscalaFrequencia;
 	private static List<EscalaCorrente> listEscalaCorrente;
 	
-	private LoadConfiguration() {
+	private LoadConfiguration() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, SQLException {
 		super();
+		ConnectionFactory.conexao = ConnectionFactory.getConnection();
+	}
+	
+	public static void loadConnection() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, SQLException {
+		ConnectionFactory.conexao = ConnectionFactory.getConnection();
 	}
 	
 	public static void loadVersao() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException, ParseException {

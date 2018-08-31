@@ -14,37 +14,6 @@ public class Utils {
 
 	private Utils() {
 	}
-
-	public static final String QUERY_EVENTOS = "select codEvento,`desc`,formaOnda from protegemed.eventos";
-	public static final String QUERY_HARMONICA_ATUAL = "select codCaptura,codHarmonica,sen,cos from protegemed.harmatual";
-	public static final String QUERY_HARMONICA_PADRAO = "select codHarmonica,codOndaPadrao,sen,cos from protegemed.harmpadrao";
-	public static final String QUERY_MARCA = "select codMarca, `desc` from protegemed.marca";
-	public static final String QUERY_MODELO = "select codModelo, `desc` from protegemed.modelo";
-	public static final String QUERY_PROCEDIMENTO = "select codProced,`desc` from protegemed.procedimento";
-	public static final String QUERY_RESPONSAVEL = "select codResp,`desc` from protegemed.responsavel";
-	public static final String QUERY_SALA_CIRURGIA = "select codSala,`desc` from protegemed.salacirurgia";
-	public static final String QUERY_TIPO = "select codTipo,`desc` from protegemed.tipo";
-	public static final String QUERY_TIPO_ONDA = "select codTipoOnda,`desc` from protegemed.tipoonda";
-	public static final String QUERY_TIPO_PADRAO = "select codTipoPadrao,`desc` from protegemed.tipopadrao";
-	public static final String QUERY_TOMADA = "select codTomada,codSala,indice,modulo,`desc` from protegemed.tomada";
-	public static final String QUERY_USO_SALA = "select codUsoSala,codSala,codProced,codResp,horaInicio,horaFinal,ativa from protegemed.usosala";
-	public static final String QUERY_USO_SALA_CAPTURA = "select codCaptura,codUsoSala from protegemed.usosalacaptura";
-	public static final String QUERY_USO_SALA_EQUIP = "select codEquip,codUsoSala from protegemed.usosalaequip";
-	public static final String QUERY_CAPTURA_ATUAL = "select codCaptura,codTomada,codTipoOnda,codEquip,codEvento, valorMedio, offset, gain, eficaz, dataAtual, vm2, under, over, duration from protegemed.capturaatual";
-	public static final String QUERY_EQUIPAMENTO = "select codEquip,codMarca,codModelo,codTipo,codTomada,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso from protegemed.equipamento";
-	public static final String QUERY_ONDA_PADRAO = "select codOndaPadrao,codTipoOnda,codTomada,codEquip,valorMedio,offset,gain,eficaz,dataPadrao,codTipoPadrao from protegemed.ondapadrao";
-	public static final String QUERY_COD_SALA = "select s.codSala, s.desc from protegemed.salacirurgia s, tomada t where t.codSala = s.codSala and t.codTomada = ?";
-	public static final String QUERY_COD_EQUIPAMENTO = "select e.codEquip, e.codMarca, e.codModelo, e.codTipo, e.codPatrimonio, e.desc from protegemed.equipamento e where e.rfid = ?";
-	public static final String QUERY_FREQ_NORMAL = "select f.valor from protegemed.frequencia_normal f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
-	public static final String QUERY_FREQ_ATENCAO = "select f.valor from protegemed.frequencia_atencao f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
-	public static final String QUERY_FREQ_PERIGO = "select f.valor from protegemed.frequencia_perigo f inner join versao_frequencia v on f.id_versao = v.id and v.id = ?";
-	public static final String QUERY_ESCALA_FREQUENCIA = "SELECT f.valor, f.frequencia FROM protegemed.escala_frequencia f, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE f.id_versao = v.id AND f.id_tipo = pf.id AND f.id_tipo = ? AND f.id_versao = ?";
-	public static final String QUERY_ESCALA_SIMILARIDADE = "SELECT es.valor_min, es.valor_max FROM protegemed.escala_similaridade es, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE es.id_versao = v.id AND es.id_tipo = pf.id AND es.id_tipo = ? AND es.id_versao = ?";
-	public static final String QUERY_ESCALA_CORRENTE = "SELECT ec.valor FROM protegemed.escala_corrente ec, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE ec.id_versao = v.id AND ec.id_tipo = pf.id AND ec.id_tipo = ? AND ec.id_versao = ?";
-	public static final String QUERY_VERSAO = "select id, data, id_versao, descricao from versao where id_versao = ?";
-	public static final String QUERY_PERICULOSIDADE_FUGA = "select id,tipo,descricao from protegemed.periculosidade_fuga";
-	//public static final String INSERT_VL_CORRENTE = "insert into protegemed.vl_corrente(resultado, id_captura) values(?, ?)";
-	public static final String INSERT_SPEARMAN = "insert into protegemed.spearman(valor) values(?)";
 	
 	public static final String PASSWORD = "senha.123";
 	public static final String USER = "protegemed";
@@ -93,5 +62,48 @@ public class Utils {
 
 	public static Float convertHexToFloat(String string) {
 		return Float.intBitsToFloat(new Long(Long.parseLong(string, 16)).intValue());
+	}
+	
+	public class QuerySelect {
+		
+		public static final String QUERY_EVENTOS = "SELECT codEvento,`desc`,formaOnda FROM protegemed.eventos";
+		public static final String QUERY_HARMONICA_ATUAL = "SELECT codCaptura,codHarmonica,sen,cos FROM protegemed.harmatual";
+		public static final String QUERY_HARMONICA_PADRAO = "SELECT codHarmonica,codOndaPadrao,sen,cos FROM protegemed.harmpadrao";
+		public static final String QUERY_MARCA = "SELECT codMarca, `desc` FROM protegemed.marca";
+		public static final String QUERY_MODELO = "SELECT codModelo, `desc` FROM protegemed.modelo";
+		public static final String QUERY_PROCEDIMENTO = "SELECT codProced,`desc` FROM protegemed.procedimento";
+		public static final String QUERY_RESPONSAVEL = "SELECT codResp,`desc` FROM protegemed.responsavel";
+		public static final String QUERY_SALA_CIRURGIA = "SELECT codSala,`desc` FROM protegemed.salacirurgia";
+		public static final String QUERY_TIPO = "SELECT codTipo,`desc` FROM protegemed.tipo";
+		public static final String QUERY_TIPO_ONDA = "SELECT codTipoOnda,`desc` FROM protegemed.tipoonda";
+		public static final String QUERY_TIPO_PADRAO = "SELECT codTipoPadrao,`desc` FROM protegemed.tipopadrao";
+		public static final String QUERY_TOMADA = "SELECT codTomada,codSala,indice,modulo,`desc` FROM protegemed.tomada";
+		public static final String QUERY_USO_SALA = "SELECT codUsoSala,codSala,codProced,codResp,horaInicio,horaFinal,ativa FROM protegemed.usosala";
+		public static final String QUERY_USO_SALA_CAPTURA = "SELECT codCaptura,codUsoSala FROM protegemed.usosalacaptura";
+		public static final String QUERY_USO_SALA_EQUIP = "SELECT codEquip,codUsoSala FROM protegemed.usosalaequip";
+		public static final String QUERY_CAPTURA_ATUAL = "SELECT codCaptura,codTomada,codTipoOnda,codEquip,codEvento, valorMedio, offset, gain, eficaz, dataAtual, vm2, under, over, duration FROM protegemed.capturaatual";
+		public static final String QUERY_EQUIPAMENTO = "SELECT codEquip,codMarca,codModelo,codTipo,codTomada,rfid,codPatrimonio,`desc`,dataUltimaFalha,dataUltimaManutencao,tempoUso FROM protegemed.equipamento";
+		public static final String QUERY_ONDA_PADRAO = "SELECT codOndaPadrao,codTipoOnda,codTomada,codEquip,valorMedio,offset,gain,eficaz,dataPadrao,codTipoPadrao FROM protegemed.ondapadrao";
+		public static final String QUERY_COD_SALA = "SELECT s.codSala, s.desc FROM protegemed.salacirurgia s, tomada t WHERE t.codSala = s.codSala AND t.codTomada = ?";
+		public static final String QUERY_COD_EQUIPAMENTO = "SELECT e.codEquip, e.codMarca, e.codModelo, e.codTipo, e.codPatrimonio, e.desc FROM protegemed.equipamento e WHERE e.rfid = ?";
+		public static final String QUERY_FREQ_NORMAL = "SELECT f.valor FROM protegemed.frequencia_normal f inner join versao_frequencia v on f.id_versao = v.id AND v.id = ?";
+		public static final String QUERY_FREQ_ATENCAO = "SELECT f.valor FROM protegemed.frequencia_atencao f inner join versao_frequencia v on f.id_versao = v.id AND v.id = ?";
+		public static final String QUERY_FREQ_PERIGO = "SELECT f.valor FROM protegemed.frequencia_perigo f inner join versao_frequencia v on f.id_versao = v.id AND v.id = ?";
+		public static final String QUERY_ESCALA_FREQUENCIA = "SELECT f.valor, f.frequencia FROM protegemed.escala_frequencia f, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE f.id_versao = v.id AND f.id_tipo = pf.id AND f.id_tipo = ? AND f.id_versao = ?";
+		public static final String QUERY_ESCALA_SIMILARIDADE = "SELECT es.valor_min, es.valor_max FROM protegemed.escala_similaridade es, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE es.id_versao = v.id AND es.id_tipo = pf.id AND es.id_tipo = ? AND es.id_versao = ?";
+		public static final String QUERY_ESCALA_CORRENTE = "SELECT ec.valor FROM protegemed.escala_corrente ec, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE ec.id_versao = v.id AND ec.id_tipo = pf.id AND ec.id_tipo = ? AND ec.id_versao = ?";
+		public static final String QUERY_VERSAO = "SELECT id, data, id_versao, descricao FROM versao WHERE id_versao = ?";
+		public static final String QUERY_PERICULOSIDADE_FUGA = "SELECT id,tipo,descricao FROM protegemed.periculosidade_fuga";
+		public static final String QUERY_SEQ_CAPTURA_ATUAL = "SELECT nextval(SEQ_CAPTURA_ATUAL)";
+	}
+	
+	public class QueryInsert {
+		
+		public static final String INSERT_CAPTURA_ATUAL = "INSERT INTO protegemed.capturaatual (codCaptura, codtomada,codtipoonda,codequip,codevento,valormedio,offset,gain,eficaz,dataatual,vm2,under,`over`,duration) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+	}
+	
+	public class QueryUpdate {
+		
+		
 	}
 }

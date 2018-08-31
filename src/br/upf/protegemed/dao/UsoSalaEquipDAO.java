@@ -28,7 +28,7 @@ public List<UsoSalaEquip> queryUseRoomEquip() throws ProtegeDAOException, Proteg
 		ResultSet resultSet;
 		
 		try {
-			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_USO_SALA_EQUIP);
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_USO_SALA_EQUIP);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {

@@ -24,7 +24,7 @@ public List<Eventos> queryEvents() throws ProtegeDAOException, ProtegeInstanciaE
 		ResultSet resultSet;
 		
 		try {
-			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_EVENTOS);
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_EVENTOS);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {

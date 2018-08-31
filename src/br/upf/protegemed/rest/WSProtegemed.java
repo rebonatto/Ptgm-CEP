@@ -24,6 +24,7 @@ import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
 import br.upf.protegemed.beans.Tomada;
 import br.upf.protegemed.beans.eventos.Similaridade;
+import br.upf.protegemed.dao.CapturaAtualDAO;
 import br.upf.protegemed.dao.EquipamentoDAO;
 import br.upf.protegemed.dao.SalaCirurgiaDAO;
 import br.upf.protegemed.enums.TypesRequests;
@@ -73,6 +74,7 @@ public class WSProtegemed {
 	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		try {
+			c += "&SIN=4254A050%3BBFE0F68A%3BBE464CAA%3BBF62A529%3BBFA9CDB2%3BBDCA9270%3B3E8FB022%3BBE8987A2%3B3C6A3700%3BBEFD04EB%3BBEFF5D15%3BBE9BB644&COS=412A13F6%3BBCFBBE6C%3BBEBA6265%3BBDD75965%3BBFB807F3%3B3DFC5F62%3B3A7BB900%3BBDBB55DF%3B3E72D46A%3B3DA7D24B%3BBDBA04F4%3B3E25F431";
 			// Separar os parÃ¢metros recebidos Ex: RFID=000&TYPE=00F
 			String[] temp = c.split("&");
 			List<HarmAtual> listHarmAtual = new ArrayList<>();
@@ -88,7 +90,7 @@ public class WSProtegemed {
 	
 			paramRequest = splitRequest(temp);
 			
-			capturaAtual.setCodCaptura(2736);
+			capturaAtual.setCodCaptura(new CapturaAtualDAO().getNextval());
 			eventos.setCodEvento(Integer.parseInt(paramRequest.getTYPE()));
 			tomada.setCodTomada(Integer.parseInt(paramRequest.getOUTLET()));
 			salaCirurgia = new SalaCirurgiaDAO().querySalaCirurgia(tomada.getCodTomada());
@@ -122,8 +124,11 @@ public class WSProtegemed {
 			capturaAtual.setListHarmAtual(listHarmAtual);
 			capturaAtual.setData(Calendar.getInstance());
 			
+			new CapturaAtualDAO().insertCapturaAtual(capturaAtual);
+			
 			LoadConfiguration.getkSession().insert(capturaAtual);
 			LoadConfiguration.getkSession().fireAllRules();
+			
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
 		}

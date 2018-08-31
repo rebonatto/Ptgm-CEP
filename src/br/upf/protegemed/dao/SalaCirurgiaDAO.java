@@ -21,7 +21,7 @@ public class SalaCirurgiaDAO {
 		SalaCirurgia sala = new SalaCirurgia();
 		
 		try {
-			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_COD_SALA);
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_COD_SALA);
 			stmt.setInt(1, codTomada);
 			
 			resultSet = stmt.executeQuery();

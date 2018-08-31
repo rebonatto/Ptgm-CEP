@@ -23,7 +23,7 @@ public class EscalaCorrenteDAO {
 		EscalaCorrente escalaCorrente = null;
 		
 		try {
-			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_ESCALA_CORRENTE);
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_ESCALA_CORRENTE);
 			
 			stmt.setInt(1, periculosidadeFuga.getId());
 			stmt.setInt(2, versao.getId());

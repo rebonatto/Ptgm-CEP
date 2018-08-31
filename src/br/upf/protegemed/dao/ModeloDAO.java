@@ -24,7 +24,7 @@ public List<Modelo> queryModels() throws ProtegeDAOException, ProtegeInstanciaEx
 		ResultSet resultSet;
 		
 		try {
-			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_MODELO);
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_MODELO);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {

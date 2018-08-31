@@ -3,6 +3,7 @@ package br.upf.protegemed.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class CapturaAtualDAO {
 		ResultSet resultSet;
 		
 		try {
-			stmt = new ConnectionFactory().getConnection().prepareStatement(Utils.QUERY_CAPTURA_ATUAL);
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_CAPTURA_ATUAL);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {
@@ -70,5 +71,63 @@ public class CapturaAtualDAO {
 		} catch (SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
 		}
+	}
+	
+	public Integer getNextval() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		
+		PreparedStatement stmt;
+		ResultSet resultSet;
+		Integer sequence = 0;
+		
+		try {
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_SEQ_CAPTURA_ATUAL);
+			
+			resultSet = stmt.executeQuery();
+			
+			while(resultSet.next()) {
+				sequence = resultSet.getInt(1);
+			}
+			
+			return sequence;
+			
+		} catch (SQLException pr) {
+			System.out.println(pr.getMessage());
+			throw new ProtegeDAOException(pr.getMessage());
+		}
+	}
+	
+	public void insertCapturaAtual(CapturaAtual capturaAtual) throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		
+		PreparedStatement stmt;
+		
+		try {
+			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QueryInsert.INSERT_CAPTURA_ATUAL);
+			stmt.setInt(1, capturaAtual.getCodCaptura());
+			stmt.setInt(2, capturaAtual.getTomada().getCodTomada());
+			stmt.setInt(3, 1);
+			stmt.setInt(4, 1);
+			stmt.setInt(5, capturaAtual.getEventos().getCodEvento());
+			stmt.setFloat(6, capturaAtual.getMv());
+			stmt.setFloat(7, capturaAtual.getOffset());
+			stmt.setFloat(8, capturaAtual.getGain());
+			stmt.setFloat(9, capturaAtual.getEficaz());
+			stmt.setString(10,new SimpleDateFormat(Utils.MASK_DATA).format(capturaAtual.getData().getTime()));
+			stmt.setFloat(11, capturaAtual.getMv2());
+			stmt.setInt(12, capturaAtual.getUnder());
+			stmt.setInt(13, capturaAtual.getOver());
+			stmt.setLong(14, capturaAtual.getDuracao());
+			
+			stmt.execute();
+			stmt.close();
+			
+		} catch (SQLException pr) {
+			System.out.println(pr.getMessage());
+			throw new ProtegeDAOException(pr.getMessage());
+		}
+		
+	}
+	
+	public void updateCapturaAtual() {
+		
 	}
 }
