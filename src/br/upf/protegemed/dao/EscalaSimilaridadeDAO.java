@@ -26,7 +26,7 @@ public class EscalaSimilaridadeDAO {
 		EscalaSimilaridade escalaSimilaridade;
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_ESCALA_SIMILARIDADE);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_ESCALA_SIMILARIDADE);
 			
 			stmt.setInt(1, periculosidadeFuga.getId());
 			stmt.setInt(2, versao.getId());

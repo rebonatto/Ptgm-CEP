@@ -47,7 +47,6 @@ public class LoadConfiguration {
 	
 	private LoadConfiguration() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, SQLException {
 		super();
-		ConnectionFactory.conexao = ConnectionFactory.getConnection();
 	}
 	
 	public static void loadConnection() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, SQLException {

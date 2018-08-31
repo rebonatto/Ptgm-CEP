@@ -23,7 +23,7 @@ public class PericulosidadeFugaDAO {
 		ResultSet resultSet;
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_PERICULOSIDADE_FUGA);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_PERICULOSIDADE_FUGA);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {

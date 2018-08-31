@@ -26,7 +26,7 @@ public class VersaoDAO {
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.MASK_YYYY_MM_DD);		
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_VERSAO);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_VERSAO);
 			
 			stmt.setString(1, idVersao);
 			resultSet = stmt.executeQuery();

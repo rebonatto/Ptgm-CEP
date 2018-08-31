@@ -38,7 +38,7 @@ public List<Equipamento> queryEquipament() throws ProtegeDAOException, Protegeme
 		PreparedStatement stmt;
 		ResultSet resultSet;
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_EQUIPAMENTO);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_EQUIPAMENTO);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {
@@ -89,7 +89,7 @@ public List<Equipamento> queryEquipament() throws ProtegeDAOException, Protegeme
 		Modelo modelo =  new Modelo();
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_COD_EQUIPAMENTO);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_COD_EQUIPAMENTO);
 			stmt.setString(1, rfid);
 			
 			resultSet = stmt.executeQuery();

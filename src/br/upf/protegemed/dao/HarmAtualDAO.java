@@ -26,7 +26,7 @@ public class HarmAtualDAO {
 		ResultSet resultSet;
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_HARMONICA_ATUAL);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_HARMONICA_ATUAL);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {

@@ -34,7 +34,7 @@ public class CapturaAtualDAO {
 		ResultSet resultSet;
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_CAPTURA_ATUAL);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_CAPTURA_ATUAL);
 			resultSet = stmt.executeQuery();
 			
 			while(resultSet.next()) {
@@ -80,7 +80,7 @@ public class CapturaAtualDAO {
 		Integer sequence = 0;
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QuerySelect.QUERY_SEQ_CAPTURA_ATUAL);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_SEQ_CAPTURA_ATUAL);
 			
 			resultSet = stmt.executeQuery();
 			
@@ -101,7 +101,7 @@ public class CapturaAtualDAO {
 		PreparedStatement stmt;
 		
 		try {
-			stmt = ConnectionFactory.conexao.prepareStatement(Utils.QueryInsert.INSERT_CAPTURA_ATUAL);
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryInsert.INSERT_CAPTURA_ATUAL);
 			stmt.setInt(1, capturaAtual.getCodCaptura());
 			stmt.setInt(2, capturaAtual.getTomada().getCodTomada());
 			stmt.setInt(3, 1);
