@@ -65,7 +65,7 @@ public class Utils {
 	}
 	
 	public class QuerySelect {
-		
+		private QuerySelect() {}
 		public static final String QUERY_EVENTOS = "SELECT codEvento,`desc`,formaOnda FROM protegemed.eventos";
 		public static final String QUERY_HARMONICA_ATUAL = "SELECT codCaptura,codHarmonica,sen,cos FROM protegemed.harmatual";
 		public static final String QUERY_HARMONICA_PADRAO = "SELECT codHarmonica,codOndaPadrao,sen,cos FROM protegemed.harmpadrao";
@@ -94,16 +94,22 @@ public class Utils {
 		public static final String QUERY_ESCALA_CORRENTE = "SELECT ec.valor FROM protegemed.escala_corrente ec, protegemed.versao v, protegemed.periculosidade_fuga pf WHERE ec.id_versao = v.id AND ec.id_tipo = pf.id AND ec.id_tipo = ? AND ec.id_versao = ?";
 		public static final String QUERY_VERSAO = "SELECT id, data, id_versao, descricao FROM versao WHERE id_versao = ?";
 		public static final String QUERY_PERICULOSIDADE_FUGA = "SELECT id,tipo,descricao FROM protegemed.periculosidade_fuga";
-		public static final String QUERY_SEQ_CAPTURA_ATUAL = "SELECT nextval(SEQ_CAPTURA_ATUAL)";
+		public static final String QUERY_SEQ_CAPTURA_ATUAL = "SELECT COALESCE(MAX(codCaptura), 0) + 1 FROM protegemed.capturaatual";
 	}
 	
 	public class QueryInsert {
-		
+		private QueryInsert() {}	
 		public static final String INSERT_CAPTURA_ATUAL = "INSERT INTO protegemed.capturaatual (codCaptura, codtomada,codtipoonda,codequip,codevento,valormedio,offset,gain,eficaz,dataatual,vm2,under,`over`,duration) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 	}
 	
 	public class QueryUpdate {
-		
+		private QueryUpdate() {}
+		public static final String UPDATE_DURATION_CAPTURA_ATUAL = "update protegemed.capturaatual set duration = ? where codCaptura in(?,?)";
+		public static final String UPDATE_CAPTURA_ATUAL_ORFAO = "update protegemed.capturaatual set duration = -1 where codCaptura = ?";
+		public static final String UPDATE_PERICULOSIDADE_SIMILARIDADE = "UPDATE protegemed.capturaatual SET periculosidade_similaridade = ? WHERE codCaptura in(?,?)";
+		public static final String UPDATE_PERICULOSIDADE_CORRENTE = "UPDATE protegemed.capturaatual SET periculosidade_corrente = ? WHERE codCaptura = ?";
+		public static final String UPDATE_PERICULOSIDADE_FREQUENCIA = "UPDATE protegemed.capturaatual SET periculosidade_frequencia = ? WHERE codCaptura = ?";
 		
 	}
+
 }

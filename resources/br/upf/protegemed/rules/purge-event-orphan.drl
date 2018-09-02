@@ -3,13 +3,14 @@ package br.upf.protegemed.rules
 
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
+import br.upf.protegemed.dao.CapturaAtualDAO;
 
 rule "rule-detect-orphan-event-one"
 	salience 10
 	when
 		$typeOne : CapturaAtual( getEventos().getCodEvento() == 1 )
 		$total   : Number($total > 1) from accumulate (
-			CapturaAtual(
+			$atual : CapturaAtual(
 					this.getEventos().getCodEvento() == $typeOne.getEventos().getCodEvento() && 
 					this.getTomada().getCodTomada() == $typeOne.getTomada().getCodTomada(), 
 					$cont : this
@@ -19,18 +20,11 @@ rule "rule-detect-orphan-event-one"
 	then
 		Utils.logger("remove -> " +
 			" data: " + $typeOne.getData().getTime().toString() + 
-			" evento: " + $typeOne.getEventos().getCodEvento());
+			" evento: " + $typeOne.getEventos().getCodEvento() +
+			"cod captura " + $typeOne.getCodCaptura());
+		new CapturaAtualDAO().updateCapturaAtualOrfao($typeOne);
 		retract($typeOne);
 end
-
-rule "list-all-events"
-	when
-		$capture : CapturaAtual(  )
-	then
-		Utils.logger("drools -> " +
-			" data: " + $capture.getData().getTime().toString() + 
-			" evento: " + $capture.getEventos().getCodEvento());
-end;
 
 rule "rule-detect-orphan-event-six"
 	salience 10
@@ -48,5 +42,6 @@ rule "rule-detect-orphan-event-six"
 		Utils.logger("remove -> " +
 			" data: " + $typeSix.getData().getTime().toString() + 
 			" evento: " + $typeSix.getEventos().getCodEvento());
+		new CapturaAtualDAO().updateCapturaAtualOrfao($typeSix);
 		retract($typeSix);
 end

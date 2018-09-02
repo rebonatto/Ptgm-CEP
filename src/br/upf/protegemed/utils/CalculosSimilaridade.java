@@ -3,19 +3,15 @@
  * Classe usada na versão atual do Protegemed
  * https://github.com/rebonatto/Ptgm-InterfaceJava/blob/master/src/Similaridade/Funcoes.java
  */
-package br.upf.protegemed.funcoes;
+package br.upf.protegemed.utils;
 
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import br.upf.protegemed.utils.Calculos;
-import br.upf.protegemed.utils.Utils;
-import br.upf.protegemed.utils.ValoresShapiroWilk;
+public class CalculosSimilaridade {
 
-public class Similaridade {
-
-	private Similaridade() {
+	private CalculosSimilaridade() {
 	}
 
 	public static double[] pearson(List<Double> onda1List, List<Double> onda2List) {

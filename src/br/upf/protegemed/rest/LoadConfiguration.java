@@ -45,12 +45,12 @@ public class LoadConfiguration {
 	private static List<EscalaFrequencia> listEscalaFrequencia;
 	private static List<EscalaCorrente> listEscalaCorrente;
 	
-	private LoadConfiguration() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, SQLException {
+	private LoadConfiguration() {
 		super();
 	}
 	
 	public static void loadConnection() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, SQLException {
-		ConnectionFactory.conexao = ConnectionFactory.getConnection();
+		ConnectionFactory.setConexao(ConnectionFactory.getConnection());
 	}
 	
 	public static void loadVersao() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException, ParseException {

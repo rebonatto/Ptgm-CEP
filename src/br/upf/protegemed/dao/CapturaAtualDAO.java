@@ -21,36 +21,37 @@ import br.upf.protegemed.utils.Utils;
 
 public class CapturaAtualDAO {
 
-	public List<CapturaAtual> queryCaptureCurrent() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
+	public List<CapturaAtual> queryCaptureCurrent() throws ProtegeDAOException, ProtegeInstanciaException,
+			ProtegeIllegalAccessException, ProtegeClassException {
 		CapturaAtual capturaAtual;
 		Tomada tomada;
 		TipoOnda tipoOnda;
 		Equipamento equipamento;
 		Eventos eventos;
-		
+
 		List<CapturaAtual> listCapturaAtual = new ArrayList<>();
-		
+
 		PreparedStatement stmt;
 		ResultSet resultSet;
-		
+
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_CAPTURA_ATUAL);
 			resultSet = stmt.executeQuery();
-			
-			while(resultSet.next()) {
-				
+
+			while (resultSet.next()) {
+
 				capturaAtual = new CapturaAtual();
 				tomada = new Tomada();
 				tipoOnda = new TipoOnda();
 				equipamento = new Equipamento();
 				eventos = new Eventos();
-				
+
 				capturaAtual.setCodCaptura(resultSet.getInt(1));
 				tomada.setCodTomada(resultSet.getInt(2));
 				tipoOnda.setCodTipoOnda(resultSet.getInt(3));
 				equipamento.setCodEquip(resultSet.getInt(4));
 				eventos.setCodEvento(resultSet.getInt(5));
-				
+
 				capturaAtual.setTomada(tomada);
 				capturaAtual.setTipoOnda(tipoOnda);
 				capturaAtual.setEquipamento(equipamento);
@@ -67,39 +68,40 @@ public class CapturaAtualDAO {
 			}
 			stmt.close();
 			return listCapturaAtual;
-			
+
 		} catch (SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
 		}
 	}
-	
-	public Integer getNextval() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		
+
+	public Integer getNextval() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
+			ProtegeDAOException {
+
 		PreparedStatement stmt;
 		ResultSet resultSet;
 		Integer sequence = 0;
-		
+
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_SEQ_CAPTURA_ATUAL);
-			
+
 			resultSet = stmt.executeQuery();
-			
-			while(resultSet.next()) {
+
+			while (resultSet.next()) {
 				sequence = resultSet.getInt(1);
 			}
-			
+			Utils.logger("sequence " + sequence);
 			return sequence;
-			
+
 		} catch (SQLException pr) {
-			System.out.println(pr.getMessage());
 			throw new ProtegeDAOException(pr.getMessage());
 		}
 	}
-	
-	public void insertCapturaAtual(CapturaAtual capturaAtual) throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		
+
+	public void insertCapturaAtual(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
+			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+
 		PreparedStatement stmt;
-		
+
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryInsert.INSERT_CAPTURA_ATUAL);
 			stmt.setInt(1, capturaAtual.getCodCaptura());
@@ -111,23 +113,109 @@ public class CapturaAtualDAO {
 			stmt.setFloat(7, capturaAtual.getOffset());
 			stmt.setFloat(8, capturaAtual.getGain());
 			stmt.setFloat(9, capturaAtual.getEficaz());
-			stmt.setString(10,new SimpleDateFormat(Utils.MASK_DATA).format(capturaAtual.getData().getTime()));
+			stmt.setString(10, new SimpleDateFormat(Utils.MASK_DATA).format(capturaAtual.getData().getTime()));
 			stmt.setFloat(11, capturaAtual.getMv2());
 			stmt.setInt(12, capturaAtual.getUnder());
 			stmt.setInt(13, capturaAtual.getOver());
 			stmt.setLong(14, capturaAtual.getDuracao());
-			
+
 			stmt.execute();
 			stmt.close();
-			
+
 		} catch (SQLException pr) {
-			System.out.println(pr.getMessage());
 			throw new ProtegeDAOException(pr.getMessage());
 		}
-		
+
 	}
-	
-	public void updateCapturaAtual() {
-		
+
+	public void updateCapturaAtual(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo, long duracao)
+			throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
+			ProtegeDAOException {
+
+		PreparedStatement stmt;
+
+		try {
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_DURATION_CAPTURA_ATUAL);
+			stmt.setLong(1, duracao);
+			stmt.setInt(2, capturaAtualOne.getCodCaptura());
+			stmt.setInt(3, capturaAtualTwo.getCodCaptura());
+
+			stmt.execute();
+			stmt.close();
+
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(pr.getMessage());
+		}
+	}
+
+	public void updateCapturaAtualOrfao(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
+			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+
+		PreparedStatement stmt;
+
+		try {
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_CAPTURA_ATUAL_ORFAO);
+			stmt.setInt(1, capturaAtual.getCodCaptura());
+			stmt.execute();
+			stmt.close();
+
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(pr.getMessage());
+		}
+	}
+
+	public void updateFrequencia(CapturaAtual capturaAtual, Integer escalaFrequencia) throws ProtegeInstanciaException,
+			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+
+		PreparedStatement stmt;
+
+		try {
+			stmt = ConnectionFactory.getConnection()
+					.prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_FREQUENCIA);
+			stmt.setInt(1, escalaFrequencia);
+			stmt.setInt(2, capturaAtual.getCodCaptura());
+			stmt.execute();
+			stmt.close();
+
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(pr.getMessage());
+		}
+	}
+
+	public void updateCorrente(CapturaAtual capturaAtual, Integer escalaCorrente) throws ProtegeInstanciaException,
+			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+
+		PreparedStatement stmt;
+
+		try {
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_CORRENTE);
+			stmt.setInt(1, escalaCorrente);
+			stmt.setInt(2, capturaAtual.getCodCaptura());
+			stmt.execute();
+			stmt.close();
+
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(pr.getMessage());
+		}
+	}
+
+	public void updateSimilaridade(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo,
+			Integer escalaSimilaridade) throws ProtegeInstanciaException, ProtegeIllegalAccessException,
+			ProtegeClassException, ProtegeDAOException {
+
+		PreparedStatement stmt;
+
+		try {
+			stmt = ConnectionFactory.getConnection()
+					.prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_SIMILARIDADE);
+			stmt.setInt(1, escalaSimilaridade);
+			stmt.setInt(2, capturaAtualOne.getCodCaptura());
+			stmt.setInt(3, capturaAtualTwo.getCodCaptura());
+			stmt.execute();
+			stmt.close();
+
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(pr.getMessage());
+		}
 	}
 }

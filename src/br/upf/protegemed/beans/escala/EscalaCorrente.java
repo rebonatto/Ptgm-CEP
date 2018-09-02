@@ -2,7 +2,9 @@ package br.upf.protegemed.beans.escala;
 
 import java.io.Serializable;
 
+import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Versao;
+import br.upf.protegemed.rest.LoadConfiguration;
 
 public class EscalaCorrente implements Serializable{
 
@@ -48,5 +50,24 @@ public class EscalaCorrente implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
-	}	
+	}
+	
+	/**
+	 * O método inicia a comparação pelo maior indíce retornado do banco de dados da tabela
+	 * ESCALA_CORRENTE, sendo o 3 atualmente como PERIGO. Nunca há comparação com o menor valor
+	 * atualmente é 1 - NORMAL default
+	 * @param  Recebe a captura atual
+	 * @return Retorna a escala da periculosidade atual
+	 */
+    public static Integer getStatusCorrente(CapturaAtual capturaAtual){        
+        Integer sizeList = LoadConfiguration.getListEscalaCorrente().size();
+        
+    	for(int index = sizeList; index > 1; index--) {
+    		if (capturaAtual.getEficaz() >= LoadConfiguration.getListEscalaCorrente().get(index-1).getValor())
+	        	return 3;
+	        else if (capturaAtual.getEficaz() >= LoadConfiguration.getListEscalaCorrente().get(index-1).getValor())
+	        	return 2;
+    	}
+        return 1;
+    }
 }

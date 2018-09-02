@@ -8,8 +8,6 @@ import java.util.List;
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.OndaPadrao;
-import br.upf.protegemed.funcoes.ProtegeDataset;
-import br.upf.protegemed.funcoes.Similaridade;
 
 /**
  *
@@ -128,19 +126,19 @@ public class Calculos {
 		return variancia;
 	}
 
-	public static float calcularSpearman(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo) {
+	public static int calcularSpearman(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo) {
 
 		List<Double> listaUm = ProtegeDataset.newDatasetOnda(capturaAtualOne);
 		List<Double> listaDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo);
 		double[] res = null;
-		res = Similaridade.spearman(listaUm, listaDois);
+		res = CalculosSimilaridade.spearman(listaUm, listaDois);
 		
 		if (res[0] >= 0.95 || res[0] <= 1.0) {
-			return 3.0F;
+			return 3;
 		} else if (res[0] <= 0.84900) {
-			return 1.0F;
+			return 1;
 		} else {
-			return 2.0F;
+			return 2;
 		}
 	}
 }

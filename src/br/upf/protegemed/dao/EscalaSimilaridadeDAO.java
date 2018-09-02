@@ -22,7 +22,7 @@ public class EscalaSimilaridadeDAO {
 		
 		PreparedStatement stmt = null;
 		ResultSet resultSet = null;
-		List<EscalaSimilaridade> listEscalaSimilaridade = new ArrayList<EscalaSimilaridade>();
+		List<EscalaSimilaridade> listEscalaSimilaridade = new ArrayList<>();
 		EscalaSimilaridade escalaSimilaridade;
 		
 		try {

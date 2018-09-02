@@ -3,6 +3,7 @@ package br.upf.protegemed.rules
 
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
+import br.upf.protegemed.dao.CapturaAtualDAO;
 
 rule "detect-flight-plug-one-six"
 	when
@@ -12,10 +13,11 @@ rule "detect-flight-plug-one-six"
 						$eventSix.getTomada().getCodTomada() == $eventOne.getTomada().getCodTomada() 
 						&& $eventSix after[0s] $eventOne
 					)
-		//$e : CapturaAtual( $e.calculaPericulosidade() > 0 )
 	then
 		Utils.logger(drools.getRule().getName() + " " + $outlet.durationBetweenEvent(
 			$eventSix.getData(), $eventOne.getData()) + " tomada " + $eventOne.getTomada().getCodTomada());
+		long $duracao = CapturaAtual.durationBetweenEvent($eventSix.getData(), $eventOne.getData());
+		new CapturaAtualDAO().updateCapturaAtual($eventOne, $eventSix, $duracao);
 		retract($eventSix);
 		retract($eventOne);
 end

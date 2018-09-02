@@ -22,8 +22,8 @@ import br.upf.protegemed.beans.Eventos;
 import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
+import br.upf.protegemed.beans.Similaridade;
 import br.upf.protegemed.beans.Tomada;
-import br.upf.protegemed.beans.eventos.Similaridade;
 import br.upf.protegemed.dao.CapturaAtualDAO;
 import br.upf.protegemed.dao.EquipamentoDAO;
 import br.upf.protegemed.dao.SalaCirurgiaDAO;
@@ -128,6 +128,7 @@ public class WSProtegemed {
 			
 			LoadConfiguration.getkSession().insert(capturaAtual);
 			LoadConfiguration.getkSession().fireAllRules();
+			Utils.logger("captura atual " + capturaAtual.getCodCaptura());
 			
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());

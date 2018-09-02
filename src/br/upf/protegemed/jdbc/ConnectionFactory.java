@@ -11,13 +11,25 @@ import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.utils.Utils;
 
 public class ConnectionFactory {
-	public Connection getConnection() throws ProtegeDAOException, ProtegeInstanciaException,
+	
+	private static Connection conexao = null;
+	
+	private ConnectionFactory() {
+		super();
+	}
+	
+	public static Connection getConnection() throws ProtegeDAOException, ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException {
 		try {
-			Class.forName("com.mysql.jdbc.Driver").newInstance();
-			return DriverManager.getConnection(
-					"jdbc:" + Utils.JDBC + "://" + Utils.HOST + ":" + Utils.PORT + "/" + Utils.BD, Utils.USER,
-					Utils.PASSWORD);
+			
+			if (conexao == null) {
+				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				return DriverManager.getConnection(
+						"jdbc:" + Utils.JDBC + "://" + Utils.HOST + ":" + Utils.PORT + "/" + Utils.BD, Utils.USER,
+						Utils.PASSWORD);
+			} else {
+				return conexao;
+			}
 		} catch (SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
 		} catch (InstantiationException in) {
@@ -27,5 +39,13 @@ public class ConnectionFactory {
 		} catch (ClassNotFoundException cl) {
 			throw new ProtegeClassException(cl.getMessage());
 		}
+	}
+
+	public static Connection getConexao() {
+		return conexao;
+	}
+
+	public static void setConexao(Connection conexao) {
+		ConnectionFactory.conexao = conexao;
 	}
 }

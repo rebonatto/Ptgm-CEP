@@ -3,7 +3,7 @@
  * adaptação: Clayton Tolotti
  */
 
-package br.upf.protegemed.funcoes;
+package br.upf.protegemed.utils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,7 +11,6 @@ import java.util.List;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.HarmAtual;
-import br.upf.protegemed.utils.Utils;
 
 public class ProtegeDataset implements Serializable {
 

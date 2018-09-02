@@ -1,9 +1,7 @@
-package br.upf.protegemed.beans.eventos;
+package br.upf.protegemed.beans;
 
 import java.io.Serializable;
 import java.util.List;
-
-import br.upf.protegemed.beans.CapturaAtual;
 
 public class Similaridade implements Serializable {
 

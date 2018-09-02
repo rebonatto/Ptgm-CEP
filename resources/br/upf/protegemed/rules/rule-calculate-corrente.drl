@@ -4,11 +4,8 @@ package br.upf.protegemed.rules
 import br.upf.protegemed.utils.Utils;
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.dao.EscalaCorrenteDAO;
-import br.upf.protegemed.beans.eventos.PericulosidadeFugaEvento
-import br.upf.protegemed.funcoes.CorrenteRMS
-
-import java.util.List
-import java.util.ArrayList
+import br.upf.protegemed.dao.CapturaAtualDAO
+import br.upf.protegemed.beans.escala.EscalaCorrente
 
 rule "rule-calcule-corrente"
 	salience 6
@@ -17,13 +14,6 @@ rule "rule-calcule-corrente"
 					getEventos().getCodEvento() == 1
 				)
     then
-    	List<CapturaAtual> $lista = new ArrayList<CapturaAtual>();
-    	$lista.add($captura);
-    	PericulosidadeFugaEvento $pericCorrente = new PericulosidadeFugaEvento(
-    		"corrente",
-	    	$lista,
-	    	CorrenteRMS.getStatusCorrente($captura)
-    	);
-    	insert($pericCorrente);
-    	Utils.logger("[CORRENTE]: " + $pericCorrente.getResultado());
+    	Integer $pericCorrente = EscalaCorrente.getStatusCorrente($captura);
+    	new CapturaAtualDAO().updateCorrente($captura, $pericCorrente);
 end

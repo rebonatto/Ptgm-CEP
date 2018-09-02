@@ -34,8 +34,10 @@ public class EscalaCorrenteDAO {
 				escalaCorrente.setValor(resultSet.getFloat(1));
 			}
 			
-			escalaCorrente.setPericulosidadeFuga(periculosidadeFuga);
-			escalaCorrente.setVersao(versao);
+			if (escalaCorrente != null) {
+				escalaCorrente.setPericulosidadeFuga(periculosidadeFuga);
+				escalaCorrente.setVersao(versao);
+			}
 			stmt.close();
 			return escalaCorrente;
 					
