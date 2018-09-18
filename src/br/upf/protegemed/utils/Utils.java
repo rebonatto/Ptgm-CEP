@@ -100,6 +100,7 @@ public class Utils {
 	public class QueryInsert {
 		private QueryInsert() {}	
 		public static final String INSERT_CAPTURA_ATUAL = "INSERT INTO protegemed.capturaatual (codCaptura, codtomada,codtipoonda,codequip,codevento,valormedio,offset,gain,eficaz,dataatual,vm2,under,`over`,duration) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		public static final String INSERT_HARMONICA_ATUAL = "INSERT INTO protegemed.harmatual (codCaptura, codHarmonica, sen, cos) VALUES(?,?,?,?)";
 	}
 	
 	public class QueryUpdate {

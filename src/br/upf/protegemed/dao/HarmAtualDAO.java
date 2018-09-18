@@ -46,4 +46,34 @@ public class HarmAtualDAO {
 			throw new ProtegeDAOException(pr.getMessage());
 		}
 	}
+	
+	public void insertHarmAtual(CapturaAtual capturaAtual) throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
+		
+		PreparedStatement stmt;
+		Integer indice = 0;
+		
+		try {
+			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryInsert.INSERT_HARMONICA_ATUAL);
+			stmt.setInt(1, capturaAtual.getCodCaptura());
+			
+			if(capturaAtual.getListHarmAtual().size() > 0) {
+				for (HarmAtual harm : capturaAtual.getListHarmAtual()) {
+					indice += 1;
+					stmt.setInt(2, indice);
+					stmt.setDouble(3, harm.getSen());
+					stmt.setDouble(4, harm.getCos());
+					stmt.addBatch();
+					Utils.logger("codCaptura: " + capturaAtual.getCodCaptura() + " codHarmonica: " + indice + " sen: " + harm.getSen() + " cos: " + harm.getCos());	
+				}
+			} else {
+				return;
+			}
+			
+			stmt.executeBatch();
+			stmt.close();
+		
+		} catch (SQLException pr) {
+			throw new ProtegeDAOException(pr.getMessage());
+		}
+	}
 }

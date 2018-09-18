@@ -106,8 +106,8 @@ public class CapturaAtualDAO {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryInsert.INSERT_CAPTURA_ATUAL);
 			stmt.setInt(1, capturaAtual.getCodCaptura());
 			stmt.setInt(2, capturaAtual.getTomada().getCodTomada());
-			stmt.setInt(3, 1);
-			stmt.setInt(4, 1);
+			stmt.setInt(3, 1);//TODO verificar se é fase ou fuga, tabela tipoonda
+			stmt.setInt(4, 1);//TODO verificar se for pra buscar no banco pelo RFID, tabela equipamento
 			stmt.setInt(5, capturaAtual.getEventos().getCodEvento());
 			stmt.setFloat(6, capturaAtual.getMv());
 			stmt.setFloat(7, capturaAtual.getOffset());
@@ -118,7 +118,7 @@ public class CapturaAtualDAO {
 			stmt.setInt(12, capturaAtual.getUnder());
 			stmt.setInt(13, capturaAtual.getOver());
 			stmt.setLong(14, capturaAtual.getDuracao());
-
+			
 			stmt.execute();
 			stmt.close();
 

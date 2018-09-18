@@ -26,6 +26,7 @@ import br.upf.protegemed.beans.Similaridade;
 import br.upf.protegemed.beans.Tomada;
 import br.upf.protegemed.dao.CapturaAtualDAO;
 import br.upf.protegemed.dao.EquipamentoDAO;
+import br.upf.protegemed.dao.HarmAtualDAO;
 import br.upf.protegemed.dao.SalaCirurgiaDAO;
 import br.upf.protegemed.enums.TypesRequests;
 import br.upf.protegemed.exceptions.ProtegeClassException;
@@ -125,6 +126,7 @@ public class WSProtegemed {
 			capturaAtual.setData(Calendar.getInstance());
 			
 			new CapturaAtualDAO().insertCapturaAtual(capturaAtual);
+			new HarmAtualDAO().insertHarmAtual(capturaAtual);
 			
 			LoadConfiguration.getkSession().insert(capturaAtual);
 			LoadConfiguration.getkSession().fireAllRules();
