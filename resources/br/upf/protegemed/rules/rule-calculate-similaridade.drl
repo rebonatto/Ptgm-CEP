@@ -1,4 +1,4 @@
-//created by Clayton Tolotti: claytontolotti@gmail.com, on: 24/06/2018protegemed.spearman
+//created by Clayton Tolotti: claytontolotti@gmail.com, on: 24/06/2018
 package br.upf.protegemed.rules
 
 import br.upf.protegemed.utils.Utils;
@@ -16,6 +16,8 @@ rule "rule-calculate-similaridade"
 					,this.getTomada().getCodTomada() != $eventOneBefore.getTomada().getCodTomada()
 				)
     then
-    	Integer $escala = Calculos.calcularSpearman($eventOneBefore, $eventOneAfter);
-    	new CapturaAtualDAO().updateSimilaridade($eventOneBefore, $eventOneAfter, $escala);
+    	Integer $periculosidadeSimilaridade = Calculos.calcularSpearman($eventOneBefore, $eventOneAfter);
+    	$eventOneBefore.setPericulosidadeSimilaridade($periculosidadeSimilaridade);
+    	$eventOneAfter.setPericulosidadeSimilaridade($periculosidadeSimilaridade);
+    	new CapturaAtualDAO().updateSimilaridade($eventOneBefore, $eventOneAfter);
 end

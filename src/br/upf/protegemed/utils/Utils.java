@@ -110,7 +110,6 @@ public class Utils {
 		public static final String UPDATE_PERICULOSIDADE_SIMILARIDADE = "UPDATE protegemed.capturaatual SET periculosidade_similaridade = ? WHERE codCaptura in(?,?)";
 		public static final String UPDATE_PERICULOSIDADE_CORRENTE = "UPDATE protegemed.capturaatual SET periculosidade_corrente = ? WHERE codCaptura = ?";
 		public static final String UPDATE_PERICULOSIDADE_FREQUENCIA = "UPDATE protegemed.capturaatual SET periculosidade_frequencia = ? WHERE codCaptura = ?";
-		
 	}
 
 }

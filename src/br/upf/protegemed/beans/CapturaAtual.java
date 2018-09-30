@@ -30,6 +30,9 @@ public class CapturaAtual implements Serializable{
 	private long duracao;
 	private List<HarmAtual> listHarmAtual;
 	private SalaCirurgia salaCirurgia;
+	private Integer periculosidadeCorrente;
+	private Integer periculosidadeFrequencia;
+	private Integer periculosidadeSimilaridade;
 	
 	public CapturaAtual() {
 		super();
@@ -167,6 +170,30 @@ public class CapturaAtual implements Serializable{
 		this.salaCirurgia = salaCirurgia;
 	}
 	
+	public Integer getPericulosidadeCorrente() {
+		return periculosidadeCorrente;
+	}
+
+	public void setPericulosidadeCorrente(Integer periculosidadeCorrente) {
+		this.periculosidadeCorrente = periculosidadeCorrente;
+	}
+
+	public Integer getPericulosidadeFrequencia() {
+		return periculosidadeFrequencia;
+	}
+
+	public void setPericulosidadeFrequencia(Integer periculosidadeFrequencia) {
+		this.periculosidadeFrequencia = periculosidadeFrequencia;
+	}
+
+	public Integer getPericulosidadeSimilaridade() {
+		return periculosidadeSimilaridade;
+	}
+
+	public void setPericulosidadeSimilaridade(Integer periculosidadeSimilaridade) {
+		this.periculosidadeSimilaridade = periculosidadeSimilaridade;
+	}
+
 	public static long durationBetweenEvent(Calendar eventoFim, Calendar eventoIni) {
 		
 		long millIni = eventoIni.getTimeInMillis();

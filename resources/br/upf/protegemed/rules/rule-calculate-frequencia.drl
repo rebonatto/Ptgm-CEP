@@ -11,6 +11,7 @@ rule "rule-frequencia-corrente"
     when
 		$captura : CapturaAtual( getEventos().getCodEvento() == 1 )
     then
-    	Integer $statusFrequencia = EscalaFrequencia.getStatusFrequencia($captura);
-    	new CapturaAtualDAO().updateFrequencia($captura, $statusFrequencia);
+    	Integer $periculosidadeFrequencia = EscalaFrequencia.getStatusFrequencia($captura);
+    	$captura.setPericulosidadeFrequencia($periculosidadeFrequencia);
+    	new CapturaAtualDAO().updateFrequencia($captura);
 end

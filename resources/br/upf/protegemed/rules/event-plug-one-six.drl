@@ -14,10 +14,10 @@ rule "detect-flight-plug-one-six"
 						&& $eventSix after[0s] $eventOne
 					)
 	then
-		Utils.logger(drools.getRule().getName() + " " + $outlet.durationBetweenEvent(
-			$eventSix.getData(), $eventOne.getData()) + " tomada " + $eventOne.getTomada().getCodTomada());
+		//Utils.logger(drools.getRule().getName() + " " + $outlet.durationBetweenEvent(
+		//	$eventSix.getData(), $eventOne.getData()) + " tomada " + $eventOne.getTomada().getCodTomada());
 		long $duracao = CapturaAtual.durationBetweenEvent($eventSix.getData(), $eventOne.getData());
-		new CapturaAtualDAO().updateCapturaAtual($eventOne, $eventSix, $duracao);
+		new CapturaAtualDAO().updateDurationCapturaAtual($eventOne, $eventSix, $duracao);
 		retract($eventSix);
 		retract($eventOne);
 end

@@ -10,7 +10,7 @@ import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
 import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.utils.Utils;
 
-@ApplicationPath("webservice")
+@ApplicationPath("")
 public class RestfulApp extends ResourceConfig {
 	
 	public RestfulApp() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {

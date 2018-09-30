@@ -56,14 +56,13 @@ public class HarmAtualDAO {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryInsert.INSERT_HARMONICA_ATUAL);
 			stmt.setInt(1, capturaAtual.getCodCaptura());
 			
-			if(capturaAtual.getListHarmAtual().size() > 0) {
+			if(!capturaAtual.getListHarmAtual().isEmpty()) {
 				for (HarmAtual harm : capturaAtual.getListHarmAtual()) {
 					indice += 1;
 					stmt.setInt(2, indice);
 					stmt.setDouble(3, harm.getSen());
 					stmt.setDouble(4, harm.getCos());
-					stmt.addBatch();
-					Utils.logger("codCaptura: " + capturaAtual.getCodCaptura() + " codHarmonica: " + indice + " sen: " + harm.getSen() + " cos: " + harm.getCos());	
+					stmt.addBatch();	
 				}
 			} else {
 				return;

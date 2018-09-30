@@ -35,7 +35,7 @@ import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
 import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.utils.Utils;
 
-@Path("/operations")
+@Path("/")
 public class WSProtegemed {
 
 	public static final Integer ativarLog = 1;
@@ -47,15 +47,15 @@ public class WSProtegemed {
 	public WSProtegemed() {
 		super();
 	}
-
+	
 	@GET
-	@Path("get/status")
+	@Path("status")
 	public String getStatus() {
 		return "ON";
 	}
 
 	@GET
-	@Path("get/init-drools")
+	@Path("init-drools")
 	public void getSession() {
 		
 		if (LoadConfiguration.getkSession() == null) {
@@ -69,13 +69,12 @@ public class WSProtegemed {
 		}
 	}
 
-	@POST
-	@Path("post/receive-event")
+	@POST//events/receive
+	@Path("capture.php")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		try {
-			c += "&SIN=4254A050%3BBFE0F68A%3BBE464CAA%3BBF62A529%3BBFA9CDB2%3BBDCA9270%3B3E8FB022%3BBE8987A2%3B3C6A3700%3BBEFD04EB%3BBEFF5D15%3BBE9BB644&COS=412A13F6%3BBCFBBE6C%3BBEBA6265%3BBDD75965%3BBFB807F3%3B3DFC5F62%3B3A7BB900%3BBDBB55DF%3B3E72D46A%3B3DA7D24B%3BBDBA04F4%3B3E25F431";
 			// Separar os parÃ¢metros recebidos Ex: RFID=000&TYPE=00F
 			String[] temp = c.split("&");
 			List<HarmAtual> listHarmAtual = new ArrayList<>();
@@ -117,8 +116,8 @@ public class WSProtegemed {
 			for (int i = 0; i < arrayCos.length; i++) {
 				HarmAtual harmAtual = new HarmAtual();
 				harmAtual.setCodHarmonica(i);
-				harmAtual.setSen(Utils.convertHexToFloat(arraySen[i]));
-				harmAtual.setCos(Utils.convertHexToFloat(arrayCos[i]));
+				harmAtual.setSen(Utils.convertHexToFloat(arraySen[i].replaceAll("\\r\\n", "")));
+				harmAtual.setCos(Utils.convertHexToFloat(arrayCos[i].replaceAll("\\r\\n", "")));
 				listHarmAtual.add(harmAtual);
 			}
 	
@@ -130,15 +129,16 @@ public class WSProtegemed {
 			
 			LoadConfiguration.getkSession().insert(capturaAtual);
 			LoadConfiguration.getkSession().fireAllRules();
-			Utils.logger("captura atual " + capturaAtual.getCodCaptura());
 			
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
+		} catch(Exception e) {
+			Utils.logger(e.getMessage());
 		}
 	}
 	
 	@GET
-	@Path("get/list-all-events")
+	@Path("events/list-all")
 	public void listAllEvents() {
 		Collection<FactHandle> collect = LoadConfiguration.getkSession().getFactHandles();
 		

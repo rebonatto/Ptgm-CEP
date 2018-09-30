@@ -128,7 +128,7 @@ public class CapturaAtualDAO {
 
 	}
 
-	public void updateCapturaAtual(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo, long duracao)
+	public void updateDurationCapturaAtual(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo, long duracao)
 			throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
 			ProtegeDAOException {
 
@@ -164,7 +164,7 @@ public class CapturaAtualDAO {
 		}
 	}
 
-	public void updateFrequencia(CapturaAtual capturaAtual, Integer escalaFrequencia) throws ProtegeInstanciaException,
+	public void updateFrequencia(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
 
 		PreparedStatement stmt;
@@ -172,7 +172,7 @@ public class CapturaAtualDAO {
 		try {
 			stmt = ConnectionFactory.getConnection()
 					.prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_FREQUENCIA);
-			stmt.setInt(1, escalaFrequencia);
+			stmt.setInt(1, capturaAtual.getPericulosidadeFrequencia());
 			stmt.setInt(2, capturaAtual.getCodCaptura());
 			stmt.execute();
 			stmt.close();
@@ -182,14 +182,14 @@ public class CapturaAtualDAO {
 		}
 	}
 
-	public void updateCorrente(CapturaAtual capturaAtual, Integer escalaCorrente) throws ProtegeInstanciaException,
+	public void updateCorrente(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
 
 		PreparedStatement stmt;
 
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_CORRENTE);
-			stmt.setInt(1, escalaCorrente);
+			stmt.setInt(1, capturaAtual.getPericulosidadeCorrente());
 			stmt.setInt(2, capturaAtual.getCodCaptura());
 			stmt.execute();
 			stmt.close();
@@ -199,8 +199,7 @@ public class CapturaAtualDAO {
 		}
 	}
 
-	public void updateSimilaridade(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo,
-			Integer escalaSimilaridade) throws ProtegeInstanciaException, ProtegeIllegalAccessException,
+	public void updateSimilaridade(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo) throws ProtegeInstanciaException, ProtegeIllegalAccessException,
 			ProtegeClassException, ProtegeDAOException {
 
 		PreparedStatement stmt;
@@ -208,7 +207,7 @@ public class CapturaAtualDAO {
 		try {
 			stmt = ConnectionFactory.getConnection()
 					.prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_SIMILARIDADE);
-			stmt.setInt(1, escalaSimilaridade);
+			stmt.setInt(1, capturaAtualOne.getPericulosidadeSimilaridade());
 			stmt.setInt(2, capturaAtualOne.getCodCaptura());
 			stmt.setInt(3, capturaAtualTwo.getCodCaptura());
 			stmt.execute();

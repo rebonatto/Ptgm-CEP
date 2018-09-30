@@ -14,6 +14,7 @@ rule "rule-calcule-corrente"
 					getEventos().getCodEvento() == 1
 				)
     then
-    	Integer $pericCorrente = EscalaCorrente.getStatusCorrente($captura);
-    	new CapturaAtualDAO().updateCorrente($captura, $pericCorrente);
+    	Integer $periculosidadeCorrente = EscalaCorrente.getStatusCorrente($captura);
+    	$captura.setPericulosidadeCorrente($periculosidadeCorrente);
+    	new CapturaAtualDAO().updateCorrente($captura);
 end
