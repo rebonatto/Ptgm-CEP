@@ -1,9 +1,8 @@
 //created by Clayton Tolotti: claytontolotti@gmail.com, on: 11/05/2018
 package br.upf.protegemed.rules
 
-import br.upf.protegemed.utils.Utils;
-import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.dao.CapturaAtualDAO;
+import br.upf.protegemed.beans.CapturaAtual
+import br.upf.protegemed.dao.CapturaAtualDAO
 
 rule "rule-detect-orphan-event-four"
 	salience 9
@@ -18,10 +17,6 @@ rule "rule-detect-orphan-event-four"
 				count($cont)
 			)
 	then
-		Utils.logger("remove -> " +
-			" data: " + $typeFour.getData().getTime().toString() + 
-			" evento: " + $typeFour.getEventos().getCodEvento() +
-			"cod captura " + $typeFour.getCodCaptura());
 		new CapturaAtualDAO().updateCapturaAtualOrfao($typeFour);
 		retract($typeFour);
 end
@@ -39,9 +34,6 @@ rule "rule-detect-orphan-event-five"
 				count($cont)
 			)
 	then
-		Utils.logger("remove -> " +
-			" data: " + $typeFive.getData().getTime().toString() + 
-			" evento: " + $typeFive.getEventos().getCodEvento());
 		new CapturaAtualDAO().updateCapturaAtualOrfao($typeFive);
 		retract($typeFive);
 end

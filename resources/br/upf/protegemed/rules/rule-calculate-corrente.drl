@@ -1,11 +1,12 @@
 //created by Clayton Tolotti: claytontolotti@gmail.com on: 15/06/2018
 package br.upf.protegemed.rules
 
-import br.upf.protegemed.utils.Utils;
-import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.dao.EscalaCorrenteDAO;
+import br.upf.protegemed.beans.CapturaAtual
 import br.upf.protegemed.dao.CapturaAtualDAO
 import br.upf.protegemed.beans.escala.EscalaCorrente
+import org.apache.log4j.Logger
+
+global Logger logger;
 
 rule "rule-calcule-corrente"
 	salience 6
@@ -17,4 +18,6 @@ rule "rule-calcule-corrente"
     	Integer $periculosidadeCorrente = EscalaCorrente.getStatusCorrente($captura);
     	$captura.setPericulosidadeCorrente($periculosidadeCorrente);
     	new CapturaAtualDAO().updateCorrente($captura);
+    	logger = Logger.getLogger(CapturaAtual.class);
+    	logger.info("Periculosidade da corrente: " + $periculosidadeCorrente);
 end

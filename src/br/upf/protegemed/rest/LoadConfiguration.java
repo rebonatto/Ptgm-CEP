@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
@@ -31,10 +32,16 @@ import br.upf.protegemed.exceptions.ProtegeDAOException;
 import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
 import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.jdbc.ConnectionFactory;
-import br.upf.protegemed.utils.Utils;
 
 public class LoadConfiguration {
 
+	final static Logger logger = Logger.getLogger(LoadConfiguration.class);
+	public static final Integer ativarLog = 1;
+
+	public static Integer getAtivarlog() {
+		return ativarLog;
+	}
+	
 	private static KieServices ks;
 	private static KieContainer kContainer;
 	private static KieSession kSession;
@@ -90,9 +97,9 @@ public class LoadConfiguration {
 			setkContainer(getKs().getKieClasspathContainer());
 			setkSession(getkContainer().newKieSession("protegemed"));
 			setInicializaoDrools(1);
-			Utils.logger("Initializing drools instance");
+			//logger.info("Initializing drools instance");
 		} else {
-			Utils.logger("Instance ok " + getkSession().getIdentifier());
+			logger.info("Instance ok " + getkSession().getIdentifier());
 		}
 	}
 

@@ -1,9 +1,8 @@
 //created by Clayton Tolotti: claytontolotti@gmail.com, on: 01/04/2018
 package br.upf.protegemed.rules
 
-import br.upf.protegemed.utils.Utils;
-import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.dao.CapturaAtualDAO;
+import br.upf.protegemed.beans.CapturaAtual
+import br.upf.protegemed.dao.CapturaAtualDAO
 
 rule "detect-flight-plug-one-six"
 	when
@@ -14,8 +13,6 @@ rule "detect-flight-plug-one-six"
 						&& $eventSix after[0s] $eventOne
 					)
 	then
-		//Utils.logger(drools.getRule().getName() + " " + $outlet.durationBetweenEvent(
-		//	$eventSix.getData(), $eventOne.getData()) + " tomada " + $eventOne.getTomada().getCodTomada());
 		long $duracao = CapturaAtual.durationBetweenEvent($eventSix.getData(), $eventOne.getData());
 		new CapturaAtualDAO().updateDurationCapturaAtual($eventOne, $eventSix, $duracao);
 		retract($eventSix);

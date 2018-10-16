@@ -20,7 +20,7 @@ import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
 
 public class CapturaAtualDAO {
-
+	
 	public List<CapturaAtual> queryCaptureCurrent() throws ProtegeDAOException, ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException {
 		CapturaAtual capturaAtual;
@@ -89,7 +89,6 @@ public class CapturaAtualDAO {
 			while (resultSet.next()) {
 				sequence = resultSet.getInt(1);
 			}
-			Utils.logger("sequence " + sequence);
 			return sequence;
 
 		} catch (SQLException pr) {

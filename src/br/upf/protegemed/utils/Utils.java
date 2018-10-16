@@ -1,22 +1,12 @@
 package br.upf.protegemed.utils;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import br.upf.protegemed.rest.WSProtegemed;
-
 public class Utils {
 
 	private Utils() {
 	}
 	
 	public static final String PASSWORD = "senha.123";
-	public static final String USER = "protegemed";
+	public static final String USER = "root";
 	public static final String BD = "protegemed";
 	public static final String JDBC = "mysql";
 	public static final String HOST = "localhost";
@@ -28,7 +18,6 @@ public class Utils {
 	public static final float INTERVENTION = 0.5F;
 	public static final Integer VERSAO_FREQUENCIA = 1;
 
-	private static String LOCALE_LOG = System.getProperty("user.home") + "/Downloads/teste.txt";
 	public static final int MEMORIA = 256 * 1024 * 1024;
 	public static final int MAXSALAS = 16;
 	public static final int MAXTOMADAS = 12;
@@ -39,26 +28,6 @@ public class Utils {
 	public static final int TEMPOATUALIZATABELA = 3000;
 	public static final int DIGITOSSIGNIFICATIVOS = 3;
 	public static final double NIVELDESIGNIFICANCIA = 0.05;
-
-	public static void logger(String msg) {
-
-		if (WSProtegemed.getAtivarlog() == 1) {
-			Date dataTemp;
-			String dataString = null;
-
-			try {
-				SimpleDateFormat f = new SimpleDateFormat(MASK_DATA);
-				dataTemp = Calendar.getInstance().getTime();
-				dataString = "[LOG] ".concat(f.format(dataTemp)).concat(" - ");
-
-				Files.write(Paths.get(LOCALE_LOG), dataString.getBytes(), StandardOpenOption.APPEND);
-				Files.write(Paths.get(LOCALE_LOG), msg.getBytes(), StandardOpenOption.APPEND);
-				Files.write(Paths.get(LOCALE_LOG), "\n".getBytes(), StandardOpenOption.APPEND);
-			} catch (IOException e) {
-				logger(e.getMessage());
-			}
-		}
-	}
 
 	public static Float convertHexToFloat(String string) {
 		return Float.intBitsToFloat(new Long(Long.parseLong(string, 16)).intValue());

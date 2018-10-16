@@ -2,16 +2,18 @@ package br.upf.protegemed.rest;
 
 import javax.ws.rs.ApplicationPath;
 
+import org.apache.log4j.Logger;
 import org.glassfish.jersey.server.ResourceConfig;
 
 import br.upf.protegemed.exceptions.ProtegeClassException;
 import br.upf.protegemed.exceptions.ProtegeDAOException;
 import br.upf.protegemed.exceptions.ProtegeIllegalAccessException;
 import br.upf.protegemed.exceptions.ProtegeInstanciaException;
-import br.upf.protegemed.utils.Utils;
 
 @ApplicationPath("")
 public class RestfulApp extends ResourceConfig {
+	
+	final static Logger logger = Logger.getLogger(ResourceConfig.class);
 	
 	public RestfulApp() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
 		
@@ -28,7 +30,7 @@ public class RestfulApp extends ResourceConfig {
 			LoadConfiguration.initInstanceDrools();
 
 		} catch (Exception e) {
-			Utils.logger(e.getMessage());
+			logger.error(e.getMessage());
 		}
 	}
 }

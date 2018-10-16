@@ -1,9 +1,8 @@
 //created by Clayton Tolotti: claytontolotti@gmail.com, on: 24/06/2018
 package br.upf.protegemed.rules
 
-import br.upf.protegemed.utils.Utils;
-import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.utils.Calculos;
+import br.upf.protegemed.beans.CapturaAtual
+import br.upf.protegemed.utils.Calculos
 import br.upf.protegemed.dao.CapturaAtualDAO
 
 rule "rule-calculate-similaridade"

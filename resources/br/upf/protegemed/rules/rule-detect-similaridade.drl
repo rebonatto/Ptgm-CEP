@@ -4,8 +4,10 @@
 package br.upf.protegemed.rules
 
 import br.upf.protegemed.beans.CapturaAtual
-import br.upf.protegemed.utils.Utils
 import br.upf.protegemed.utils.Calculos
+import org.apache.log4j.Logger
+
+global Logger logger;
 
 rule "rule-detected-similaridade-1"
 	salience 3 //regra será disparada antes da relação de início e fuga.
@@ -23,7 +25,8 @@ rule "rule-detected-similaridade-1"
 					,this after[0s] $eventOneAfter && $eventOneAfter after[0s] $eventOneBefore
 				)
 	then
-		Utils.logger(drools.getRule().getName());
+    	logger = Logger.getLogger(CapturaAtual.class);
+    	logger.info("execute rule " + drools.getRule().getName());
 end;
 
 rule "rule-detected-similaridade-2"
@@ -42,5 +45,6 @@ rule "rule-detected-similaridade-2"
 					,this after[0s] $eventOneAfter && $eventOneAfter after[0s] $eventOneBefore
 				)
 	then
-		Utils.logger(drools.getRule().getName());
+    	logger = Logger.getLogger(CapturaAtual.class);
+    	logger.info("execute rule " + drools.getRule().getName());
 end;

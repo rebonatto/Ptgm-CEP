@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import org.drools.core.common.DefaultFactHandle;
 import org.kie.api.KieServices;
 import org.kie.api.runtime.rule.FactHandle;
+import org.apache.log4j.Logger;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Equipamento;
@@ -38,12 +39,8 @@ import br.upf.protegemed.utils.Utils;
 @Path("/")
 public class WSProtegemed {
 
-	public static final Integer ativarLog = 1;
-
-	public static Integer getAtivarlog() {
-		return ativarLog;
-	}
-
+	final static Logger logger = Logger.getLogger(WSProtegemed.class);
+	
 	public WSProtegemed() {
 		super();
 	}
@@ -51,6 +48,7 @@ public class WSProtegemed {
 	@GET
 	@Path("status")
 	public String getStatus() {
+		logger.info("Drools ON");
 		return "ON";
 	}
 
@@ -59,13 +57,13 @@ public class WSProtegemed {
 	public void getSession() {
 		
 		if (LoadConfiguration.getkSession() == null) {
-			Utils.logger("Uninitialized drools instance... Initializing");
+			logger.info("Uninitialized drools instance... Initializing");
 			LoadConfiguration.setKs(KieServices.Factory.get());
 			LoadConfiguration.setkContainer(LoadConfiguration.getKs().getKieClasspathContainer());
 			LoadConfiguration.setkSession(LoadConfiguration.getkContainer().newKieSession("protegemed"));
-			Utils.logger("Initializing drools instance");
+			logger.info("Initializing drools instance");
 		} else {
-			Utils.logger("Instance initialized drools");
+			logger.info("Instance initialized drools");
 		}
 	}
 
@@ -75,6 +73,7 @@ public class WSProtegemed {
 	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		try {
+			//logger.info(" REQUEST: " + c);
 			// Separar os parÃ¢metros recebidos Ex: RFID=000&TYPE=00F
 			String[] temp = c.split("&");
 			List<HarmAtual> listHarmAtual = new ArrayList<>();
@@ -132,8 +131,6 @@ public class WSProtegemed {
 			
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
-		} catch(Exception e) {
-			Utils.logger(e.getMessage());
 		}
 	}
 	
@@ -143,12 +140,12 @@ public class WSProtegemed {
 		Collection<FactHandle> collect = LoadConfiguration.getkSession().getFactHandles();
 		
 		if(!collect.isEmpty()) {
-			Utils.logger("total events in drools " + collect.size());
+			logger.info("total events in drools " + collect.size());
 		} else {
-			Utils.logger("nothing events in drools");
+			logger.info("nothing events in drools");
 			return;
 		}
-		Utils.logger("list events");
+		logger.info("list events");
 		for (FactHandle factHandle : collect) {
 			
 			DefaultFactHandle df = (DefaultFactHandle) factHandle;
@@ -157,16 +154,11 @@ public class WSProtegemed {
 				Similaridade similaridade = (Similaridade) df.getObject();
 				
 				for(int i = 0; i < similaridade.getCapturaAtual().size(); i++) {
-					
 					CapturaAtual c = similaridade.getCapturaAtual().get(i);
-					
-					Utils.logger("RFID " + c.getEquipamento().getRfid()
-								);
+					logger.info("RFID " + c.getEquipamento().getRfid());
 				}
-				
-				//Utils.logger(similaridade.getResultado());
 			} else {
-				Utils.logger("fact " + factHandle.getClass());
+				logger.info("fact " + factHandle.getClass());
 			}
 		}
 	}
