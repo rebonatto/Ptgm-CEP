@@ -68,7 +68,7 @@ public class WSProtegemed {
 	}
 
 	@POST//events/receive
-	@Path("capture.php")
+	@Path("capture")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
