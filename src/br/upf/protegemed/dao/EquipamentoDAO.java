@@ -24,7 +24,10 @@ import br.upf.protegemed.utils.Utils;
 
 public class EquipamentoDAO {
 
-public List<Equipamento> queryEquipament() throws ProtegeDAOException, ProtegemedParserException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
+	private PreparedStatement stmt;
+	private ResultSet resultSet;
+	
+	public List<Equipamento> queryEquipament() throws ProtegeDAOException, ProtegemedParserException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		Equipamento equipamento;
 		Modelo modelo;
@@ -35,8 +38,6 @@ public List<Equipamento> queryEquipament() throws ProtegeDAOException, Protegeme
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.MASK_YYYY_MM_DD);
 		
-		PreparedStatement stmt;
-		ResultSet resultSet;
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_EQUIPAMENTO);
 			resultSet = stmt.executeQuery();
@@ -71,6 +72,8 @@ public List<Equipamento> queryEquipament() throws ProtegeDAOException, Protegeme
 				equipamento.setTempoUso(resultSet.getInt(11));
 				listEquipamentos.add(equipamento);				
 			}
+			stmt.close();
+			resultSet.close();
 			return listEquipamentos;
 		} catch (SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
@@ -81,8 +84,6 @@ public List<Equipamento> queryEquipament() throws ProtegeDAOException, Protegeme
 
 	public Equipamento queryCodEquipament (String rfid) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 	
-		PreparedStatement stmt = null;
-		ResultSet resultSet;
 		Equipamento equipamento = new Equipamento();
 		Marca marca = new Marca();
 		Tipo tipo = new Tipo();
@@ -105,6 +106,8 @@ public List<Equipamento> queryEquipament() throws ProtegeDAOException, Protegeme
 				equipamento.setCodPatrimonio(resultSet.getInt(5));
 				equipamento.setDesc(resultSet.getString(6)); 
 			}
+			stmt.close();
+			resultSet.close();
 			return equipamento;
 			
 		} catch (SQLException e) {

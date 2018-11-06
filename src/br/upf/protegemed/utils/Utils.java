@@ -7,7 +7,7 @@ public class Utils {
 	
 	public static final String PASSWORD = "senha.123";
 	public static final String USER = "root";
-	public static final String BD = "protegemed?useTimezone=true&serverTimezone=UTC";
+	public static final String BD = "protege?useTimezone=true&serverTimezone=UTC";
 	public static final String JDBC = "mysql";
 	public static final String HOST = "localhost";
 	public static final String PORT = "3306";

@@ -24,7 +24,7 @@ end
 rule "rule-detect-orphan-event-five"
 	salience 9
 	when
-		$typeFive : CapturaAtual( getEventos().getCodEvento() == 6 )
+		$typeFive : CapturaAtual( getEventos().getCodEvento() == 5 )
 		$total : Number($total > 1) from accumulate (
 				CapturaAtual( 
 					this.getEventos().getCodEvento() == $typeFive.getEventos().getCodEvento() &&

@@ -16,10 +16,11 @@ import br.upf.protegemed.utils.Utils;
 
 public class EscalaCorrenteDAO {
 	
+	private PreparedStatement stmt;
+	private ResultSet resultSet;
+	
 	public EscalaCorrente queryCorrente(Versao versao, PericulosidadeFuga periculosidadeFuga) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
-		PreparedStatement stmt = null;
-		ResultSet resultSet = null;
 		EscalaCorrente escalaCorrente = null;
 		
 		try {
@@ -39,6 +40,7 @@ public class EscalaCorrenteDAO {
 				escalaCorrente.setVersao(versao);
 			}
 			stmt.close();
+			resultSet.close();
 			return escalaCorrente;
 					
 		} catch (SQLException e) {

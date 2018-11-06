@@ -16,10 +16,11 @@ import br.upf.protegemed.utils.Utils;
 
 public class EscalaFrequenciasDAO {
 	
+	private PreparedStatement stmt;
+	private ResultSet resultSet;
+	
 	public EscalaFrequencia queryFrequencias(Versao versao, PericulosidadeFuga periculosidadeFuga) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
-		PreparedStatement stmt = null;
-		ResultSet resultSet = null;
 		EscalaFrequencia escalaFrequencia;
 		float[] valor = new float[12];
 		float[] frequencia = new float[12];
@@ -45,6 +46,7 @@ public class EscalaFrequenciasDAO {
 			escalaFrequencia.setPericulosidadeFuga(periculosidadeFuga);
 			
 			stmt.close();
+			resultSet.close();
 			return escalaFrequencia;
 					
 		} catch (SQLException e) {

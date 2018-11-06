@@ -18,14 +18,15 @@ import br.upf.protegemed.utils.Utils;
 
 public class UsoSalaEquipDAO {
 
-public List<UsoSalaEquip> queryUseRoomEquip() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
+	private PreparedStatement stmt;
+	private ResultSet resultSet;
+	
+	public List<UsoSalaEquip> queryUseRoomEquip() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
-		PreparedStatement stmt;
 		UsoSalaEquip usoSalaEquip;
 		Equipamento equipamento;
 		UsoSala usoSala;
 		List<UsoSalaEquip> listUsoSalaEquip = new ArrayList<>();
-		ResultSet resultSet;
 		
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_USO_SALA_EQUIP);
@@ -43,6 +44,7 @@ public List<UsoSalaEquip> queryUseRoomEquip() throws ProtegeDAOException, Proteg
 			}
 		
 			stmt.close();
+			resultSet.close();
 			return listUsoSalaEquip;
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());

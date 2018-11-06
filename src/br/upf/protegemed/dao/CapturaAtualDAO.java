@@ -21,6 +21,9 @@ import br.upf.protegemed.utils.Utils;
 
 public class CapturaAtualDAO {
 	
+	private PreparedStatement stmt;
+	private ResultSet resultSet;
+	
 	public List<CapturaAtual> queryCaptureCurrent() throws ProtegeDAOException, ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException {
 		CapturaAtual capturaAtual;
@@ -30,9 +33,6 @@ public class CapturaAtualDAO {
 		Eventos eventos;
 
 		List<CapturaAtual> listCapturaAtual = new ArrayList<>();
-
-		PreparedStatement stmt;
-		ResultSet resultSet;
 
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_CAPTURA_ATUAL);
@@ -67,6 +67,7 @@ public class CapturaAtualDAO {
 				listCapturaAtual.add(capturaAtual);
 			}
 			stmt.close();
+			resultSet.close();
 			return listCapturaAtual;
 
 		} catch (SQLException pr) {
@@ -77,8 +78,6 @@ public class CapturaAtualDAO {
 	public Integer getNextval() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
 			ProtegeDAOException {
 
-		PreparedStatement stmt;
-		ResultSet resultSet;
 		Integer sequence = 0;
 
 		try {
@@ -89,6 +88,8 @@ public class CapturaAtualDAO {
 			while (resultSet.next()) {
 				sequence = resultSet.getInt(1);
 			}
+			resultSet.close();
+			stmt.close();
 			return sequence;
 
 		} catch (SQLException pr) {
@@ -98,8 +99,6 @@ public class CapturaAtualDAO {
 
 	public void insertCapturaAtual(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-
-		PreparedStatement stmt;
 
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryInsert.INSERT_CAPTURA_ATUAL);
@@ -131,8 +130,6 @@ public class CapturaAtualDAO {
 			throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
 			ProtegeDAOException {
 
-		PreparedStatement stmt;
-
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_DURATION_CAPTURA_ATUAL);
 			stmt.setLong(1, duracao);
@@ -149,9 +146,7 @@ public class CapturaAtualDAO {
 
 	public void updateCapturaAtualOrfao(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-
-		PreparedStatement stmt;
-
+		
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_CAPTURA_ATUAL_ORFAO);
 			stmt.setInt(1, capturaAtual.getCodCaptura());
@@ -165,8 +160,6 @@ public class CapturaAtualDAO {
 
 	public void updateFrequencia(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-
-		PreparedStatement stmt;
 
 		try {
 			stmt = ConnectionFactory.getConnection()
@@ -184,8 +177,6 @@ public class CapturaAtualDAO {
 	public void updateCorrente(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
 
-		PreparedStatement stmt;
-
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_CORRENTE);
 			stmt.setInt(1, capturaAtual.getPericulosidadeCorrente());
@@ -200,8 +191,6 @@ public class CapturaAtualDAO {
 
 	public void updateSimilaridade(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo) throws ProtegeInstanciaException, ProtegeIllegalAccessException,
 			ProtegeClassException, ProtegeDAOException {
-
-		PreparedStatement stmt;
 
 		try {
 			stmt = ConnectionFactory.getConnection()

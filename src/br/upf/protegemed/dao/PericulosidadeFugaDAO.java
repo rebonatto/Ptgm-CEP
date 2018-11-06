@@ -16,11 +16,13 @@ import br.upf.protegemed.utils.Utils;
 
 public class PericulosidadeFugaDAO {
 
+	private PreparedStatement stmt;
+	private ResultSet resultSet;
+	
 	public List<PericulosidadeFuga> queryPericulosidadeFuga() throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException{
-		PreparedStatement stmt;
+
 		PericulosidadeFuga periculosidadeFuga;
 		List<PericulosidadeFuga> listPericulosidadeFugas = new ArrayList<>();
-		ResultSet resultSet;
 		
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_PERICULOSIDADE_FUGA);
@@ -35,6 +37,7 @@ public class PericulosidadeFugaDAO {
 			}
 			
 			stmt.close();
+			resultSet.close();
 			return listPericulosidadeFugas;
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());

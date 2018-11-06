@@ -3,7 +3,6 @@ package br.upf.protegemed.rest;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -12,10 +11,8 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MediaType;
 
-import org.drools.core.common.DefaultFactHandle;
-import org.kie.api.KieServices;
-import org.kie.api.runtime.rule.FactHandle;
 import org.apache.log4j.Logger;
+import org.kie.api.KieServices;
 
 import br.upf.protegemed.beans.CapturaAtual;
 import br.upf.protegemed.beans.Equipamento;
@@ -23,7 +20,6 @@ import br.upf.protegemed.beans.Eventos;
 import br.upf.protegemed.beans.HarmAtual;
 import br.upf.protegemed.beans.ParamRequest;
 import br.upf.protegemed.beans.SalaCirurgia;
-import br.upf.protegemed.beans.Similaridade;
 import br.upf.protegemed.beans.Tomada;
 import br.upf.protegemed.dao.CapturaAtualDAO;
 import br.upf.protegemed.dao.EquipamentoDAO;
@@ -67,13 +63,12 @@ public class WSProtegemed {
 		}
 	}
 
-	@POST//events/receive
+	@POST//TODO Alterar o path da operação
 	@Path("capture")
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	public void postReceiveEvent(String c) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
 		try {
-			//logger.info(" REQUEST: " + c);
 			// Separar os parÃ¢metros recebidos Ex: RFID=000&TYPE=00F
 			String[] temp = c.split("&");
 			List<HarmAtual> listHarmAtual = new ArrayList<>();
@@ -109,8 +104,8 @@ public class WSProtegemed {
 			capturaAtual.setTomada(tomada);
 			capturaAtual.setSalaCirurgia(salaCirurgia);
 
-			arraySen = paramRequest.getSIN().split("%");
-			arrayCos = paramRequest.getCOS().split("%");
+			arraySen = paramRequest.getSIN().split(";");
+			arrayCos = paramRequest.getCOS().split(";");
 			
 			for (int i = 0; i < arrayCos.length; i++) {
 				HarmAtual harmAtual = new HarmAtual();
@@ -131,35 +126,6 @@ public class WSProtegemed {
 			
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
-		}
-	}
-	
-	@GET
-	@Path("events/list-all")
-	public void listAllEvents() {
-		Collection<FactHandle> collect = LoadConfiguration.getkSession().getFactHandles();
-		
-		if(!collect.isEmpty()) {
-			logger.info("total events in drools " + collect.size());
-		} else {
-			logger.info("nothing events in drools");
-			return;
-		}
-		logger.info("list events");
-		for (FactHandle factHandle : collect) {
-			
-			DefaultFactHandle df = (DefaultFactHandle) factHandle;
-			
-			if(df.getObjectClassName().equals(Similaridade.class.getName())) {
-				Similaridade similaridade = (Similaridade) df.getObject();
-				
-				for(int i = 0; i < similaridade.getCapturaAtual().size(); i++) {
-					CapturaAtual c = similaridade.getCapturaAtual().get(i);
-					logger.info("RFID " + c.getEquipamento().getRfid());
-				}
-			} else {
-				logger.info("fact " + factHandle.getClass());
-			}
 		}
 	}
 	

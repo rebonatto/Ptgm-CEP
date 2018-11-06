@@ -17,13 +17,14 @@ import br.upf.protegemed.utils.Utils;
 
 public class HarmAtualDAO {
 
+	private PreparedStatement stmt;
+	private ResultSet resultSet;
+	
 	public List<HarmAtual> queryHarmCurrent() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 
-		PreparedStatement stmt;
 		HarmAtual harmAtual;
 		CapturaAtual capturaAtual;
 		List<HarmAtual> listHarmAtual = new ArrayList<>();
-		ResultSet resultSet;
 		
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_HARMONICA_ATUAL);
@@ -40,6 +41,7 @@ public class HarmAtualDAO {
 				listHarmAtual.add(harmAtual);
 			}
 			stmt.close();
+			resultSet.close();
 			return listHarmAtual;
 			
 		} catch(SQLException pr) {

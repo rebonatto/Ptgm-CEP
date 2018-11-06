@@ -23,7 +23,7 @@ public class ConnectionFactory {
 		try {
 			
 			if (conexao == null) {
-				Class.forName("com.mysql.jdbc.Driver").newInstance();
+				Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
 				return DriverManager.getConnection(
 						"jdbc:" + Utils.JDBC + "://" + Utils.HOST + ":" + Utils.PORT + "/" + Utils.BD, Utils.USER,
 						Utils.PASSWORD);
