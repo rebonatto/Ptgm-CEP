@@ -7,15 +7,13 @@ import br.upf.protegemed.dao.CapturaAtualDAO
 rule "rule-detect-orphan-event-one"
 	salience 10
 	when
-		$typeOne : CapturaAtual( getEventos().getCodEvento() == 1 )
-		$total   : Number($total > 1) from accumulate (
-			$atual : CapturaAtual(
-					this.getEventos().getCodEvento() == $typeOne.getEventos().getCodEvento() && 
-					this.getTomada().getCodTomada() == $typeOne.getTomada().getCodTomada(), 
-					$cont : this
-				),
-				count($cont)
-			)
+		$typeOne : CapturaAtual( this.getEventos().getCodEvento() == 1 )
+		$currentOne : CapturaAtual(
+					getEventos().getCodEvento() == $typeOne.getEventos().getCodEvento() && 
+					getTomada().getCodTomada() == $typeOne.getTomada().getCodTomada() &&
+					getCodCaptura() != $typeOne.getCodCaptura()
+				)
+		$delete : CapturaAtual( $typeOne after[0s] $currentOne)
 	then
 		new CapturaAtualDAO().updateCapturaAtualOrfao($typeOne);
 		retract($typeOne);
@@ -24,15 +22,14 @@ end
 rule "rule-detect-orphan-event-six"
 	salience 10
 	when
-		$typeSix : CapturaAtual( getEventos().getCodEvento() == 6 )
-		$total : Number($total > 1) from accumulate (
-				CapturaAtual( 
-					this.getEventos().getCodEvento() == $typeSix.getEventos().getCodEvento() &&
-					this.getTomada().getCodTomada() == $typeSix.getTomada().getCodTomada(),
-					$cont : this
-				),
-				count($cont)
-			)
+		$typeSix : CapturaAtual( this.getEventos().getCodEvento() == 6 )
+		$currentSix: CapturaAtual( 
+					getEventos().getCodEvento() == $typeSix.getEventos().getCodEvento() &&
+					getTomada().getCodTomada() == $typeSix.getTomada().getCodTomada() &&
+					getCodCaptura() != $typeSix.getCodCaptura()
+				)
+		$delete : CapturaAtual( $typeSix after[0s] $currentSix)
+				
 	then
 		new CapturaAtualDAO().updateCapturaAtualOrfao($typeSix);
 		retract($typeSix);

@@ -20,12 +20,13 @@ import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
 
 public class CapturaAtualDAO {
-	
+
 	private PreparedStatement stmt;
 	private ResultSet resultSet;
 	
 	public List<CapturaAtual> queryCaptureCurrent() throws ProtegeDAOException, ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException {
+
 		CapturaAtual capturaAtual;
 		Tomada tomada;
 		TipoOnda tipoOnda;
@@ -104,8 +105,8 @@ public class CapturaAtualDAO {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryInsert.INSERT_CAPTURA_ATUAL);
 			stmt.setInt(1, capturaAtual.getCodCaptura());
 			stmt.setInt(2, capturaAtual.getTomada().getCodTomada());
-			stmt.setInt(3, 1);//TODO verificar se é fase ou fuga, tabela tipoonda
-			stmt.setInt(4, 1);//TODO verificar se for pra buscar no banco pelo RFID, tabela equipamento
+			stmt.setInt(3, 1);// TODO verificar se é fase ou fuga, tabela tipoonda
+			stmt.setInt(4, 1);// TODO verificar se for pra buscar no banco pelo RFID, tabela equipamento
 			stmt.setInt(5, capturaAtual.getEventos().getCodEvento());
 			stmt.setFloat(6, capturaAtual.getMv());
 			stmt.setFloat(7, capturaAtual.getOffset());
@@ -116,7 +117,7 @@ public class CapturaAtualDAO {
 			stmt.setInt(12, capturaAtual.getUnder());
 			stmt.setInt(13, capturaAtual.getOver());
 			stmt.setLong(14, capturaAtual.getDuracao());
-			
+
 			stmt.execute();
 			stmt.close();
 
@@ -146,10 +147,11 @@ public class CapturaAtualDAO {
 
 	public void updateCapturaAtualOrfao(CapturaAtual capturaAtual) throws ProtegeInstanciaException,
 			ProtegeIllegalAccessException, ProtegeClassException, ProtegeDAOException {
-		
+
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QueryUpdate.UPDATE_CAPTURA_ATUAL_ORFAO);
 			stmt.setInt(1, capturaAtual.getCodCaptura());
+			//logger.info("codCaptura: " + capturaAtual.getCodCaptura());
 			stmt.execute();
 			stmt.close();
 
@@ -189,15 +191,38 @@ public class CapturaAtualDAO {
 		}
 	}
 
-	public void updateSimilaridade(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo) throws ProtegeInstanciaException, ProtegeIllegalAccessException,
-			ProtegeClassException, ProtegeDAOException {
+//	public void updatePericulosidadeSimilaridade(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo, Double spearman)
+//			throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
+//			ProtegeDAOException {
+//
+//		try {
+//			stmt = ConnectionFactory.getConnection()
+//					.prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_SIMILARIDADE);
+//			stmt.setInt(1, capturaAtualOne.getPericulosidadeSimilaridade());
+//			stmt.setInt(2, capturaAtualOne.getCodCaptura());
+//			stmt.setInt(3, capturaAtualTwo.getCodCaptura());
+//			stmt.setDouble(4, spearman);
+//			stmt.execute();
+//			stmt.close();
+//
+//		} catch (SQLException pr) {
+//			throw new ProtegeDAOException(pr.getMessage());
+//		}
+//	}
+
+	public void updateSimilaridade(String periculosidade, CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo)
+			throws ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException,
+			ProtegeDAOException {
 
 		try {
 			stmt = ConnectionFactory.getConnection()
-					.prepareStatement(Utils.QueryUpdate.UPDATE_PERICULOSIDADE_SIMILARIDADE);
-			stmt.setInt(1, capturaAtualOne.getPericulosidadeSimilaridade());
-			stmt.setInt(2, capturaAtualOne.getCodCaptura());
-			stmt.setInt(3, capturaAtualTwo.getCodCaptura());
+					.prepareStatement(Utils.QueryUpdate.UPDATE_SIMILARIDADE);
+			stmt.setString(1, periculosidade);
+			stmt.setDouble(2, capturaAtualOne.getSpearman());
+			stmt.setInt(3, capturaAtualOne.getPericulosidadeSimilaridade());
+			stmt.setInt(4, capturaAtualOne.getCodCaptura());
+			stmt.setInt(5, capturaAtualTwo.getCodCaptura());
+			//logger.info(/atualizando similaridade: " + );
 			stmt.execute();
 			stmt.close();
 

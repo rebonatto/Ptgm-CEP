@@ -7,7 +7,7 @@ public class Utils {
 	
 	public static final String PASSWORD = "senha.123";
 	public static final String USER = "root";
-	public static final String BD = "protege?useTimezone=true&serverTimezone=UTC";
+	public static final String BD = "protegemed?useTimezone=true&serverTimezone=UTC";
 	public static final String JDBC = "mysql";
 	public static final String HOST = "localhost";
 	public static final String PORT = "3306";
@@ -30,7 +30,7 @@ public class Utils {
 	public static final double NIVELDESIGNIFICANCIA = 0.05;
 
 	public static Float convertHexToFloat(String string) {
-		return Float.intBitsToFloat(new Long(Long.parseLong(string, 16)).intValue());
+		return Float.intBitsToFloat(Long.valueOf(Long.parseLong(string, 16)).intValue());
 	}
 	
 	public class QuerySelect {
@@ -76,7 +76,7 @@ public class Utils {
 		private QueryUpdate() {}
 		public static final String UPDATE_DURATION_CAPTURA_ATUAL = "update protegemed.capturaatual set duration = ? where codCaptura in(?,?)";
 		public static final String UPDATE_CAPTURA_ATUAL_ORFAO = "update protegemed.capturaatual set duration = -1 where codCaptura = ?";
-		public static final String UPDATE_PERICULOSIDADE_SIMILARIDADE = "UPDATE protegemed.capturaatual SET periculosidade_similaridade = ? WHERE codCaptura in(?,?)";
+		public static final String UPDATE_SIMILARIDADE = "UPDATE protegemed.capturaatual SET similaridade = ?, spearman = ?, periculosidade_similaridade = ? WHERE codCaptura in(?,?)";
 		public static final String UPDATE_PERICULOSIDADE_CORRENTE = "UPDATE protegemed.capturaatual SET periculosidade_corrente = ? WHERE codCaptura = ?";
 		public static final String UPDATE_PERICULOSIDADE_FREQUENCIA = "UPDATE protegemed.capturaatual SET periculosidade_frequencia = ? WHERE codCaptura = ?";
 	}

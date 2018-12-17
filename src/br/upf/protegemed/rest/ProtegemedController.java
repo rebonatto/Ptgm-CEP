@@ -33,13 +33,9 @@ import br.upf.protegemed.exceptions.ProtegeInstanciaException;
 import br.upf.protegemed.utils.Utils;
 
 @Path("/")
-public class WSProtegemed {
+public class ProtegemedController {
 
-	final static Logger logger = Logger.getLogger(WSProtegemed.class);
-	
-	public WSProtegemed() {
-		super();
-	}
+	final static Logger logger = Logger.getLogger(ProtegemedController.class);
 	
 	@GET
 	@Path("status")

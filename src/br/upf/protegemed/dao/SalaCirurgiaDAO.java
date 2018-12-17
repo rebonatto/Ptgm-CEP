@@ -14,7 +14,7 @@ import br.upf.protegemed.utils.Utils;
 
 public class SalaCirurgiaDAO {
 
-	private PreparedStatement stmt;
+	private PreparedStatement stmt = null;
 	private ResultSet resultSet;
 	
 	public SalaCirurgia querySalaCirurgia (Integer codTomada) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
@@ -31,8 +31,8 @@ public class SalaCirurgiaDAO {
 				sala.setCodSala(resultSet.getInt(1));
 				sala.setDesc(resultSet.getString(2));
 			}
-			stmt.close();
 			resultSet.close();
+			stmt.close();
 			return sala;
 		} catch (SQLException e) {
 			throw new ProtegeDAOException(e.getMessage());

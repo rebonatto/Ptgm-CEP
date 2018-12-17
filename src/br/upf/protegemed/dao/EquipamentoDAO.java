@@ -24,8 +24,8 @@ import br.upf.protegemed.utils.Utils;
 
 public class EquipamentoDAO {
 
-	private PreparedStatement stmt;
 	private ResultSet resultSet;
+	private PreparedStatement stmt;
 	
 	public List<Equipamento> queryEquipament() throws ProtegeDAOException, ProtegemedParserException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
@@ -72,8 +72,8 @@ public class EquipamentoDAO {
 				equipamento.setTempoUso(resultSet.getInt(11));
 				listEquipamentos.add(equipamento);				
 			}
-			stmt.close();
 			resultSet.close();
+			stmt.close();
 			return listEquipamentos;
 		} catch (SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
@@ -106,8 +106,8 @@ public class EquipamentoDAO {
 				equipamento.setCodPatrimonio(resultSet.getInt(5));
 				equipamento.setDesc(resultSet.getString(6)); 
 			}
-			stmt.close();
 			resultSet.close();
+			stmt.close();
 			return equipamento;
 			
 		} catch (SQLException e) {

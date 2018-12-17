@@ -18,11 +18,10 @@ import br.upf.protegemed.utils.Utils;
 
 public class EscalaSimilaridadeDAO {
 
-	private PreparedStatement stmt;
-	private ResultSet resultSet;
-	
 	public List<EscalaSimilaridade> queryEscalaSimilaridade(Versao versao, PericulosidadeFuga periculosidadeFuga) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
-	
+		
+		PreparedStatement stmt = null;
+		ResultSet resultSet = null;
 		List<EscalaSimilaridade> listEscalaSimilaridade = new ArrayList<>();
 		EscalaSimilaridade escalaSimilaridade;
 		
@@ -43,7 +42,6 @@ public class EscalaSimilaridadeDAO {
 				listEscalaSimilaridade.add(escalaSimilaridade);
 			}
 			stmt.close();
-			resultSet.close();
 			return listEscalaSimilaridade;
 					
 		} catch (SQLException e) {

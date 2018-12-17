@@ -30,6 +30,7 @@ public class CapturaAtual implements Serializable{
 	private long duracao;
 	private List<HarmAtual> listHarmAtual;
 	private SalaCirurgia salaCirurgia;
+	private Double spearman;
 	private Integer periculosidadeCorrente;
 	private Integer periculosidadeFrequencia;
 	private Integer periculosidadeSimilaridade;
@@ -192,6 +193,14 @@ public class CapturaAtual implements Serializable{
 
 	public void setPericulosidadeSimilaridade(Integer periculosidadeSimilaridade) {
 		this.periculosidadeSimilaridade = periculosidadeSimilaridade;
+	}
+
+	public Double getSpearman() {
+		return spearman;
+	}
+
+	public void setSpearman(Double spearman) {
+		this.spearman = spearman;
 	}
 
 	public static long durationBetweenEvent(Calendar eventoFim, Calendar eventoIni) {

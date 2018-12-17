@@ -85,7 +85,7 @@ public class Calculos {
 		}
 
 		BigDecimal bd = BigDecimal.valueOf(value);
-		bd = bd.setScale(places, BigDecimal.ROUND_HALF_UP);
+		bd = bd.setScale(places);
 		return bd.doubleValue();
 	}
 
@@ -126,19 +126,12 @@ public class Calculos {
 		return variancia;
 	}
 
-	public static int calcularSpearman(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo) {
+	public static Double calcularSpearman(CapturaAtual capturaAtualOne, CapturaAtual capturaAtualTwo) {
 
 		List<Double> listaUm = ProtegeDataset.newDatasetOnda(capturaAtualOne);
 		List<Double> listaDois = ProtegeDataset.newDatasetOnda(capturaAtualTwo);
 		double[] res = null;
 		res = CalculosSimilaridade.spearman(listaUm, listaDois);
-		
-		if (res[0] >= 0.95 || res[0] <= 1.0) {
-			return 3;
-		} else if (res[0] <= 0.84900) {
-			return 1;
-		} else {
-			return 2;
-		}
+		return Math.abs(Double.valueOf(res[0]));
 	}
 }

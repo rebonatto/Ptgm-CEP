@@ -1,5 +1,6 @@
 package br.upf.protegemed.jdbc;
 
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ public class ConnectionFactory {
 		try {
 			
 			if (conexao == null) {
-				Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+				Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor(ConnectionFactory.class).newInstance();
 				return DriverManager.getConnection(
 						"jdbc:" + Utils.JDBC + "://" + Utils.HOST + ":" + Utils.PORT + "/" + Utils.BD, Utils.USER,
 						Utils.PASSWORD);
@@ -38,6 +39,14 @@ public class ConnectionFactory {
 			throw new ProtegeIllegalAccessException(il.getMessage());
 		} catch (ClassNotFoundException cl) {
 			throw new ProtegeClassException(cl.getMessage());
+		} catch (IllegalArgumentException e) {
+			throw new ProtegeClassException(e.getMessage());
+		} catch (InvocationTargetException e) {
+			throw new ProtegeClassException(e.getMessage());
+		} catch (NoSuchMethodException e) {
+			throw new ProtegeClassException(e.getMessage());
+		} catch (SecurityException e) {
+			throw new ProtegeClassException(e.getMessage());
 		}
 	}
 

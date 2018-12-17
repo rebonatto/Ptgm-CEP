@@ -8,14 +8,12 @@ rule "rule-detect-orphan-event-four"
 	salience 9
 	when
 		$typeFour : CapturaAtual( getEventos().getCodEvento() == 4 )
-		$total   : Number($total > 1) from accumulate (
-			$atual : CapturaAtual(
-					this.getEventos().getCodEvento() == $typeFour.getEventos().getCodEvento() && 
-					this.getTomada().getCodTomada() == $typeFour.getTomada().getCodTomada(), 
-					$cont : this
-				),
-				count($cont)
-			)
+		$currentFour : CapturaAtual(
+					getEventos().getCodEvento() == $typeFour.getEventos().getCodEvento() && 
+					getTomada().getCodTomada() == $typeFour.getTomada().getCodTomada() &&
+					getCodCaptura() != $typeFour.getCodCaptura()
+				)
+		$delete : CapturaAtual( $typeFour after[0s] $currentFour)
 	then
 		new CapturaAtualDAO().updateCapturaAtualOrfao($typeFour);
 		retract($typeFour);
@@ -25,14 +23,12 @@ rule "rule-detect-orphan-event-five"
 	salience 9
 	when
 		$typeFive : CapturaAtual( getEventos().getCodEvento() == 5 )
-		$total : Number($total > 1) from accumulate (
-				CapturaAtual( 
-					this.getEventos().getCodEvento() == $typeFive.getEventos().getCodEvento() &&
-					this.getTomada().getCodTomada() == $typeFive.getTomada().getCodTomada(),
-					$cont : this
-				),
-				count($cont)
-			)
+		$currentFive : CapturaAtual(
+					getEventos().getCodEvento() == $typeFive.getEventos().getCodEvento() && 
+					getTomada().getCodTomada() == $typeFive.getTomada().getCodTomada() &&
+					getCodCaptura() != $typeFive.getCodCaptura()
+				)
+		$delete : CapturaAtual( $typeFive after[0s] $currentFive)
 	then
 		new CapturaAtualDAO().updateCapturaAtualOrfao($typeFive);
 		retract($typeFive);

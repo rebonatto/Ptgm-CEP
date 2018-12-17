@@ -16,12 +16,11 @@ import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
 
 public class VersaoDAO {
-	
-	private PreparedStatement stmt;
-	private ResultSet resultSet;
-	
-	public Versao queryVersao(String idVersao) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ParseException{
 
+	public Versao queryVersao(String idVersao) throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException, ParseException{
+		
+		PreparedStatement stmt = null;
+		ResultSet resultSet = null;
 		Versao versao = null;
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat(Utils.MASK_YYYY_MM_DD);		
@@ -41,7 +40,6 @@ public class VersaoDAO {
 				versao.setDescricao(resultSet.getString(4));
 			}
 			stmt.close();
-			resultSet.close();
 			return versao;
 					
 		} catch (SQLException e) {

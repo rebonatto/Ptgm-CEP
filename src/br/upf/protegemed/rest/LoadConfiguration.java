@@ -1,5 +1,5 @@
 /*
- * author: Clayton Tootti: claytontolotti@gmail.com
+, * author: Clayton Tootti: claytontolotti@gmail.com
  * Classe com métodos para carregar previamente algumas informações para a aplicação.
  * Os métodos estão sendo utilizados na classe RestfulApp, classe responsável por inicializar
  * o webservice pós deploy no tomcat.

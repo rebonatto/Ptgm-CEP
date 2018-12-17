@@ -16,13 +16,12 @@ import br.upf.protegemed.utils.Utils;
 
 public class ModeloDAO {
 
-	private PreparedStatement stmt;
-	private ResultSet resultSet;
-	
-	public List<Modelo> queryModels() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
+public List<Modelo> queryModels() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException{
 		
+		PreparedStatement stmt;
 		Modelo modelo;
 		List<Modelo> listModels = new ArrayList<>();
+		ResultSet resultSet;
 		
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_MODELO);
@@ -36,7 +35,6 @@ public class ModeloDAO {
 			}
 			
 			stmt.close();
-			resultSet.close();
 			return listModels;
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());

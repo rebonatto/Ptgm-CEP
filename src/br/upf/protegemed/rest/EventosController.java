@@ -14,33 +14,20 @@ import org.drools.core.common.DefaultFactHandle;
 import org.kie.api.runtime.rule.FactHandle;
 
 import br.upf.protegemed.beans.CapturaAtual;
-import br.upf.protegemed.beans.Evento;
+import br.upf.protegemed.beans.ListarEventos;
 
-@Path("/events")
-public class EventsController {
+@Path("events")
+public class EventosController {
 
-	final static Logger logger = Logger.getLogger(EventsController.class);
-
-	@GET
-	@Path("quantity")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Evento getQuantityEvents() {
-
-		Collection<FactHandle> collect = LoadConfiguration.getkSession().getFactHandles();
-
-		if (!collect.isEmpty()) {
-			return new Evento(collect.size());
-		} else {
-			return new Evento(0);
-		}
-	}
+	final static Logger logger = Logger.getLogger(ProtegemedController.class);
 
 	@GET
-	@Path("events")
+	@Path("all-events")
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<CapturaAtual> listAllEvents() {
+	public ListarEventos listAllEvents() {
 		Collection<FactHandle> collect = LoadConfiguration.getkSession().getFactHandles();
 
+		ListarEventos listarEventos = new ListarEventos();
 		List<CapturaAtual> lista = new ArrayList<>();
 		DefaultFactHandle df = null;
 
@@ -51,6 +38,14 @@ public class EventsController {
 			if (df.getObjectClassName().equals(CapturaAtual.class.getName()))
 				lista.add((CapturaAtual) df.getObject());
 		}
-		return lista;
+		
+		if(lista.isEmpty()) {
+			listarEventos.setListaCapturaAtual(null);
+			listarEventos.setQuantity(0);
+		} else {
+			listarEventos.setListaCapturaAtual(lista);
+			listarEventos.setQuantity(collect.size());
+		}
+		return listarEventos;
 	}
 }

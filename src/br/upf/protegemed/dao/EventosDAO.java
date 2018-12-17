@@ -15,14 +15,13 @@ import br.upf.protegemed.jdbc.ConnectionFactory;
 import br.upf.protegemed.utils.Utils;
 
 public class EventosDAO {
-	
-	private PreparedStatement stmt;
-	private ResultSet resultSet;
 
-	public List<Eventos> queryEvents() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
+public List<Eventos> queryEvents() throws ProtegeDAOException, ProtegeInstanciaException, ProtegeIllegalAccessException, ProtegeClassException {
 		
+		PreparedStatement stmt;
 		Eventos eventos;
 		List<Eventos> listEvents = new ArrayList<>();
+		ResultSet resultSet;
 		
 		try {
 			stmt = ConnectionFactory.getConnection().prepareStatement(Utils.QuerySelect.QUERY_EVENTOS);
@@ -37,7 +36,6 @@ public class EventosDAO {
 			}
 			
 			stmt.close();
-			resultSet.close();
 			return listEvents;
 		} catch(SQLException pr) {
 			throw new ProtegeDAOException(pr.getMessage());
